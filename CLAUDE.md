@@ -11,10 +11,10 @@ Moonbeam is an Ethereum-compatible parachain built with Polkadot-SDK. It's a Rus
 ### Building
 ```bash
 # Build the Moonbeam node (optimized release build)
-cargo build --release
+cargo build --release --locked
 
 # Build specific runtime only
-cargo build --release -p moonbeam-runtime
+cargo build --release --locked -p moonbeam-runtime
 
 # Build TypeScript packages
 pnpm i

@@ -1,10 +1,10 @@
 [alias]
-moonbase = " build --release -p moonbeam --no-default-features --features moonbase-native"
-moonbase-rococo = " build --release -p moonbeam --no-default-features --features moonbase-native,rococo-native"
-moonriver = " build --release -p moonbeam --no-default-features --features moonriver-native"
-moonriver-rococo = " build --release -p moonbeam --no-default-features --features moonriver-native,rococo-native"
-moonbeam = " build --release -p moonbeam --no-default-features --features moonbeam-native"
-moonbeam-rococo = " build --release -p moonbeam --no-default-features --features moonbeam-native,rococo-native"
+moonbase = " build --release --locked -p moonbeam --no-default-features --features moonbase-native"
+moonbase-rococo = " build --release --locked -p moonbeam --no-default-features --features moonbase-native,rococo-native"
+moonriver = " build --release --locked -p moonbeam --no-default-features --features moonriver-native"
+moonriver-rococo = " build --release --locked -p moonbeam --no-default-features --features moonriver-native,rococo-native"
+moonbeam = " build --release --locked -p moonbeam --no-default-features --features moonbeam-native"
+moonbeam-rococo = " build --release --locked -p moonbeam --no-default-features --features moonbeam-native,rococo-native"
 
 #
 # An auto defined `clippy` feature was introduced,

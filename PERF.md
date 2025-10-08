@@ -15,7 +15,7 @@ Moonbeam node built with `--release`, contains enough symbols to have meaningful
 However it is suggested to also combine the build with additional frame pointers in order to capture the full stack:
 
 ```
-RUSTFLAGS="-C force-frame-pointers=yes" cargo build --release
+RUSTFLAGS="-C force-frame-pointers=yes" cargo build --release --locked
 ```
 
 ## Enabling WASM debugging
@@ -171,7 +171,7 @@ At this point you should have a `perf.data` file (and a `jit-xxxx.dump` if you u
 1. Compile the node
 
 ```
-RUSTFLAGS="-C force-frame-pointers=yes" cargo build --release
+RUSTFLAGS="-C force-frame-pointers=yes" cargo build --release --locked
 ```
 
 2. Mark the test you want to execute with `it.only(...` (to avoid running other tests)

@@ -55,7 +55,7 @@ export USER_PORT=<XX000>
 ### Building the nodes
 
 ```bash
-cargo build --release
+cargo build --release --locked
 ```
 
 # Standalone nodes

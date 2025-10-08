@@ -122,7 +122,7 @@ git clone https://github.com/moonbeam-foundation/moonbeam
 cd moonbeam
 
 # Build the node (The first build will be long (~30min))
-cargo build --release
+cargo build --release --locked
 ```
 
 ## Run Tests
