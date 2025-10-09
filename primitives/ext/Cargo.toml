@@ -2,7 +2,7 @@
 name = "moonbeam-primitives-ext"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.1.0"
@@ -18,7 +18,7 @@ sp-runtime-interface = { workspace = true }
 sp-std = { workspace = true }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"evm-tracing-events/std",
 	"parity-scale-codec/std",

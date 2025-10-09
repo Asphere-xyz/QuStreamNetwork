@@ -2,7 +2,7 @@
 name = "moonbeam-service"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.network"
 license = "GPL-3.0-only"
 version = "0.47.2"
 
@@ -152,11 +152,7 @@ substrate-test-runtime-client = { workspace = true }
 substrate-build-script-utils = { workspace = true }
 
 [features]
-default = [
-	"moonbase-native",
-	"moonbeam-native",
-	"moonriver-native",
-]
+default = ["moonbase-native", "moonbeam-native", "moonriver-native"]
 
 lazy-loading = ["parking_lot/send_guard"]
 
@@ -180,7 +176,4 @@ runtime-benchmarks = [
 	"pallet-ethereum/runtime-benchmarks",
 ]
 
-try-runtime = [
-	"moonbase-runtime",
-	"moonbase-runtime/try-runtime",
-]
+try-runtime = ["moonbase-runtime", "moonbase-runtime/try-runtime"]

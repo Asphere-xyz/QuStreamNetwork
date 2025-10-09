@@ -2,7 +2,7 @@
 name = "moonbeam-relay-encoder"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.1.0"
@@ -28,8 +28,8 @@ cumulus-primitives-core = { workspace = true }
 xcm = { workspace = true }
 
 [dev-dependencies]
-frame-support = { workspace = true, features = [ "std" ] }
-pallet-utility = { workspace = true, features = [ "std" ] }
+frame-support = { workspace = true, features = ["std"] }
+pallet-utility = { workspace = true, features = ["std"] }
 pallet-xcm-transactor = { workspace = true }
 
 moonbase-runtime = { workspace = true }
@@ -37,7 +37,7 @@ polkadot-runtime-parachains = { workspace = true }
 westend-runtime = { workspace = true }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"cumulus-primitives-core/std",
 	"frame-system/std",
@@ -52,10 +52,6 @@ std = [
 	"westend-runtime/std",
 ]
 
-runtime-benchmarks = [
-	"westend-runtime/runtime-benchmarks"
-]
+runtime-benchmarks = ["westend-runtime/runtime-benchmarks"]
 
-try-runtime = [
-	"westend-runtime/try-runtime"
-]
+try-runtime = ["westend-runtime/try-runtime"]

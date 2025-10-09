@@ -2,7 +2,7 @@
 name = "moonbeam-dev-rpc"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.1.0"
@@ -10,9 +10,9 @@ version = "0.1.0"
 [dependencies]
 flume = { workspace = true }
 hex-literal = { workspace = true }
-jsonrpsee = { workspace = true, features = [ "macros", "server" ] }
-parity-scale-codec = { workspace = true, features = [ "std" ] }
+jsonrpsee = { workspace = true, features = ["macros", "server"] }
+parity-scale-codec = { workspace = true, features = ["std"] }
 xcm = { workspace = true }
 
-cumulus-primitives-core = { workspace = true, features = [ "std" ] }
-xcm-primitives = { workspace = true, features = [ "std" ] }
+cumulus-primitives-core = { workspace = true, features = ["std"] }
+xcm-primitives = { workspace = true, features = ["std"] }

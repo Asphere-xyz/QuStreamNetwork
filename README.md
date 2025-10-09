@@ -6,7 +6,7 @@
 
 **An Ethereum compatible [Parachain](https://polkadot.com/rollups) built with the [Polkadot-SDK](https://github.com/paritytech/polkadot-sdk).**
 
-👉 _Discover the Moonbeam project at [moonbeam.network](https://moonbeam.network)._<br>
+👉 _Discover the QuStreamNetwork project at [qustream.network](https://qustream.network)._<br>
 👉 _Learn to [use the Moonbeam network](https://docs.moonbeam.network/) with our technical docs._<br>
 👉 _Reference our [crate-level docs (rustdocs)](https://moonbeam-foundation.github.io/moonbeam) to contribute._
 

@@ -2,7 +2,7 @@
 name = "bp-moonriver"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.0.1"
@@ -37,5 +37,5 @@ std = [
     "frame-support/std",
     "sp-api/std",
     "sp-runtime/std",
-    "xcm/std"
+    "xcm/std",
 ]

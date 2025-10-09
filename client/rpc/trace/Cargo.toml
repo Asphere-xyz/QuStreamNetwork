@@ -2,7 +2,7 @@
 name = "moonbeam-rpc-trace"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.6.0"
@@ -10,10 +10,10 @@ version = "0.6.0"
 [dependencies]
 ethereum-types = { workspace = true }
 futures = { workspace = true }
-jsonrpsee = { workspace = true, features = [ "macros", "server" ] }
+jsonrpsee = { workspace = true, features = ["macros", "server"] }
 log = { workspace = true }
 substrate-prometheus-endpoint = { workspace = true }
-tokio = { workspace = true, features = [ "sync", "time" ] }
+tokio = { workspace = true, features = ["sync", "time"] }
 tracing = { workspace = true }
 
 # Moonbeam
@@ -31,6 +31,6 @@ sp-blockchain = { workspace = true }
 sp-runtime = { workspace = true }
 
 # Frontier
-fc-rpc = { workspace = true, features = [ "rpc-binary-search-estimate" ] }
+fc-rpc = { workspace = true, features = ["rpc-binary-search-estimate"] }
 fc-storage = { workspace = true }
 fp-rpc = { workspace = true }

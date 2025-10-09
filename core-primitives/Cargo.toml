@@ -2,7 +2,7 @@
 name = "moonbeam-core-primitives"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.1.1"
@@ -14,9 +14,5 @@ sp-core = { workspace = true }
 sp-runtime = { workspace = true }
 
 [features]
-default = [ "std" ]
-std = [
-	"account/std",
-	"sp-core/std",
-	"sp-runtime/std",
-]
+default = ["std"]
+std = ["account/std", "sp-core/std", "sp-runtime/std"]
