@@ -27,8 +27,8 @@ done
 logs_dir=$TEST_DIR/logs
 bridge_script="${BASH_SOURCE%/*}/bridge.sh"
 
-moonbeam_def=${ZOMBIENET_CONFIGS}/moonbeam-polkadot.toml
-start_zombienet $TEST_DIR $moonbeam_def moonbeam_dir moonbeam_pid
+qustream_def=${ZOMBIENET_CONFIGS}/qustream-polkadot.toml
+start_zombienet $TEST_DIR $qustream_def moonbeam_dir moonbeam_pid
 echo
 
 moonriver_def=${ZOMBIENET_CONFIGS}/moonriver-kusama.toml

@@ -20,8 +20,8 @@
 # Loading binary/specs variables
 source scripts/_init_var.sh
 
-if [ ! -f "$MOONBEAM_BINARY" ]; then
-  echo "Moonbeam binary $MOONBEAM_BINARY is missing"
+if [ ! -f "$QUSTREAM_BINARY" ]; then
+  echo "Moonbeam binary $QUSTREAM_BINARY is missing"
   echo "Please run: cargo build --release --locked"
   exit 1
 fi
@@ -83,7 +83,7 @@ echo "parachain $PARACHAIN_INDEX ($PARACHAIN_ID) - p2p-port: $((PARACHAIN_PORT +
 rpc-port: $((PARACHAIN_PORT + 10 + 2))"
 
 sha256sum $CHAIN
-$MOONBEAM_BINARY \
+$QUSTREAM_BINARY \
   --node-key ${PARACHAIN_NODE_KEYS[$PARACHAIN_INDEX]} \
   --listen-addr "/ip4/0.0.0.0/tcp/$((PARACHAIN_PORT + 10))" \
   --rpc-port $((PARACHAIN_PORT + 10 + 2)) \

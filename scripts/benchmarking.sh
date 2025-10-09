@@ -7,7 +7,7 @@
 
 set -e
 
-BINARY="./target/release/moonbeam"
+BINARY="./target/release/qustream"
 STEPS=50
 REPEAT=20
 

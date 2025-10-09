@@ -60,7 +60,7 @@ which uses the configuration (based on latest rococo, you can override using `--
 local: {
   relay: "rococo-9004",
   chain: "moonbase-local",
-  binary: "../target/release/moonbeam",
+  binary: "../target/release/qustream",
 }
 
 # relay

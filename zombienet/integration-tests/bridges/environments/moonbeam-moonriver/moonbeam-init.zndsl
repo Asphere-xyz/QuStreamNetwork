@@ -1,4 +1,4 @@
-Network: ../../../../configs/moonbeam-polkadot.toml
+Network: ../../../../configs/qustream-polkadot.toml
 Creds: config
 
 alice: is up

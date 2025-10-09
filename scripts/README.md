@@ -64,7 +64,7 @@ The standalone nodes are made to be executed without explicitly supplied specs.
 They also don't require any runtime wasm file or genesis state.
 
 ```bash
-./target/release/moonbeam --dev
+./target/release/qustream --dev
 ```
 
 It will creatte a new block each time a new transaction is received.

@@ -10,12 +10,10 @@
 👉 _Learn to [use the Moonbeam network](https://docs.moonbeam.network/) with our technical docs._<br>
 👉 _Reference our [crate-level docs (rustdocs)](https://moonbeam-foundation.github.io/moonbeam) to contribute._
 
-## Run Moonbeam with zombienet
+## Run QuStreamNetwork with zombienet
 ```bash
 # Start Polkadot relay with Moonbeam parachain
-make start-zombienet-moonbeam
-# Start Kusama relay with Moonriver parachain
-make start-zombienet-moonriver
+make start-zombienet-qustream
 ```
 
 ## Run a Moonbase Alpha (Moonbeam TestNet) Node with Docker
