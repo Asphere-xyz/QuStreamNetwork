@@ -868,7 +868,7 @@ where
 
 pub fn spec_builder() -> sc_chain_spec::ChainSpecBuilder<Extensions, HostFunctions> {
 	crate::chain_spec::moonbeam::ChainSpec::builder(
-		moonbeam_runtime::WASM_BINARY.expect("WASM binary was not build, please build it!"),
+		qustream_runtime::WASM_BINARY.expect("WASM binary was not build, please build it!"),
 		Default::default(),
 	)
 	.with_name("Lazy Loading")

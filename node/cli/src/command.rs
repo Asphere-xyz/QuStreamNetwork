@@ -26,7 +26,7 @@ use moonbeam_cli_opt::EthApi;
 #[cfg(feature = "moonbase-native")]
 use moonbeam_service::moonbase_runtime;
 #[cfg(feature = "moonbeam-native")]
-use moonbeam_service::moonbeam_runtime;
+use moonbeam_service::qustream_runtime;
 #[cfg(feature = "moonriver-native")]
 use moonbeam_service::moonriver_runtime;
 
@@ -154,7 +154,7 @@ impl Cli {
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => return &moonbeam_service::moonriver_runtime::VERSION,
 			#[cfg(feature = "moonbeam-native")]
-			spec if spec.is_moonbeam() => return &moonbeam_service::moonbeam_runtime::VERSION,
+			spec if spec.is_moonbeam() => return &moonbeam_service::qustream_runtime::VERSION,
 			#[cfg(feature = "moonbase-native")]
 			_ => return &moonbeam_service::moonbase_runtime::VERSION,
 			#[cfg(not(feature = "moonbase-native"))]
@@ -384,7 +384,7 @@ pub fn run() -> Result<()> {
 				#[cfg(feature = "moonbeam-native")]
 				spec if spec.is_moonbeam() => runner.async_run(|mut config| {
 					let params = moonbeam_service::new_partial::<
-						moonbeam_service::moonbeam_runtime::RuntimeApi,
+						moonbeam_service::qustream_runtime::RuntimeApi,
 						moonbeam_service::MoonbeamCustomizations,
 					>(
 						&mut config,
@@ -447,7 +447,7 @@ pub fn run() -> Result<()> {
 				}
 				#[cfg(feature = "moonbeam-native")]
 				chain_spec if chain_spec.is_moonbeam() => {
-					let block: moonbeam_service::moonbeam_runtime::Block =
+					let block: moonbeam_service::qustream_runtime::Block =
 						generate_genesis_block(&*chain_spec, state_version)?;
 					let raw_header = block.header().encode();
 					let output_buf = if params.raw {
@@ -523,7 +523,7 @@ pub fn run() -> Result<()> {
 							#[cfg(feature = "moonbeam-native")]
 							spec if spec.is_moonbeam() => {
 								return runner.sync_run(|config| {
-									cmd.run_with_spec::<HashingFor<moonbeam_runtime::Block>, HostFunctions>(
+									cmd.run_with_spec::<HashingFor<qustream_runtime::Block>, HostFunctions>(
 										Some(config.chain_spec),
 									)
 								})
@@ -569,7 +569,7 @@ pub fn run() -> Result<()> {
 						spec if spec.is_moonbeam() => {
 							return runner.sync_run(|mut config| {
 								let params = moonbeam_service::new_partial::<
-									moonbeam_service::moonbeam_runtime::RuntimeApi,
+									moonbeam_service::qustream_runtime::RuntimeApi,
 									moonbeam_service::MoonbeamCustomizations,
 								>(
 									&mut config,
@@ -634,7 +634,7 @@ pub fn run() -> Result<()> {
 						spec if spec.is_moonbeam() => {
 							return runner.sync_run(|mut config| {
 								let params = moonbeam_service::new_partial::<
-									moonbeam_service::moonbeam_runtime::RuntimeApi,
+									moonbeam_service::qustream_runtime::RuntimeApi,
 									moonbeam_service::MoonbeamCustomizations,
 								>(
 									&mut config,
@@ -719,7 +719,7 @@ pub fn run() -> Result<()> {
 						backend,
 						..
 					} = moonbeam_service::new_partial::<
-						moonbeam_service::moonbeam_runtime::RuntimeApi,
+						moonbeam_service::qustream_runtime::RuntimeApi,
 						moonbeam_service::MoonbeamCustomizations,
 					>(
 						&mut config,
@@ -811,7 +811,7 @@ pub fn run() -> Result<()> {
 						.map_err(Into::into),
 						#[cfg(feature = "moonbeam-native")]
 						spec if spec.is_moonbeam() => moonbeam_service::new_dev::<
-							moonbeam_service::moonbeam_runtime::RuntimeApi,
+							moonbeam_service::qustream_runtime::RuntimeApi,
 							moonbeam_service::MoonbeamCustomizations,
 							sc_network::NetworkWorker<_, _>,
 						>(
@@ -866,7 +866,7 @@ pub fn run() -> Result<()> {
 					config.offchain_worker.enabled = false;
 
 					return moonbeam_service::lazy_loading::new_lazy_loading_service::<
-						moonbeam_runtime::RuntimeApi,
+						qustream_runtime::RuntimeApi,
 						moonbeam_service::MoonbeamCustomizations,
 						sc_network::NetworkWorker<_, _>,
 					>(
@@ -938,7 +938,7 @@ pub fn run() -> Result<()> {
 					.map_err(Into::into),
 					#[cfg(feature = "moonbeam-native")]
 					spec if spec.is_moonbeam() => moonbeam_service::start_node::<
-						moonbeam_service::moonbeam_runtime::RuntimeApi,
+						moonbeam_service::qustream_runtime::RuntimeApi,
 						moonbeam_service::MoonbeamCustomizations,
 					>(
 						config,

@@ -50,7 +50,7 @@ use maplit::hashmap;
 pub use moonbase_runtime;
 use moonbeam_cli_opt::{EthApi as EthApiCmd, FrontierBackendConfig, RpcConfig};
 #[cfg(feature = "moonbeam-native")]
-pub use moonbeam_runtime;
+pub use qustream_runtime;
 use moonbeam_vrf::VrfDigestsProvider;
 #[cfg(feature = "moonriver-native")]
 pub use moonriver_runtime;
@@ -379,7 +379,7 @@ pub fn new_chain_ops(
 		>(config, rpc_config, legacy_block_import_strategy),
 		#[cfg(feature = "moonbeam-native")]
 		spec if spec.is_moonbeam() => new_chain_ops_inner::<
-			moonbeam_runtime::RuntimeApi,
+			qustream_runtime::RuntimeApi,
 			MoonbeamCustomizations,
 		>(config, rpc_config, legacy_block_import_strategy),
 		#[cfg(feature = "moonbase-native")]

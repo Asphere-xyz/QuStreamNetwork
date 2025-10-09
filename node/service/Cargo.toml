@@ -44,7 +44,7 @@ session-keys-primitives = { workspace = true }
 
 # Moonbeam runtimes
 moonbase-runtime = { workspace = true, optional = true }
-moonbeam-runtime = { workspace = true, optional = true }
+qustream-runtime = { workspace = true, optional = true }
 moonriver-runtime = { workspace = true, optional = true }
 frame-system = { workspace = true, features = ["std"] }
 pallet-balances = { workspace = true, features = ["std"] }
@@ -157,20 +157,20 @@ default = ["moonbase-native", "moonbeam-native", "moonriver-native"]
 lazy-loading = ["parking_lot/send_guard"]
 
 moonbase-native = ["moonbase-runtime"]
-moonbeam-native = ["moonbeam-runtime"]
+moonbeam-native = ["qustream-runtime"]
 moonriver-native = ["moonriver-runtime"]
 
 metadata-hash = [
 	"moonbase-runtime/metadata-hash",
 	"moonriver-runtime/metadata-hash",
-	"moonbeam-runtime/metadata-hash",
+	"qustream-runtime/metadata-hash",
 ]
 
 runtime-benchmarks = [
 	"moonbase-native",
 	"moonbase-runtime/runtime-benchmarks",
 	"moonbeam-native",
-	"moonbeam-runtime/runtime-benchmarks",
+	"qustream-runtime/runtime-benchmarks",
 	"moonriver-native",
 	"moonriver-runtime/runtime-benchmarks",
 	"pallet-ethereum/runtime-benchmarks",

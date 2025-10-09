@@ -1,11 +1,11 @@
 [package]
 authors = { workspace = true }
 build = "build.rs"
-description = "Moonbeam Runtime"
+description = "QuStreamNetwork Runtime"
 edition = "2021"
 homepage = "https://qustream.network"
 license = "GPL-3.0-only"
-name = "moonbeam-runtime"
+name = "qustream-runtime"
 version = "0.8.4"
 
 [dependencies]

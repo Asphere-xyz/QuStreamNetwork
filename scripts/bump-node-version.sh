@@ -8,7 +8,7 @@ fi
 
 FROM=$1
 TO=$2
-sed -i "s/moonbeam-foundation\/moonbeam:v$FROM/moonbeam-foundation\/moonbeam:v$TO/" README.md
+sed -i "s/Asphere-xyz\/QuStreamNetwork:v$FROM/Asphere-xyz\/QuStreamNetwork:v$TO/" README.md
 sed -i "s/^version = '$FROM'$/version = '$TO'/" node/Cargo.toml
 sed -i "s/^version = '$FROM'$/version = '$TO'/" node/cli/Cargo.toml
 sed -i "s/^version = '$FROM'$/version = '$TO'/" node/cli-opt/Cargo.toml
@@ -16,6 +16,6 @@ sed -i "s/^version = '$FROM'$/version = '$TO'/" node/service/Cargo.toml
 
 sed -i "s/^version = '$FROM'$/version = '$TO'/" runtime/moonbase/Cargo.toml
 sed -i "s/^version = '$FROM'$/version = '$TO'/" runtime/moonriver/Cargo.toml
-sed -i "s/^version = '$FROM'$/version = '$TO'/" runtime/moonbeam/Cargo.toml
+sed -i "s/^version = '$FROM'$/version = '$TO'/" runtime/qustream/Cargo.toml
 
 cargo build --release --locked

@@ -40,7 +40,7 @@ members = [
     "primitives/bridge/moonbeam",
     "primitives/bridge/moonriver",
     "runtime/moonbase",
-    "runtime/moonbeam",
+    "runtime/qustream",
     "runtime/moonriver",
     "runtime/relay-encoder",
     "runtime/summarize-precompile-checks",
@@ -133,7 +133,7 @@ moonbeam-rpc-trace = { path = "client/rpc/trace" }
 moonbeam-vrf = { path = "client/vrf" }
 
 moonbase-runtime = { path = "runtime/moonbase" }
-moonbeam-runtime = { path = "runtime/moonbeam" }
+qustream-runtime = { path = "runtime/qustream" }
 moonriver-runtime = { path = "runtime/moonriver" }
 
 frame-benchmarking = { git = "https://github.com/moonbeam-foundation/polkadot-sdk", branch = "moonbeam-polkadot-stable2503", default-features = false }

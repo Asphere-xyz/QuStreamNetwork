@@ -149,7 +149,7 @@ pub trait ClientHandle {
 #[derive(Clone)]
 pub enum Client {
 	#[cfg(feature = "moonbeam-native")]
-	Moonbeam(Arc<crate::FullClient<moonbeam_runtime::RuntimeApi>>),
+	Moonbeam(Arc<crate::FullClient<qustream_runtime::RuntimeApi>>),
 	#[cfg(feature = "moonriver-native")]
 	Moonriver(Arc<crate::FullClient<moonriver_runtime::RuntimeApi>>),
 	#[cfg(feature = "moonbase-native")]
@@ -157,8 +157,8 @@ pub enum Client {
 }
 
 #[cfg(feature = "moonbeam-native")]
-impl From<Arc<crate::FullClient<moonbeam_runtime::RuntimeApi>>> for Client {
-	fn from(client: Arc<crate::FullClient<moonbeam_runtime::RuntimeApi>>) -> Self {
+impl From<Arc<crate::FullClient<qustream_runtime::RuntimeApi>>> for Client {
+	fn from(client: Arc<crate::FullClient<qustream_runtime::RuntimeApi>>) -> Self {
 		Self::Moonbeam(client)
 	}
 }

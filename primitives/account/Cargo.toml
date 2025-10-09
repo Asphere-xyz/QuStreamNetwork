@@ -2,7 +2,7 @@
 name = "account"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.1.1"
@@ -38,5 +38,5 @@ std = [
 	"sha3/std",
 	"sp-core/std",
 	"sp-io/std",
-	"sp-runtime/std"
+	"sp-runtime/std",
 ]

@@ -44,7 +44,7 @@ pub trait MoonbeamExt {
 
 	// New design, proxy events.
 	/// An `Evm` event proxied by the Moonbeam runtime to this host function.
-	/// evm -> moonbeam_runtime -> host.
+	/// evm -> qustream_runtime -> host.
 	fn evm_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = EvmEvent::decode(&mut &event[..]) {
 			Event::Evm(event).emit();
@@ -52,7 +52,7 @@ pub trait MoonbeamExt {
 	}
 
 	/// A `Gasometer` event proxied by the Moonbeam runtime to this host function.
-	/// evm_gasometer -> moonbeam_runtime -> host.
+	/// evm_gasometer -> qustream_runtime -> host.
 	fn gasometer_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = GasometerEvent::decode(&mut &event[..]) {
 			Event::Gasometer(event).emit();
@@ -60,7 +60,7 @@ pub trait MoonbeamExt {
 	}
 
 	/// A `Runtime` event proxied by the Moonbeam runtime to this host function.
-	/// evm_runtime -> moonbeam_runtime -> host.
+	/// evm_runtime -> qustream_runtime -> host.
 	fn runtime_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = RuntimeEvent::decode(&mut &event[..]) {
 			Event::Runtime(event).emit();

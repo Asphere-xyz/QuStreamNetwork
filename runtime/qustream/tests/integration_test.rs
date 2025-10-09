@@ -33,10 +33,10 @@ use frame_support::{
 	weights::{constants::WEIGHT_REF_TIME_PER_SECOND, Weight},
 	StorageHasher, Twox128,
 };
-use moonbeam_runtime::currency::{GIGAWEI, WEI};
-use moonbeam_runtime::runtime_params::dynamic_params;
-use moonbeam_runtime::xcm_config::{AssetHubLocation, XcmExecutor};
-use moonbeam_runtime::{
+use qustream_runtime::currency::{GIGAWEI, WEI};
+use qustream_runtime::runtime_params::dynamic_params;
+use qustream_runtime::xcm_config::{AssetHubLocation, XcmExecutor};
+use qustream_runtime::{
 	currency::GLMR,
 	moonbeam_xcm_weights,
 	xcm_config::{CurrencyId, SelfReserve},
@@ -76,7 +76,7 @@ type CrowdloanRewardsPCall =
 	pallet_evm_precompile_crowdloan_rewards::CrowdloanRewardsPrecompileCall<Runtime>;
 type XcmUtilsPCall = pallet_evm_precompile_xcm_utils::XcmUtilsPrecompileCall<
 	Runtime,
-	moonbeam_runtime::xcm_config::XcmExecutorConfig,
+	qustream_runtime::xcm_config::XcmExecutorConfig,
 >;
 type XcmTransactorV2PCall =
 	pallet_evm_precompile_xcm_transactor::v2::XcmTransactorPrecompileV2Call<Runtime>;
@@ -86,7 +86,7 @@ const BASE_FEE_GENESIS: u128 = 10000 * GIGAWEI;
 fn currency_to_asset(currency_id: CurrencyId, amount: u128) -> Asset {
 	Asset {
 		id: AssetId(
-			<moonbeam_runtime::Runtime as pallet_xcm_transactor::Config>::CurrencyIdToLocation::convert(
+			<qustream_runtime::Runtime as pallet_xcm_transactor::Config>::CurrencyIdToLocation::convert(
 				currency_id,
 			)
 			.unwrap(),
@@ -99,7 +99,7 @@ fn xcmp_queue_controller_origin_is_root() {
 	// important for the XcmExecutionManager impl of PauseExecution which uses root origin
 	// to suspend/resume XCM execution in xcmp_queue::on_idle
 	assert_ok!(
-		<moonbeam_runtime::Runtime as cumulus_pallet_xcmp_queue::Config
+		<qustream_runtime::Runtime as cumulus_pallet_xcmp_queue::Config
 		>::ControllerOrigin::ensure_origin(root_origin())
 	);
 }
@@ -113,46 +113,46 @@ fn verify_pallet_prefixes() {
 		// https://github.com/paritytech/substrate/blob/master/frame/support/procedural/src/pallet/
 		// expand/storage.rs#L389-L401
 		assert_eq!(
-			<moonbeam_runtime::Runtime as frame_system::Config>::PalletInfo::name::<P>(),
+			<qustream_runtime::Runtime as frame_system::Config>::PalletInfo::name::<P>(),
 			Some(name)
 		);
 	}
 	// TODO: use StorageInfoTrait once https://github.com/paritytech/substrate/pull/9246
 	// is pulled in substrate deps.
-	is_pallet_prefix::<moonbeam_runtime::System>("System");
-	is_pallet_prefix::<moonbeam_runtime::Utility>("Utility");
-	is_pallet_prefix::<moonbeam_runtime::ParachainSystem>("ParachainSystem");
-	is_pallet_prefix::<moonbeam_runtime::TransactionPayment>("TransactionPayment");
-	is_pallet_prefix::<moonbeam_runtime::ParachainInfo>("ParachainInfo");
-	is_pallet_prefix::<moonbeam_runtime::EthereumChainId>("EthereumChainId");
-	is_pallet_prefix::<moonbeam_runtime::EVM>("EVM");
-	is_pallet_prefix::<moonbeam_runtime::Ethereum>("Ethereum");
-	is_pallet_prefix::<moonbeam_runtime::ParachainStaking>("ParachainStaking");
-	is_pallet_prefix::<moonbeam_runtime::Scheduler>("Scheduler");
-	is_pallet_prefix::<moonbeam_runtime::OpenTechCommitteeCollective>(
+	is_pallet_prefix::<qustream_runtime::System>("System");
+	is_pallet_prefix::<qustream_runtime::Utility>("Utility");
+	is_pallet_prefix::<qustream_runtime::ParachainSystem>("ParachainSystem");
+	is_pallet_prefix::<qustream_runtime::TransactionPayment>("TransactionPayment");
+	is_pallet_prefix::<qustream_runtime::ParachainInfo>("ParachainInfo");
+	is_pallet_prefix::<qustream_runtime::EthereumChainId>("EthereumChainId");
+	is_pallet_prefix::<qustream_runtime::EVM>("EVM");
+	is_pallet_prefix::<qustream_runtime::Ethereum>("Ethereum");
+	is_pallet_prefix::<qustream_runtime::ParachainStaking>("ParachainStaking");
+	is_pallet_prefix::<qustream_runtime::Scheduler>("Scheduler");
+	is_pallet_prefix::<qustream_runtime::OpenTechCommitteeCollective>(
 		"OpenTechCommitteeCollective",
 	);
-	is_pallet_prefix::<moonbeam_runtime::Treasury>("Treasury");
-	is_pallet_prefix::<moonbeam_runtime::AuthorInherent>("AuthorInherent");
-	is_pallet_prefix::<moonbeam_runtime::AuthorFilter>("AuthorFilter");
-	is_pallet_prefix::<moonbeam_runtime::CrowdloanRewards>("CrowdloanRewards");
-	is_pallet_prefix::<moonbeam_runtime::AuthorMapping>("AuthorMapping");
-	is_pallet_prefix::<moonbeam_runtime::MaintenanceMode>("MaintenanceMode");
-	is_pallet_prefix::<moonbeam_runtime::Identity>("Identity");
-	is_pallet_prefix::<moonbeam_runtime::XcmpQueue>("XcmpQueue");
-	is_pallet_prefix::<moonbeam_runtime::CumulusXcm>("CumulusXcm");
-	is_pallet_prefix::<moonbeam_runtime::PolkadotXcm>("PolkadotXcm");
-	is_pallet_prefix::<moonbeam_runtime::Assets>("Assets");
-	is_pallet_prefix::<moonbeam_runtime::XcmTransactor>("XcmTransactor");
-	is_pallet_prefix::<moonbeam_runtime::ProxyGenesisCompanion>("ProxyGenesisCompanion");
-	is_pallet_prefix::<moonbeam_runtime::MoonbeamOrbiters>("MoonbeamOrbiters");
-	is_pallet_prefix::<moonbeam_runtime::TreasuryCouncilCollective>("TreasuryCouncilCollective");
-	is_pallet_prefix::<moonbeam_runtime::MoonbeamLazyMigrations>("MoonbeamLazyMigrations");
-	is_pallet_prefix::<moonbeam_runtime::RelayStorageRoots>("RelayStorageRoots");
-	is_pallet_prefix::<moonbeam_runtime::BridgeKusamaGrandpa>("BridgeKusamaGrandpa");
-	is_pallet_prefix::<moonbeam_runtime::BridgeKusamaParachains>("BridgeKusamaParachains");
-	is_pallet_prefix::<moonbeam_runtime::BridgeKusamaMessages>("BridgeKusamaMessages");
-	is_pallet_prefix::<moonbeam_runtime::BridgeXcmOverMoonriver>("BridgeXcmOverMoonriver");
+	is_pallet_prefix::<qustream_runtime::Treasury>("Treasury");
+	is_pallet_prefix::<qustream_runtime::AuthorInherent>("AuthorInherent");
+	is_pallet_prefix::<qustream_runtime::AuthorFilter>("AuthorFilter");
+	is_pallet_prefix::<qustream_runtime::CrowdloanRewards>("CrowdloanRewards");
+	is_pallet_prefix::<qustream_runtime::AuthorMapping>("AuthorMapping");
+	is_pallet_prefix::<qustream_runtime::MaintenanceMode>("MaintenanceMode");
+	is_pallet_prefix::<qustream_runtime::Identity>("Identity");
+	is_pallet_prefix::<qustream_runtime::XcmpQueue>("XcmpQueue");
+	is_pallet_prefix::<qustream_runtime::CumulusXcm>("CumulusXcm");
+	is_pallet_prefix::<qustream_runtime::PolkadotXcm>("PolkadotXcm");
+	is_pallet_prefix::<qustream_runtime::Assets>("Assets");
+	is_pallet_prefix::<qustream_runtime::XcmTransactor>("XcmTransactor");
+	is_pallet_prefix::<qustream_runtime::ProxyGenesisCompanion>("ProxyGenesisCompanion");
+	is_pallet_prefix::<qustream_runtime::MoonbeamOrbiters>("MoonbeamOrbiters");
+	is_pallet_prefix::<qustream_runtime::TreasuryCouncilCollective>("TreasuryCouncilCollective");
+	is_pallet_prefix::<qustream_runtime::MoonbeamLazyMigrations>("MoonbeamLazyMigrations");
+	is_pallet_prefix::<qustream_runtime::RelayStorageRoots>("RelayStorageRoots");
+	is_pallet_prefix::<qustream_runtime::BridgeKusamaGrandpa>("BridgeKusamaGrandpa");
+	is_pallet_prefix::<qustream_runtime::BridgeKusamaParachains>("BridgeKusamaParachains");
+	is_pallet_prefix::<qustream_runtime::BridgeKusamaMessages>("BridgeKusamaMessages");
+	is_pallet_prefix::<qustream_runtime::BridgeXcmOverMoonriver>("BridgeXcmOverMoonriver");
 
 	let prefix = |pallet_name, storage_name| {
 		let mut res = [0u8; 32];
@@ -161,7 +161,7 @@ fn verify_pallet_prefixes() {
 		res.to_vec()
 	};
 	assert_eq!(
-		<moonbeam_runtime::Timestamp as StorageInfoTrait>::storage_info(),
+		<qustream_runtime::Timestamp as StorageInfoTrait>::storage_info(),
 		vec![
 			StorageInfo {
 				pallet_name: b"Timestamp".to_vec(),
@@ -180,7 +180,7 @@ fn verify_pallet_prefixes() {
 		]
 	);
 	assert_eq!(
-		<moonbeam_runtime::Balances as StorageInfoTrait>::storage_info(),
+		<qustream_runtime::Balances as StorageInfoTrait>::storage_info(),
 		vec![
 			StorageInfo {
 				pallet_name: b"Balances".to_vec(),
@@ -234,7 +234,7 @@ fn verify_pallet_prefixes() {
 		]
 	);
 	assert_eq!(
-		<moonbeam_runtime::Proxy as StorageInfoTrait>::storage_info(),
+		<qustream_runtime::Proxy as StorageInfoTrait>::storage_info(),
 		vec![
 			StorageInfo {
 				pallet_name: b"Proxy".to_vec(),
@@ -253,7 +253,7 @@ fn verify_pallet_prefixes() {
 		]
 	);
 	assert_eq!(
-		<moonbeam_runtime::MaintenanceMode as StorageInfoTrait>::storage_info(),
+		<qustream_runtime::MaintenanceMode as StorageInfoTrait>::storage_info(),
 		vec![StorageInfo {
 			pallet_name: b"MaintenanceMode".to_vec(),
 			storage_name: b"MaintenanceMode".to_vec(),
@@ -263,7 +263,7 @@ fn verify_pallet_prefixes() {
 		},]
 	);
 	assert_eq!(
-		<moonbeam_runtime::RelayStorageRoots as StorageInfoTrait>::storage_info(),
+		<qustream_runtime::RelayStorageRoots as StorageInfoTrait>::storage_info(),
 		vec![
 			StorageInfo {
 				pallet_name: b"RelayStorageRoots".to_vec(),
@@ -286,13 +286,13 @@ fn verify_pallet_prefixes() {
 #[test]
 fn test_collectives_storage_item_prefixes() {
 	for StorageInfo { pallet_name, .. } in
-		<moonbeam_runtime::TreasuryCouncilCollective as StorageInfoTrait>::storage_info()
+		<qustream_runtime::TreasuryCouncilCollective as StorageInfoTrait>::storage_info()
 	{
 		assert_eq!(pallet_name, b"TreasuryCouncilCollective".to_vec());
 	}
 
 	for StorageInfo { pallet_name, .. } in
-		<moonbeam_runtime::OpenTechCommitteeCollective as StorageInfoTrait>::storage_info()
+		<qustream_runtime::OpenTechCommitteeCollective as StorageInfoTrait>::storage_info()
 	{
 		assert_eq!(pallet_name, b"OpenTechCommitteeCollective".to_vec());
 	}
@@ -320,7 +320,7 @@ fn collective_set_members_root_origin_works() {
 
 #[test]
 fn collective_set_members_general_admin_origin_works() {
-	use moonbeam_runtime::{
+	use qustream_runtime::{
 		governance::custom_origins::Origin as CustomOrigin, OriginCaller, Utility,
 	};
 
@@ -402,60 +402,60 @@ fn collective_set_members_signed_origin_does_not_work() {
 fn verify_pallet_indices() {
 	fn is_pallet_index<P: 'static>(index: usize) {
 		assert_eq!(
-			<moonbeam_runtime::Runtime as frame_system::Config>::PalletInfo::index::<P>(),
+			<qustream_runtime::Runtime as frame_system::Config>::PalletInfo::index::<P>(),
 			Some(index)
 		);
 	}
 
 	// System support
-	is_pallet_index::<moonbeam_runtime::System>(0);
-	is_pallet_index::<moonbeam_runtime::ParachainSystem>(1);
-	is_pallet_index::<moonbeam_runtime::Timestamp>(3);
-	is_pallet_index::<moonbeam_runtime::ParachainInfo>(4);
+	is_pallet_index::<qustream_runtime::System>(0);
+	is_pallet_index::<qustream_runtime::ParachainSystem>(1);
+	is_pallet_index::<qustream_runtime::Timestamp>(3);
+	is_pallet_index::<qustream_runtime::ParachainInfo>(4);
 	// Monetary
-	is_pallet_index::<moonbeam_runtime::Balances>(10);
-	is_pallet_index::<moonbeam_runtime::TransactionPayment>(11);
+	is_pallet_index::<qustream_runtime::Balances>(10);
+	is_pallet_index::<qustream_runtime::TransactionPayment>(11);
 	// Consensus support
-	is_pallet_index::<moonbeam_runtime::ParachainStaking>(20);
-	is_pallet_index::<moonbeam_runtime::AuthorInherent>(21);
-	is_pallet_index::<moonbeam_runtime::AuthorFilter>(22);
-	is_pallet_index::<moonbeam_runtime::AuthorMapping>(23);
-	is_pallet_index::<moonbeam_runtime::MoonbeamOrbiters>(24);
+	is_pallet_index::<qustream_runtime::ParachainStaking>(20);
+	is_pallet_index::<qustream_runtime::AuthorInherent>(21);
+	is_pallet_index::<qustream_runtime::AuthorFilter>(22);
+	is_pallet_index::<qustream_runtime::AuthorMapping>(23);
+	is_pallet_index::<qustream_runtime::MoonbeamOrbiters>(24);
 	// Handy utilities
-	is_pallet_index::<moonbeam_runtime::Utility>(30);
-	is_pallet_index::<moonbeam_runtime::Proxy>(31);
-	is_pallet_index::<moonbeam_runtime::MaintenanceMode>(32);
-	is_pallet_index::<moonbeam_runtime::Identity>(33);
-	is_pallet_index::<moonbeam_runtime::ProxyGenesisCompanion>(35);
-	is_pallet_index::<moonbeam_runtime::MoonbeamLazyMigrations>(37);
+	is_pallet_index::<qustream_runtime::Utility>(30);
+	is_pallet_index::<qustream_runtime::Proxy>(31);
+	is_pallet_index::<qustream_runtime::MaintenanceMode>(32);
+	is_pallet_index::<qustream_runtime::Identity>(33);
+	is_pallet_index::<qustream_runtime::ProxyGenesisCompanion>(35);
+	is_pallet_index::<qustream_runtime::MoonbeamLazyMigrations>(37);
 	// Ethereum compatibility
-	is_pallet_index::<moonbeam_runtime::EthereumChainId>(50);
-	is_pallet_index::<moonbeam_runtime::EVM>(51);
-	is_pallet_index::<moonbeam_runtime::Ethereum>(52);
+	is_pallet_index::<qustream_runtime::EthereumChainId>(50);
+	is_pallet_index::<qustream_runtime::EVM>(51);
+	is_pallet_index::<qustream_runtime::Ethereum>(52);
 	// Governance
-	is_pallet_index::<moonbeam_runtime::Scheduler>(60);
-	// is_pallet_index::<moonbeam_runtime::Democracy>(61); Removed
+	is_pallet_index::<qustream_runtime::Scheduler>(60);
+	// is_pallet_index::<qustream_runtime::Democracy>(61); Removed
 	// Council
-	// is_pallet_index::<moonbeam_runtime::CouncilCollective>(70); Removed
-	// is_pallet_index::<moonbeam_runtime::TechCommitteeCollective>(71); Removed
-	is_pallet_index::<moonbeam_runtime::TreasuryCouncilCollective>(72);
-	is_pallet_index::<moonbeam_runtime::OpenTechCommitteeCollective>(73);
+	// is_pallet_index::<qustream_runtime::CouncilCollective>(70); Removed
+	// is_pallet_index::<qustream_runtime::TechCommitteeCollective>(71); Removed
+	is_pallet_index::<qustream_runtime::TreasuryCouncilCollective>(72);
+	is_pallet_index::<qustream_runtime::OpenTechCommitteeCollective>(73);
 	// Treasury
-	is_pallet_index::<moonbeam_runtime::Treasury>(80);
+	is_pallet_index::<qustream_runtime::Treasury>(80);
 	// Crowdloan
-	is_pallet_index::<moonbeam_runtime::CrowdloanRewards>(90);
+	is_pallet_index::<qustream_runtime::CrowdloanRewards>(90);
 	// XCM Stuff
-	is_pallet_index::<moonbeam_runtime::XcmpQueue>(100);
-	is_pallet_index::<moonbeam_runtime::CumulusXcm>(101);
-	is_pallet_index::<moonbeam_runtime::PolkadotXcm>(103);
-	is_pallet_index::<moonbeam_runtime::Assets>(104);
-	// is_pallet_index::<moonbeam_runtime::AssetManager>(105);
-	// is_pallet_index::<moonbeam_runtime::XTokens>(106); Removed
-	is_pallet_index::<moonbeam_runtime::XcmTransactor>(107);
-	is_pallet_index::<moonbeam_runtime::BridgeKusamaGrandpa>(130);
-	is_pallet_index::<moonbeam_runtime::BridgeKusamaParachains>(131);
-	is_pallet_index::<moonbeam_runtime::BridgeKusamaMessages>(132);
-	is_pallet_index::<moonbeam_runtime::BridgeXcmOverMoonriver>(133);
+	is_pallet_index::<qustream_runtime::XcmpQueue>(100);
+	is_pallet_index::<qustream_runtime::CumulusXcm>(101);
+	is_pallet_index::<qustream_runtime::PolkadotXcm>(103);
+	is_pallet_index::<qustream_runtime::Assets>(104);
+	// is_pallet_index::<qustream_runtime::AssetManager>(105);
+	// is_pallet_index::<qustream_runtime::XTokens>(106); Removed
+	is_pallet_index::<qustream_runtime::XcmTransactor>(107);
+	is_pallet_index::<qustream_runtime::BridgeKusamaGrandpa>(130);
+	is_pallet_index::<qustream_runtime::BridgeKusamaParachains>(131);
+	is_pallet_index::<qustream_runtime::BridgeKusamaMessages>(132);
+	is_pallet_index::<qustream_runtime::BridgeXcmOverMoonriver>(133);
 }
 
 #[test]
@@ -467,7 +467,7 @@ fn verify_reserved_indices() {
 
 	t.execute_with(|| {
 		use frame_metadata::*;
-		let metadata = moonbeam_runtime::Runtime::metadata();
+		let metadata = qustream_runtime::Runtime::metadata();
 		let metadata = match metadata.1 {
 			RuntimeMetadata::V14(metadata) => metadata,
 			_ => panic!("metadata has been bumped, test needs to be updated"),
@@ -487,14 +487,14 @@ fn verify_reserved_indices() {
 
 #[test]
 fn verify_proxy_type_indices() {
-	assert_eq!(moonbeam_runtime::ProxyType::Any as u8, 0);
-	assert_eq!(moonbeam_runtime::ProxyType::NonTransfer as u8, 1);
-	assert_eq!(moonbeam_runtime::ProxyType::Governance as u8, 2);
-	assert_eq!(moonbeam_runtime::ProxyType::Staking as u8, 3);
-	assert_eq!(moonbeam_runtime::ProxyType::CancelProxy as u8, 4);
-	assert_eq!(moonbeam_runtime::ProxyType::Balances as u8, 5);
-	assert_eq!(moonbeam_runtime::ProxyType::AuthorMapping as u8, 6);
-	assert_eq!(moonbeam_runtime::ProxyType::IdentityJudgement as u8, 7);
+	assert_eq!(qustream_runtime::ProxyType::Any as u8, 0);
+	assert_eq!(qustream_runtime::ProxyType::NonTransfer as u8, 1);
+	assert_eq!(qustream_runtime::ProxyType::Governance as u8, 2);
+	assert_eq!(qustream_runtime::ProxyType::Staking as u8, 3);
+	assert_eq!(qustream_runtime::ProxyType::CancelProxy as u8, 4);
+	assert_eq!(qustream_runtime::ProxyType::Balances as u8, 5);
+	assert_eq!(qustream_runtime::ProxyType::AuthorMapping as u8, 6);
+	assert_eq!(qustream_runtime::ProxyType::IdentityJudgement as u8, 7);
 }
 
 #[test]
@@ -1324,7 +1324,7 @@ fn length_fee_is_sensible() {
 		let uxt: TestXt<_, ()> = TestXt::new_signed(RuntimeCall::System(call), 1u64, (), ());
 
 		let calc_fee = |len: u32| -> Balance {
-			moonbeam_runtime::TransactionPayment::query_fee_details(uxt.clone(), len)
+			qustream_runtime::TransactionPayment::query_fee_details(uxt.clone(), len)
 				.inclusion_fee
 				.expect("fee should be calculated")
 				.len_fee
@@ -1350,8 +1350,8 @@ fn length_fee_is_sensible() {
 fn multiplier_can_grow_from_zero() {
 	use frame_support::traits::Get;
 
-	let minimum_multiplier = moonbeam_runtime::MinimumMultiplier::get();
-	let target = moonbeam_runtime::TargetBlockFullness::get()
+	let minimum_multiplier = qustream_runtime::MinimumMultiplier::get();
+	let target = qustream_runtime::TargetBlockFullness::get()
 		* RuntimeBlockWeights::get()
 			.get(DispatchClass::Normal)
 			.max_total
@@ -1359,7 +1359,7 @@ fn multiplier_can_grow_from_zero() {
 	// if the min is too small, then this will not change, and we are doomed forever.
 	// the weight is 1/100th bigger than target.
 	run_with_system_weight(target * 101 / 100, || {
-		let next = moonbeam_runtime::SlowAdjustingFeeUpdate::<Runtime>::convert(minimum_multiplier);
+		let next = qustream_runtime::SlowAdjustingFeeUpdate::<Runtime>::convert(minimum_multiplier);
 		assert!(
 			next > minimum_multiplier,
 			"{:?} !>= {:?}",
@@ -1598,7 +1598,7 @@ fn total_issuance_after_evm_transaction_with_priority_fee() {
 
 			assert_eq!(issuance_after, issuance_before - burnt_base_fee_part);
 
-			assert_eq!(moonbeam_runtime::Treasury::pot(), treasury_base_fee_part);
+			assert_eq!(qustream_runtime::Treasury::pot(), treasury_base_fee_part);
 		});
 }
 
@@ -1649,7 +1649,7 @@ fn total_issuance_after_evm_transaction_without_priority_fee() {
 
 			assert_eq!(issuance_after, issuance_before - burnt_base_fee_part);
 
-			assert_eq!(moonbeam_runtime::Treasury::pot(), treasury_base_fee_part);
+			assert_eq!(qustream_runtime::Treasury::pot(), treasury_base_fee_part);
 		});
 }
 
@@ -1670,8 +1670,8 @@ fn root_can_change_default_xcm_vers() {
 		}])
 		.build()
 		.execute_with(|| {
-			let source_id: moonbeam_runtime::AssetId = 1;
-			let currency_id = moonbeam_runtime::xcm_config::CurrencyId::ForeignAsset(source_id);
+			let source_id: qustream_runtime::AssetId = 1;
+			let currency_id = qustream_runtime::xcm_config::CurrencyId::ForeignAsset(source_id);
 			let asset = Asset {
 				id: AssetId(
 					<Runtime as pallet_xcm_transactor::Config>::CurrencyIdToLocation::convert(
@@ -1734,7 +1734,7 @@ fn asset_can_be_registered() {
 		let source_id = 1;
 
 		assert_ok!(EvmForeignAssets::create_foreign_asset(
-			moonbeam_runtime::RuntimeOrigin::root(),
+			qustream_runtime::RuntimeOrigin::root(),
 			source_id,
 			source_location.clone(),
 			12,
@@ -1779,7 +1779,7 @@ fn xcm_asset_erc20_precompiles_supply_and_balance() {
 		.build()
 		.execute_with(|| {
 			// We have the assetId that corresponds to the relay chain registered
-			let relay_asset_id: moonbeam_runtime::AssetId =
+			let relay_asset_id: qustream_runtime::AssetId =
 				AssetType::Xcm(xcm::v3::Location::parent()).into();
 
 			// Its address is
@@ -1790,7 +1790,7 @@ fn xcm_asset_erc20_precompiles_supply_and_balance() {
 
 			// Assert the asset has been created with the correct supply
 			assert_eq!(
-				moonbeam_runtime::Assets::total_supply(relay_asset_id),
+				qustream_runtime::Assets::total_supply(relay_asset_id),
 				1_000 * GLMR
 			);
 
@@ -1841,7 +1841,7 @@ fn xcm_asset_erc20_precompiles_transfer() {
 		.build()
 		.execute_with(|| {
 			// We have the assetId that corresponds to the relay chain registered
-			let relay_asset_id: moonbeam_runtime::AssetId =
+			let relay_asset_id: qustream_runtime::AssetId =
 				AssetType::Xcm(xcm::v3::Location::parent()).into();
 
 			// Its address is
@@ -1906,7 +1906,7 @@ fn xcm_asset_erc20_precompiles_approve() {
 		.build()
 		.execute_with(|| {
 			// We have the assetId that corresponds to the relay chain registered
-			let relay_asset_id: moonbeam_runtime::AssetId =
+			let relay_asset_id: qustream_runtime::AssetId =
 				AssetType::Xcm(xcm::v3::Location::parent()).into();
 
 			// Its address is
@@ -1998,7 +1998,7 @@ fn make_sure_glmr_can_be_transferred_precompile() {
 					.into(),
 				})),
 				Box::new(VersionedAssets::from(Asset {
-					id: AssetId(moonbeam_runtime::xcm_config::SelfReserve::get()),
+					id: AssetId(qustream_runtime::xcm_config::SelfReserve::get()),
 					fun: Fungible(1000)
 				})),
 				0,
@@ -2035,7 +2035,7 @@ fn make_sure_glmr_can_be_transferred() {
 				Box::new(VersionedLocation::from(Location::parent())),
 				Box::new(VersionedLocation::from(dest)),
 				Box::new(VersionedAssets::from(Asset {
-					id: AssetId(moonbeam_runtime::xcm_config::SelfReserve::get()),
+					id: AssetId(qustream_runtime::xcm_config::SelfReserve::get()),
 					fun: Fungible(100)
 				})),
 				0,
@@ -2067,7 +2067,7 @@ fn make_sure_polkadot_xcm_cannot_be_called() {
 				.into(),
 			};
 			let assets: Assets = [Asset {
-				id: AssetId(moonbeam_runtime::xcm_config::SelfLocation::get()),
+				id: AssetId(qustream_runtime::xcm_config::SelfLocation::get()),
 				fun: Fungible(1000),
 			}]
 			.to_vec()
@@ -2187,7 +2187,7 @@ fn transactor_cannot_use_more_than_max_weight() {
 		}])
 		.build()
 		.execute_with(|| {
-			let source_id: moonbeam_runtime::AssetId = 1;
+			let source_id: qustream_runtime::AssetId = 1;
 			assert_ok!(XcmTransactor::register(
 				root_origin(),
 				AccountId::from(ALICE),
@@ -2213,7 +2213,7 @@ fn transactor_cannot_use_more_than_max_weight() {
 			assert_noop!(
 				XcmTransactor::transact_through_derivative(
 					origin_of(AccountId::from(ALICE)),
-					moonbeam_runtime::xcm_config::Transactors::Relay,
+					qustream_runtime::xcm_config::Transactors::Relay,
 					0,
 					CurrencyPayment {
 						currency: Currency::AsMultiLocation(Box::new(
@@ -2234,11 +2234,11 @@ fn transactor_cannot_use_more_than_max_weight() {
 			assert_noop!(
 				XcmTransactor::transact_through_derivative(
 					origin_of(AccountId::from(ALICE)),
-					moonbeam_runtime::xcm_config::Transactors::Relay,
+					qustream_runtime::xcm_config::Transactors::Relay,
 					0,
 					CurrencyPayment {
 						currency: Currency::AsCurrencyId(
-							moonbeam_runtime::xcm_config::CurrencyId::ForeignAsset(source_id)
+							qustream_runtime::xcm_config::CurrencyId::ForeignAsset(source_id)
 						),
 						fee_amount: None
 					},
@@ -2504,7 +2504,7 @@ fn test_xcm_utils_weight_message() {
 	ExtBuilder::default().build().execute_with(|| {
 		let xcm_utils_precompile_address = H160::from_low_u64_be(2060);
 		let expected_weight =
-			XcmWeight::<moonbeam_runtime::Runtime, RuntimeCall>::clear_origin().ref_time();
+			XcmWeight::<qustream_runtime::Runtime, RuntimeCall>::clear_origin().ref_time();
 
 		let message: Vec<u8> = xcm::VersionedXcm::<()>::V5(Xcm(vec![ClearOrigin])).encode();
 
@@ -2566,7 +2566,7 @@ fn test_xcm_utils_get_units_per_second() {
 		let input = XcmUtilsPCall::get_units_per_second { location };
 
 		let expected_units =
-			WEIGHT_REF_TIME_PER_SECOND as u128 * moonbeam_runtime::currency::WEIGHT_FEE;
+			WEIGHT_REF_TIME_PER_SECOND as u128 * qustream_runtime::currency::WEIGHT_FEE;
 
 		Precompiles::new()
 			.prepare_test(ALICE, xcm_utils_precompile_address, input)
@@ -2681,7 +2681,7 @@ fn removed_precompiles() {
 #[test]
 fn deal_with_fees_handles_tip() {
 	use frame_support::traits::OnUnbalanced;
-	use moonbeam_runtime::Treasury;
+	use qustream_runtime::Treasury;
 	use moonbeam_runtime_common::deal_with_fees::DealWithSubstrateFeesAndTip;
 
 	ExtBuilder::default().build().execute_with(|| {
@@ -2841,12 +2841,12 @@ mod bridge_tests {
 	use frame_support::assert_ok;
 	use frame_support::pallet_prelude::{Hooks, PalletInfoAccess};
 	use moonbeam_core_primitives::AccountId;
-	use moonbeam_runtime::bridge_config::{
+	use qustream_runtime::bridge_config::{
 		KusamaGlobalConsensusNetwork, WithKusamaMessagesInstance,
 	};
-	use moonbeam_runtime::currency::GLMR;
-	use moonbeam_runtime::xcm_config::CurrencyId;
-	use moonbeam_runtime::{
+	use qustream_runtime::currency::GLMR;
+	use qustream_runtime::xcm_config::CurrencyId;
+	use qustream_runtime::{
 		Balances, BridgeKusamaMessages, BridgeXcmOverMoonriver, MessageQueue, PolkadotXcm, Runtime,
 		RuntimeEvent, System,
 	};
@@ -3129,7 +3129,7 @@ mod bridge_tests {
 mod treasury_tests {
 	use super::*;
 	use frame_support::traits::fungible::NativeOrWithId;
-	use moonbeam_runtime::XcmWeightTrader;
+	use qustream_runtime::XcmWeightTrader;
 	use sp_core::bounded_vec;
 	use sp_runtime::traits::Hash;
 
@@ -3349,7 +3349,7 @@ mod fee_tests {
 		traits::{ConstU128, OnFinalize},
 		weights::{ConstantMultiplier, WeightToFee},
 	};
-	use moonbeam_runtime::{
+	use qustream_runtime::{
 		currency, LengthToFee, MinimumMultiplier, RuntimeBlockWeights, SlowAdjustingFeeUpdate,
 		TargetBlockFullness, TransactionPaymentAsGasPrice, NORMAL_WEIGHT, WEIGHT_PER_GAS,
 	};

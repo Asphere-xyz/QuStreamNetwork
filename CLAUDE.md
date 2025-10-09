@@ -4,17 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Moonbeam is an Ethereum-compatible parachain built with Polkadot-SDK. It's a Rust-based blockchain project that enables Ethereum-style smart contracts on Polkadot/Kusama networks.
+QuStreamNetwork is an Ethereum-compatible parachain built with Polkadot-SDK. It's a Rust-based blockchain project that enables Ethereum-style smart contracts on Polkadot/Kusama networks.
 
 ## Essential Commands
 
 ### Building
 ```bash
-# Build the Moonbeam node (optimized release build)
+# Build the QuStreamNetwork node (optimized release build)
 cargo build --release --locked
 
 # Build specific runtime only
-cargo build --release --locked -p moonbeam-runtime
+cargo build --release --locked -p qustream-runtime
 
 # Build TypeScript packages
 pnpm i

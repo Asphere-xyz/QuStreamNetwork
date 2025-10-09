@@ -1,5 +1,5 @@
 [package]
-name = "qusteram"
+name = "qustream"
 authors = { workspace = true }
 description = "QuStreamNetwork Collator"
 edition = "2021"
