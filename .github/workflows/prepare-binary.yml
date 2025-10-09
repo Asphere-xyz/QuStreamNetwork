@@ -51,8 +51,8 @@ jobs:
         id: prep
         run: |
           echo "rename default binary"
-          mv build/moonbeam-x86-64 build/moonbeam
-          DOCKER_IMAGE=moonbeamfoundation/moonbeam
+          mv build/qustream-x86-64 build/qustream
+          DOCKER_IMAGE=Asphere-xyz/QuStreamNetwork
           COMMIT_SHA8=`echo ${{ github.event.inputs.sha }} | cut -c1-8`
           TAG_SHA="${DOCKER_IMAGE}:sha-${COMMIT_SHA8}"
           TAG_VER="${DOCKER_IMAGE}:${{ github.event.inputs.tag }}"

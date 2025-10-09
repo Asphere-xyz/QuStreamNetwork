@@ -1,6 +1,6 @@
 name: Build Production Binary
 description: |
-  Builds production a moonbeam binary for a given CPU target
+  Builds production a QuStream binary for a given CPU target
 
 inputs:
   target:
@@ -13,24 +13,24 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Build production moonbeam
+    - name: Build production QuStream
       shell: bash
       run: |
-        # Build moonbeam
+        # Build QuStream
         # (we don't use volumes because of ownership/permissions issues)
         docker build \
           --tag prod --no-cache \
           --build-arg="COMMIT=${{ inputs.ref }}" \
           --build-arg="RUSTFLAGS=-C target-cpu=${{ inputs.target }}" \
-          - < docker/moonbeam-production.Dockerfile
+          - < docker/qustream-production.Dockerfile
 
-        # Copy moonbeam binary
+        # Copy QuStream binary
         docker rm -f dummy 2> /dev/null | true
         docker create -ti --name dummy prod bash
-        docker cp dummy:/moonbeam/moonbeam moonbeam
+        docker cp dummy:/qustream/qustream qustream
         docker rm -f dummy
 
-        GLIBC_VERSION="$(objdump -T moonbeam | grep "GLIBC_" | sed 's/.*GLIBC_\([.0-9]*\).*/\1/g' | sort -Vu | tail -1)"
+        GLIBC_VERSION="$(objdump -T qustream | grep "GLIBC_" | sed 's/.*GLIBC_\([.0-9]*\).*/\1/g' | sort -Vu | tail -1)"
 
         if [[ $GLIBC_VERSION == "2.34" ]]; then
           echo "✅ Using expected GLIBC version: ${GLIBC_VERSION}";
@@ -46,9 +46,9 @@ runs:
       shell: bash
       run: |
         mkdir -p build
-        cp moonbeam build/moonbeam-${{ inputs.target }}
+        cp qustream build/qustream-${{ inputs.target }}
     - name: Upload binary
       uses: actions/upload-artifact@v4
       with:
         name: binaries-${{inputs.target}}
-        path: build/moonbeam-${{inputs.target}}
+        path: build/qustream-${{inputs.target}}

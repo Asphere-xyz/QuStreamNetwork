@@ -8,7 +8,7 @@ on:
 
 # Cancel any previous job still running this workflow for this branch
 # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/control-the-concurrency-of-workflows-and-jobs#example-using-concurrency-to-cancel-any-in-progress-job-or-run
-concurrency:  
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -50,10 +50,10 @@ jobs:
           command: doc
           args: --all --no-deps
 
-      # Make an index.html file so we start at the moonbeam_runtime page
+      # Make an index.html file so we start at the qustream_runtime page
       # Copied from https://github.com/substrate-developer-hub/rustdocs/blob/master/index.html
       - name: Make index.html
-        run: echo "<meta http-equiv=refresh content=0;url=moonbeam_runtime/index.html>" > ./target/doc/index.html
+        run: echo "<meta http-equiv=refresh content=0;url=qustream_runtime/index.html>" > ./target/doc/index.html
 
       - name: Deploy documentation
         uses: peaceiris/actions-gh-pages@v4

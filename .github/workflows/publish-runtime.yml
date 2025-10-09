@@ -51,7 +51,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        chain: ["moonbase", "moonriver", "moonbeam"]
+        chain: ["moonbase", "moonriver", "qustream"]
         srtool_image:
           - paritytech/srtool
         srtool_image_tag:
@@ -62,7 +62,7 @@ jobs:
           ref: ${{ github.event.inputs.to }}
       - name: Login to DockerHub
         uses: docker/login-action@v3
-        if: github.repository == 'moonbeam-foundation/moonbeam'
+        if: github.repository == 'Asphere-xyz/QuStreamNetwork'
         with:
           username: ${{ secrets.MBF_DOCKERHUB_USERNAME }}
           password: ${{ secrets.MBF_DOCKERHUB_PASSWORD }}
@@ -125,10 +125,10 @@ jobs:
         with:
           name: moonriver-runtime
           path: build
-      - name: Download moonbeam runtime
+      - name: Download QuStream runtime
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam-runtime
+          name: qustream-runtime
           path: build
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -160,10 +160,10 @@ jobs:
           mv build/moonriver-runtime.compact.compressed.wasm moonriver-runtime-${runtime_moonriver_ver}.wasm
           mv build/moonriver-srtool-digest.json moonriver-runtime-${runtime_moonriver_ver}-srtool-digest.json
 
-          runtime_moonbeam_ver="$(cat ./runtime/moonbeam/src/lib.rs | grep -o 'spec_version: [0-9]*' | tail -1 | grep -o '[0-9]*')"
-          echo "runtime_moonbeam_ver=$runtime_moonbeam_ver" >> $GITHUB_OUTPUT
-          mv build/moonbeam-runtime.compact.compressed.wasm moonbeam-runtime-${runtime_moonbeam_ver}.wasm
-          mv build/moonbeam-srtool-digest.json moonbeam-runtime-${runtime_moonbeam_ver}-srtool-digest.json
+          runtime_qustream_ver="$(cat ./runtime/qustream/src/lib.rs | grep -o 'spec_version: [0-9]*' | tail -1 | grep -o '[0-9]*')"
+          echo "runtime_qustream_ver=$runtime_qustream_ver" >> $GITHUB_OUTPUT
+          mv build/qustream-runtime.compact.compressed.wasm qustream-runtime-${runtime_qustream_ver}.wasm
+          mv build/qustream-srtool-digest.json qustream-runtime-${runtime_qustream_ver}-srtool-digest.json
 
       - name: Create draft release
         id: create-release
@@ -211,21 +211,21 @@ jobs:
           asset_path: moonriver-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonriver_ver }}-srtool-digest.json
           asset_name: moonriver-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonriver_ver }}.srtool-digest.json
           asset_content_type: application/json
-      - name: Upload moonbeam wasm
+      - name: Upload QuStream wasm
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: moonbeam-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonbeam_ver }}.wasm
-          asset_name: moonbeam-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonbeam_ver }}.wasm
+          asset_path: qustream-runtime-${{ steps.get-runtime-ver.outputs.runtime_qustream_ver }}.wasm
+          asset_name: qustream-runtime-${{ steps.get-runtime-ver.outputs.runtime_qustream_ver }}.wasm
           asset_content_type: application/octet-stream
-      - name: Upload moonbeam srtool digest
+      - name: Upload QuStream srtool digest
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: moonbeam-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonbeam_ver }}-srtool-digest.json
-          asset_name: moonbeam-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonbeam_ver }}.srtool-digest.json
+          asset_path: qustream-runtime-${{ steps.get-runtime-ver.outputs.runtime_qustream_ver }}-srtool-digest.json
+          asset_name: qustream-runtime-${{ steps.get-runtime-ver.outputs.runtime_qustream_ver }}.srtool-digest.json
           asset_content_type: application/json

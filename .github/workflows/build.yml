@@ -19,7 +19,7 @@ on:
 
 # Cancel any previous job still running this workflow for this branch
 # https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/control-the-concurrency-of-workflows-and-jobs#example-using-concurrency-to-cancel-any-in-progress-job-or-run
-concurrency:  
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -74,7 +74,7 @@ jobs:
       - name: Get Latest RT Release
         id: get-latest-rt
         run: |
-          LATEST_RUNTIME_RELEASE=$(curl -s https://api.github.com/repos/moonbeam-foundation/moonbeam/releases | jq -r '.[] | select(.name | test("runtime";"i")) | .tag_name' | sort -rs | head -n 1 | tr -d '[:blank:]') && [[ ! -z "${LATEST_RUNTIME_RELEASE}" ]]
+          LATEST_RUNTIME_RELEASE=$(curl -s https://api.github.com/repos/Asphere-xyz/QuStreamNetwork/releases | jq -r '.[] | select(.name | test("runtime";"i")) | .tag_name' | sort -rs | head -n 1 | tr -d '[:blank:]') && [[ ! -z "${LATEST_RUNTIME_RELEASE}" ]]
           echo $LATEST_RUNTIME_RELEASE
           echo "latest_rt=$LATEST_RUNTIME_RELEASE" >> $GITHUB_OUTPUT
       - name: Get Sha
@@ -87,7 +87,7 @@ jobs:
           head -1 | sed 's/.*#//' |  cut -c1-8)" >> $GITHUB_OUTPUT
           echo "polkadot_ver=$(grep 'frame-system' Cargo.toml | sed -nE 's/.*moonbeam-polkadot-v([0-9]+\.[0-9]+\.[0-9]+).*/\1/p' | head -1)" >> $GITHUB_OUTPUT
 
-          ENDPOINT="https://api.github.com/repos/moonbeam-foundation/moonbeam/git/refs/tags/${{ steps.get-latest-rt.outputs.latest_rt }}"
+          ENDPOINT="https://api.github.com/repos/Asphere-xyz/QuStreamNetwork/git/refs/tags/${{ steps.get-latest-rt.outputs.latest_rt }}"
           RESPONSE=$(curl -s -H "Accept: application/vnd.github.v3+json" $ENDPOINT)
           TYPE=$(echo $RESPONSE | jq -r '.object.type')
 
@@ -109,7 +109,7 @@ jobs:
         id: check-docker-image
         run: |
           TAG=sha-${{ steps.get-sha.outputs.sha8 }}
-          echo "image_exists=$(docker image inspect moonbeamfoundation/moonbeam:$TAG > /dev/null && echo "true" || echo "false")" >> $GITHUB_OUTPUT
+          echo "image_exists=$(docker image inspect Asphere-xyz/QuStreamNetwork:$TAG > /dev/null && echo "true" || echo "false")" >> $GITHUB_OUTPUT
       - name: Display variables
         run: |
           echo git_ref: ${{ steps.check-git-ref.outputs.git_ref }}
@@ -297,7 +297,7 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
-          name: moonbeam
+          name: qustream
           path: build
 
   check-wasm-size:
@@ -328,7 +328,7 @@ jobs:
         id: latest-target-build
         run: |
           TARGET_BRANCH=${{ github.event.pull_request.base.ref }}
-          LATEST_TARGET_BRANCH_BUILD=$(gh run -R moonbeam-foundation/moonbeam list -w Build --limit=100 --json databaseId,url,headBranch,event,status,conclusion,createdAt --jq ".[] | select(.headBranch == \"$TARGET_BRANCH\" and .event == \"push\" and .status == \"completed\") | .databaseId" | head -n 1)
+          LATEST_TARGET_BRANCH_BUILD=$(gh run -R Asphere-xyz/QuStreamNetwork list -w Build --limit=100 --json databaseId,url,headBranch,event,status,conclusion,createdAt --jq ".[] | select(.headBranch == \"$TARGET_BRANCH\" and .event == \"push\" and .status == \"completed\") | .databaseId" | head -n 1)
           echo "LATEST_TARGET_BRANCH_BUILD=$LATEST_TARGET_BRANCH_BUILD" >> $GITHUB_OUTPUT
       - name: "Download runtimes from target branch"
         uses: actions/download-artifact@v5
@@ -349,10 +349,10 @@ jobs:
       - name: Check Runtimes size for target branch
         run: |
           PREVIOUS_MOONBASE=$(du -k runtimes-target-branch/* | awk '/moonbase_runtime/ {print $1}')
-          PREVIOUS_MOONBEAM=$(du -k runtimes-target-branch/* | awk '/moonbeam_runtime/ {print $1}')
+          PREVIOUS_QUSTREAM=$(du -k runtimes-target-branch/* | awk '/qustream_runtime/ {print $1}')
           PREVIOUS_MOONRIVER=$(du -k runtimes-target-branch/* | awk '/moonriver_runtime/ {print $1}')
           echo "PREVIOUS_MOONBASE=$PREVIOUS_MOONBASE" >> $GITHUB_ENV
-          echo "PREVIOUS_MOONBEAM=$PREVIOUS_MOONBEAM" >> $GITHUB_ENV
+          echo "PREVIOUS_QUSTREAM=$PREVIOUS_QUSTREAM" >> $GITHUB_ENV
           echo "PREVIOUS_MOONRIVER=$PREVIOUS_MOONRIVER" >> $GITHUB_ENV
       - name: "Download branch built runtime"
         uses: actions/download-artifact@v5
@@ -369,27 +369,27 @@ jobs:
       - name: Check Runtimes size for current branch
         run: |
           CURRENT_MOONBASE=$(du -k runtimes-current-branch/* | awk '/moonbase_runtime/ {print $1}')
-          CURRENT_MOONBEAM=$(du -k runtimes-current-branch/* | awk '/moonbeam_runtime/ {print $1}')
+          CURRENT_QUSTREAM=$(du -k runtimes-current-branch/* | awk '/qustream_runtime/ {print $1}')
           CURRENT_MOONRIVER=$(du -k runtimes-current-branch/* | awk '/moonriver_runtime/ {print $1}')
           echo "CURRENT_MOONBASE=$CURRENT_MOONBASE" >> $GITHUB_ENV
-          echo "CURRENT_MOONBEAM=$CURRENT_MOONBEAM" >> $GITHUB_ENV
+          echo "CURRENT_QUSTREAM=$CURRENT_QUSTREAM" >> $GITHUB_ENV
           echo "CURRENT_MOONRIVER=$CURRENT_MOONRIVER" >> $GITHUB_ENV
       - name: Fetch latest release tag
         id: fetch_latest_release
         run: |
-          LATEST_RELEASE_TAG=$(gh api repos/moonbeam-foundation/moonbeam/releases --paginate --jq '.[] | select(.tag_name | test("^runtime-\\d+$")) | .tag_name' | sort -V | tail -n 1)
+          LATEST_RELEASE_TAG=$(gh api repos/Asphere-xyz/QuStreamNetwork/releases --paginate --jq '.[] | select(.tag_name | test("^runtime-\\d+$")) | .tag_name' | sort -V | tail -n 1)
           echo "LATEST_RELEASE_TAG=$LATEST_RELEASE_TAG" >> $GITHUB_ENV
           echo $LATEST_RELEASE_TAG
       - name: Download latest release runtimes
         run: |
-          gh release download $LATEST_RELEASE_TAG -R moonbeam-foundation/moonbeam -p "moonbeam-runtime-${LATEST_RELEASE_TAG#runtime-}.wasm" -p "moonbase-runtime-${LATEST_RELEASE_TAG#runtime-}.wasm" -p "moonriver-runtime-${LATEST_RELEASE_TAG#runtime-}.wasm" --dir runtimes-latest-release
+          gh release download $LATEST_RELEASE_TAG -R Asphere-xyz/QuStreamNetwork -p "qustream-runtime-${LATEST_RELEASE_TAG#runtime-}.wasm" -p "moonbase-runtime-${LATEST_RELEASE_TAG#runtime-}.wasm" -p "moonriver-runtime-${LATEST_RELEASE_TAG#runtime-}.wasm" --dir runtimes-latest-release
       - name: Check Runtimes size for latest release
         run: |
           LATEST_MOONBASE=$(du -k runtimes-latest-release/* | awk '/moonbase-runtime/ {print $1}')
-          LATEST_MOONBEAM=$(du -k runtimes-latest-release/* | awk '/moonbeam-runtime/ {print $1}')
+          LATEST_QUSTREAM=$(du -k runtimes-latest-release/* | awk '/qustream-runtime/ {print $1}')
           LATEST_MOONRIVER=$(du -k runtimes-latest-release/* | awk '/moonriver-runtime/ {print $1}')
           echo "LATEST_MOONBASE=$LATEST_MOONBASE" >> $GITHUB_ENV
-          echo "LATEST_MOONBEAM=$LATEST_MOONBEAM" >> $GITHUB_ENV
+          echo "LATEST_QUSTREAM=$LATEST_QUSTREAM" >> $GITHUB_ENV
           echo "LATEST_MOONRIVER=$LATEST_MOONRIVER" >> $GITHUB_ENV
       - name: Create Twiggy diff reports
         run: |
@@ -401,7 +401,7 @@ jobs:
           # Generate Twiggy diff reports in JSON format with top 100 entries
           mkdir -p twiggy-diff-reports
           twiggy diff -n 100 --format json uncompressed-runtimes-target-branch/moonbase_runtime.wasm uncompressed-runtimes-current-branch/moonbase_runtime.wasm > twiggy-diff-reports/twiggy_diff_moonbase.json
-          twiggy diff -n 100 --format json uncompressed-runtimes-target-branch/moonbeam_runtime.wasm uncompressed-runtimes-current-branch/moonbeam_runtime.wasm > twiggy-diff-reports/twiggy_diff_moonbeam.json
+          twiggy diff -n 100 --format json uncompressed-runtimes-target-branch/qustream_runtime.wasm uncompressed-runtimes-current-branch/qustream_runtime.wasm > twiggy-diff-reports/twiggy_diff_qustream.json
           twiggy diff -n 100 --format json uncompressed-runtimes-target-branch/moonriver_runtime.wasm uncompressed-runtimes-current-branch/moonriver_runtime.wasm > twiggy-diff-reports/twiggy_diff_moonriver.json
 
       - name: Upload Twiggy diff reports
@@ -415,11 +415,11 @@ jobs:
           echo "" > runtime_size_report.md
 
           MOONBASE_DIFF=$((CURRENT_MOONBASE - PREVIOUS_MOONBASE))
-          MOONBEAM_DIFF=$((CURRENT_MOONBEAM - PREVIOUS_MOONBEAM))
+          QUSTREAM_DIFF=$((CURRENT_QUSTREAM - PREVIOUS_QUSTREAM))
           MOONRIVER_DIFF=$((CURRENT_MOONRIVER - PREVIOUS_MOONRIVER))
 
           LATEST_MOONBASE_DIFF=$((CURRENT_MOONBASE - LATEST_MOONBASE))
-          LATEST_MOONBEAM_DIFF=$((CURRENT_MOONBEAM - LATEST_MOONBEAM))
+          LATEST_QUSTREAM_DIFF=$((CURRENT_QUSTREAM - LATEST_QUSTREAM))
           LATEST_MOONRIVER_DIFF=$((CURRENT_MOONRIVER - LATEST_MOONRIVER))
 
           get_status_emoji() {
@@ -435,19 +435,19 @@ jobs:
           }
 
           MOONBASE_STATUS=$(get_status_emoji $CURRENT_MOONBASE $MOONBASE_DIFF)
-          MOONBEAM_STATUS=$(get_status_emoji $CURRENT_MOONBEAM $MOONBEAM_DIFF)
+          QUSTREAM_STATUS=$(get_status_emoji $CURRENT_QUSTREAM $QUSTREAM_DIFF)
           MOONRIVER_STATUS=$(get_status_emoji $CURRENT_MOONRIVER $MOONRIVER_DIFF)
 
           LATEST_MOONBASE_STATUS=$(get_status_emoji $CURRENT_MOONBASE $LATEST_MOONBASE_DIFF)
-          LATEST_MOONBEAM_STATUS=$(get_status_emoji $CURRENT_MOONBEAM $LATEST_MOONBEAM_DIFF)
+          LATEST_QUSTREAM_STATUS=$(get_status_emoji $CURRENT_QUSTREAM $LATEST_QUSTREAM_DIFF)
           LATEST_MOONRIVER_STATUS=$(get_status_emoji $CURRENT_MOONRIVER $LATEST_MOONRIVER_DIFF)
 
           MOONBASE_MSG="Moonbase runtime: ${CURRENT_MOONBASE} KB ($( [ $MOONBASE_DIFF -eq 0 ] && echo "no changes" || echo "$( [ $MOONBASE_DIFF -gt 0 ] && echo "+" )${MOONBASE_DIFF} KB")) ${MOONBASE_STATUS}"
-          MOONBEAM_MSG="Moonbeam runtime: ${CURRENT_MOONBEAM} KB ($( [ $MOONBEAM_DIFF -eq 0 ] && echo "no changes" || echo "$( [ $MOONBEAM_DIFF -gt 0 ] && echo "+" )${MOONBEAM_DIFF} KB")) ${MOONBEAM_STATUS}"
+          QUSTREAM_MSG="QuStream runtime: ${CURRENT_QUSTREAM} KB ($( [ $QUSTREAM_DIFF -eq 0 ] && echo "no changes" || echo "$( [ $QUSTREAM_DIFF -gt 0 ] && echo "+" )${QUSTREAM_DIFF} KB")) ${QUSTREAM_STATUS}"
           MOONRIVER_MSG="Moonriver runtime: ${CURRENT_MOONRIVER} KB ($( [ $MOONRIVER_DIFF -eq 0 ] && echo "no changes" || echo "$( [ $MOONRIVER_DIFF -gt 0 ] && echo "+" )${MOONRIVER_DIFF} KB")) ${MOONRIVER_STATUS}"
 
           LATEST_MOONBASE_MSG="Moonbase runtime: ${CURRENT_MOONBASE} KB ($( [ $LATEST_MOONBASE_DIFF -eq 0 ] && echo "no changes" || echo "$( [ $LATEST_MOONBASE_DIFF -gt 0 ] && echo "+" )${LATEST_MOONBASE_DIFF} KB compared to latest release")) ${LATEST_MOONBASE_STATUS}"
-          LATEST_MOONBEAM_MSG="Moonbeam runtime: ${CURRENT_MOONBEAM} KB ($( [ $LATEST_MOONBEAM_DIFF -eq 0 ] && echo "no changes" || echo "$( [ $LATEST_MOONBEAM_DIFF -gt 0 ] && echo "+" )${LATEST_MOONBEAM_DIFF} KB compared to latest release")) ${LATEST_MOONBEAM_STATUS}"
+          LATEST_QUSTREAM_MSG="QuStream runtime: ${CURRENT_QUSTREAM} KB ($( [ $LATEST_QUSTREAM_DIFF -eq 0 ] && echo "no changes" || echo "$( [ $LATEST_QUSTREAM_DIFF -gt 0 ] && echo "+" )${LATEST_QUSTREAM_DIFF} KB compared to latest release")) ${LATEST_QUSTREAM_STATUS}"
           LATEST_MOONRIVER_MSG="Moonriver runtime: ${CURRENT_MOONRIVER} KB ($( [ $LATEST_MOONRIVER_DIFF -eq 0 ] && echo "no changes" || echo "$( [ $LATEST_MOONRIVER_DIFF -gt 0 ] && echo "+" )${LATEST_MOONRIVER_DIFF} KB compared to latest release")) ${LATEST_MOONRIVER_STATUS}"
 
           echo "### WASM runtime size check:" > runtime_size_report.md
@@ -456,7 +456,7 @@ jobs:
           echo "" >> runtime_size_report.md
           echo "$MOONBASE_MSG" >> runtime_size_report.md
           echo "" >> runtime_size_report.md
-          echo "$MOONBEAM_MSG" >> runtime_size_report.md
+          echo "$QUSTREAM_MSG" >> runtime_size_report.md
           echo "" >> runtime_size_report.md
           echo "$MOONRIVER_MSG" >> runtime_size_report.md
           echo "" >> runtime_size_report.md
@@ -464,7 +464,7 @@ jobs:
           echo "" >> runtime_size_report.md
           echo "$LATEST_MOONBASE_MSG" >> runtime_size_report.md
           echo "" >> runtime_size_report.md
-          echo "$LATEST_MOONBEAM_MSG" >> runtime_size_report.md
+          echo "$LATEST_QUSTREAM_MSG" >> runtime_size_report.md
           echo "" >> runtime_size_report.md
           echo "$LATEST_MOONRIVER_MSG" >> runtime_size_report.md
           cat runtime_size_report.md
@@ -606,7 +606,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chain: ["moonbase", "moonriver", "moonbeam"]
+        chain: ["moonbase", "moonriver", "qustream"]
         shard: [1, 2, 3, 4]
     env:
       GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
@@ -627,7 +627,7 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: "Run Moonwall Dev Tests"
         uses: ./.github/workflow-templates/dev-tests
@@ -675,7 +675,7 @@ jobs:
           ref: ${{ needs.set-tags.outputs.git_ref }}
       - uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: build
       - name: Use pnpm
         uses: pnpm/action-setup@v4
@@ -692,7 +692,7 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: Get tracing runtimes
         run: |
@@ -701,8 +701,8 @@ jobs:
           mv build/wasm/moonbase-runtime-local-substitute-tracing.wasm test/moonbase-overrides/
       - name: Preparing the repository
         run: |
-          chmod uog+x build/moonbeam
-          chmod uog+x target/release/moonbeam
+          chmod uog+x build/qustream
+          chmod uog+x target/release/qustream
       - name: Running Tracing Tests
         env:
           DEBUG_COLOURS: "1"
@@ -723,7 +723,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        chain: ["moonbeam"]
+        chain: ["qustream"]
     env:
       GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
       DEBUG_COLORS: 1
@@ -751,11 +751,11 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: "Run lazy loading tests"
         run: |
-          chmod uog+x target/release/moonbeam
+          chmod uog+x target/release/qustream
           cd test
           pnpm install
           pnpm moonwall test lazy_loading_${{ matrix.chain }}
@@ -779,7 +779,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chain: ["moonbase", "moonriver", "moonbeam"]
+        chain: ["moonbase", "moonriver", "qustream"]
     env:
       GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
       DEBUG_COLORS: 1
@@ -827,7 +827,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        chain: ["moonbase", "moonriver", "moonbeam"]
+        chain: ["moonbase", "moonriver", "qustream"]
     env:
       GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
       DEBUG_COLORS: 1
@@ -855,24 +855,24 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
-      - name: Retrieve moonbeam binary from docker (for plainSpec generation)
+      - name: Retrieve QuStream binary from docker (for plainSpec generation)
         run: |
-          LATEST_CLIENT=$(curl -s https://api.github.com/repos/moonbeam-foundation/moonbeam/releases | jq -r '.[] | select(.name | test("v";"i")) | .tag_name' | sort -rs | head -n 1 | tr -d '[:blank:]')
+          LATEST_CLIENT=$(curl -s https://api.github.com/repos/Asphere-xyz/QuStreamNetwork/releases | jq -r '.[] | select(.name | test("v";"i")) | .tag_name' | sort -rs | head -n 1 | tr -d '[:blank:]')
           echo "Latest client: $LATEST_CLIENT"
-          wget https://github.com/moonbeam-foundation/moonbeam/releases/download/$LATEST_CLIENT/moonbeam -O test/tmp/moonbeam_rt
+          wget https://github.com/Asphere-xyz/QuStreamNetwork/releases/download/$LATEST_CLIENT/qustream -O test/tmp/qustream_rt
       - name: Prepare Chainspecs
         run: |
           cd test
           pnpm install
 
           ## Generate old spec using latest published node, modify it, and generate raw spec
-          chmod uog+x tmp/moonbeam_rt
-          chmod uog+x ../target/release/moonbeam
-          tmp/moonbeam_rt build-spec --chain ${{ matrix.chain }}-local > tmp/${{ matrix.chain }}-plain-spec.json
+          chmod uog+x tmp/qustream_rt
+          chmod uog+x ../target/release/qustream
+          tmp/qustream_rt build-spec --chain ${{ matrix.chain }}-local > tmp/${{ matrix.chain }}-plain-spec.json
           pnpm tsx scripts/modify-plain-specs.ts process tmp/${{ matrix.chain }}-plain-spec.json tmp/${{ matrix.chain }}-modified-spec.json
-          tmp/moonbeam_rt build-spec --chain tmp/${{ matrix.chain }}-modified-spec.json --raw > tmp/${{ matrix.chain }}-raw-spec.json
+          tmp/qustream_rt build-spec --chain tmp/${{ matrix.chain }}-modified-spec.json --raw > tmp/${{ matrix.chain }}-raw-spec.json
           pnpm tsx scripts/preapprove-rt-rawspec.ts process tmp/${{ matrix.chain }}-raw-spec.json tmp/${{ matrix.chain }}-modified-raw-spec.json ../target/release/wbuild/${{ matrix.chain }}-runtime/${{ matrix.chain }}_runtime.compact.compressed.wasm
       - name: "Run zombie upgrade test"
         run: |
@@ -908,14 +908,14 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: Setup
         run: |
           # Install polkadot-js-api
           # https://github.com/paritytech/polkadot-sdk/blob/56f683fabfc5a4554d4b9208e91103624264407c/bridges/testing/framework/utils/bridges.sh#L21
           npm install -g @polkadot/api-cli
-          chmod uog+x ./target/release/moonbeam
+          chmod uog+x ./target/release/qustream
           # This command prepares all required binaries and runs the bridge integration tests
           make run-bridge-integration-tests
       - name: Zip and Upload Logs on Failure

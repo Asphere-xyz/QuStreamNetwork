@@ -43,8 +43,8 @@ jobs:
         id: prep
         run: |
           echo "rename default binary"
-          mv build/moonbeam-x86-64 build/moonbeam
-          DOCKER_IMAGE=moonbeamfoundation/moonbeam
+          mv build/qustream-x86-64 build/qustream
+          DOCKER_IMAGE=Asphere-xyz/QuStreamNetwork
           TAGS="${DOCKER_IMAGE}:${{ github.event.inputs.tag }}"
           echo "tags=${TAGS}" >> $GITHUB_OUTPUT
           echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT
