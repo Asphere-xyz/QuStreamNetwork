@@ -1,4 +1,4 @@
-# Moonbeam Binary
+# QuStreamNetwork Binary
 #
 # Requires to run from repository root and to copy the binary in the build folder (part of the release workflow)
 
@@ -7,22 +7,22 @@ FROM debian:stable AS builder
 RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
 
 FROM debian:stable-slim
-LABEL maintainer="alan@moonsonglabs.com"
-LABEL description="Moonbeam Binary"
+LABEL maintainer="t.emin@asphere.xyz"
+LABEL description="QuStreamNetwork Binary"
 
-RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbeam moonbeam && \
-	mkdir -p /moonbeam/.local/share && \
+RUN useradd -m -u 1000 -U -s /bin/sh -d /qustream qustream && \
+	mkdir -p /qustream/.local/share && \
 	mkdir /data && \
-	chown -R moonbeam:moonbeam /data && \
-	ln -s /data /moonbeam/.local/share/moonbeam && \
+	chown -R qustream:qustream /data && \
+	ln -s /data /qustream/.local/share/qustream && \
 	rm -rf /usr/sbin
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
-USER moonbeam
+USER qustream
 
-COPY --chown=moonbeam build/* /moonbeam
-RUN chmod uog+x /moonbeam/moonbeam*
+COPY --chown=qustream build/* /qustream
+RUN chmod uog+x /qustream/qustream*
 
 # 30333 for parachain p2p
 # 30334 for relaychain p2p
@@ -32,4 +32,4 @@ EXPOSE 30333 30334 9944 9615
 
 VOLUME ["/data"]
 
-ENTRYPOINT ["/moonbeam/moonbeam"]
+ENTRYPOINT ["/qustream/qustream"]
