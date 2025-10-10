@@ -56,7 +56,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          base: master
+          base: qustream
           branch: "update-typescript-api-${{ github.run_id }}"
           commit-message: "Update Rust/TS bindings"
           draft: true

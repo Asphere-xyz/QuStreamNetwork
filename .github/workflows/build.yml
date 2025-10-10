@@ -9,7 +9,7 @@ on:
   pull_request:
   push:
     branches:
-      - master
+      - qustream
       - perm-*
   workflow_dispatch:
     inputs:
@@ -61,7 +61,7 @@ jobs:
             echo "test_s3_dir=test-pulls/${{ github.event.inputs.pull_request }}" >> $GITHUB_OUTPUT
             echo "git_ref=refs/pull/${{ github.event.inputs.pull_request }}/head" >> $GITHUB_OUTPUT
           else
-            echo "test_s3_dir=test-branches/master" >> $GITHUB_OUTPUT
+            echo "test_s3_dir=test-branches/qustream" >> $GITHUB_OUTPUT
             echo "git_branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
             echo "git_ref=$GITHUB_REF" >> $GITHUB_OUTPUT
           fi
@@ -261,12 +261,12 @@ jobs:
           rustup show
       # Development branch clippy check
       - name: Clippy (dev)
-        if: github.ref != 'refs/heads/master' && !startsWith(github.ref, 'perm-')
+        if: github.ref != 'refs/heads/qustream' && !startsWith(github.ref, 'perm-')
         run: SKIP_WASM_BUILD=1 env -u RUSTFLAGS cargo clippy --features try-runtime,runtime-benchmarks
-      # Main branch (master, perm-*) clippy check
+      # Main branch (qustream, perm-*) clippy check
       # Disallows: todo
       - name: Clippy (main)
-        if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'perm-')
+        if: github.ref == 'refs/heads/qustream' || startsWith(github.ref, 'perm-')
         run: SKIP_WASM_BUILD=1 env -u RUSTFLAGS cargo clippy --features try-runtime,runtime-benchmarks -- -Dclippy::todo
 
   build:
@@ -662,7 +662,7 @@ jobs:
   typescript-tracing-tests:
     if: >
       (github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork) || 
-      (github.event_name == 'push' && github.ref == 'refs/heads/master')
+      (github.event_name == 'push' && github.ref == 'refs/heads/qustream')
     runs-on:
       labels: bare-metal
     permissions:

@@ -4,11 +4,11 @@
 
 ### Branches
 
-- Releases are taken from the branch `master` using tags `vX.X.X`
+- Releases are taken from the branch `qustream` using tags `vX.X.X`
 
 ### Notes
 
-- The `master` branch must refer to frontier `paritytech/frontier/master` or
+- The `qustream` branch must refer to frontier `paritytech/frontier/master` or
   `moonbeam-foundation/frontier/moonbeam-polkadot-vX.Y.Z`
 
 ### Release Workflow
@@ -17,23 +17,23 @@ To release `vX.Y.Z`:
 
 1. Create a PR with increment the client version
 1. Get that PR approved and merged
-1. Tag master with `vX.Y.Z` and push to github
-1. Start the github action "Publish Binary Draft" (on master branch)
+1. Tag qustream with `vX.Y.Z` and push to github
+1. Start the github action "Publish Binary Draft" (on qustream branch)
 1. Review the generated Draft and clean a bit the messages if needed (keep it draft)
 1. Test the new client on internal tests networks (stagenet/moonsama/moonlama)
 1. Publish the client release draft
 1. When everything is ok, publish the new docker image: start github action Publish Docker with
    `vX.Y.Z`
 1. Publish the new tracing image: on repo moonbeam-runtime-overrides, start github action
-   Publish Docker with `vX.Y.Z` and master
+   Publish Docker with `vX.Y.Z` and qustream
 1. Documentation/Website/Tutorials have been updated
 
 ## Moonbeam runtime release
 
 ### Branches
 
-- Releases are taken from the branch `master` using tags `runtime-XXYY`
-- If the master branch contains changes that should not be included in the next runtime, then
+- Releases are taken from the branch `qustream` using tags `runtime-XXYY`
+- If the qustream branch contains changes that should not be included in the next runtime, then
   create a `perm-runtime-XXYY` branch and create the `runtime-XXYY` tag on that branch.
 
 ### Release Workflow
@@ -42,7 +42,7 @@ To release `runtime-XXYY`:
 
 1. Create a PR that increment the spec version (like #1051)
 1. Get that PR approved and merged
-1. Tag master with `runtime-XXYY` and push to github
+1. Tag qustream with `runtime-XXYY` and push to github
 1. Start the github action "Publish Runtime Draft"
 1. Review the generated Draft and clean a bit the messages if needed (keep it draft)
 1. Create the tracing runtime: start the github action "Create tracing runtime" on `moonbeam-foundation/moonbeam-runtime-overrides`

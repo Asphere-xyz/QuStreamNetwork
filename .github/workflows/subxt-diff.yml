@@ -146,7 +146,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          base: master
+          base: qustream
           branch: "runtime-diff-${{ github.event.inputs.spec_version }}"
           commit-message: "runtime diff: v0.${{ github.event.inputs.spec_version }}.0"
           draft: true

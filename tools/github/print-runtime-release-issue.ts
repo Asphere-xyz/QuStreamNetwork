@@ -33,10 +33,10 @@ async function main() {
 ## Release
 - [ ] Check all proxy types.
 - [ ] Re-run all extrinsics/hooks benchmarks.
-- [ ] Tag master with runtime-${newVersion} and push to github
+- [ ] Tag qustream with runtime-${newVersion} and push to github
 - [ ] Start the github action Publish Runtime Draft
 with runtime-${previousVersion} => runtime-${newVersion}
-  - \`gh workflow run "Publish Runtime Draft" -r 'master' ` +
+  - \`gh workflow run "Publish Runtime Draft" -r 'qustream' ` +
     `-f from=runtime-${previousVersion} -f to=runtime-${newVersion}\`
 - [ ] Review the generated Draft and clean a bit the messages if needed (keep it draft)
 - [ ] Create the tracing runtime on moonbeam-runtime-overrides
@@ -45,7 +45,7 @@ with runtime-${previousVersion} => runtime-${newVersion}
 - [ ] Add new tracing substitute in network configuration
 - [ ] Upgrade stagenet
 - [ ] Create new tracing image for partners: start the github action Publish Docker
-with ${lastClientVersion} and master
+with ${lastClientVersion} and qustream
 - [ ] Release comms
 - [ ] Upgrade alphanet (!!! NOT before release comms / tracing images !!!)
 - [ ] When everything is ok, publish the draft release
@@ -71,7 +71,7 @@ ${commonTemplate}
 
 ## Post Release
 - [ ] Publish the docker runtime image (trigger the github action "Publish Docker runtime")
-  - \`gh workflow run "Publish Runtime Draft" -r 'master' ` +
+  - \`gh workflow run "Publish Runtime Draft" -r 'qustream' ` +
       `-f from=runtime-${previousVersion} -f to=runtime-${newVersion}\`
 - [ ] Create a PR that increment spec version (like #1051)
     `;
