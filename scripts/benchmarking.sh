@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# This script can be used for running moonbeam's benchmarks.
+# This script can be used for running qustream's benchmarks.
 #
-# The moonbeam binary is required to be compiled with --features=runtime-benchmarks
+# The qustream binary is required to be compiled with --features=runtime-benchmarks
 # in release mode.
 
 set -e
@@ -13,7 +13,7 @@ REPEAT=20
 
 if [[ ! -f "${BINARY}" ]]; then
     echo "binary '${BINARY}' does not exist."
-    echo "ensure that the moonbeam binary is compiled with '--features=runtime-benchmarks' and in release mode."
+    echo "ensure that the qustream binary is compiled with '--features=runtime-benchmarks' and in release mode."
     exit 1
 fi
 
