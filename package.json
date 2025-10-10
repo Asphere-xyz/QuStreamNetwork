@@ -1,7 +1,7 @@
 {
-  "name": "moonbeam",
+  "name": "qustream",
   "version": "1.0.0",
-  "description": "Moonbeam Network Monorepo",
+  "description": "QuStream Network Monorepo",
   "private": true,
   "type": "module",
   "workspaces": [
