@@ -1,7 +1,7 @@
 {
-  "name": "@moonbeam-network/types-bundle",
+  "name": "@qustream-network/types-bundle",
   "version": "1.0.2",
-  "description": "Bundled types to instantiate the Polkadot JS api with a Moonbeam network",
+  "description": "Bundled types to instantiate the Polkadot JS api with a QuStream network",
   "main": "./dist/definitions.cjs",
   "prepublish": "tsc",
   "type": "module",
@@ -33,11 +33,11 @@
     "tsc": "tsc --noEmit --pretty",
     "build": "tsup src --format cjs,esm --dts --no-splitting",
     "publish-package": "npm run build && npm publish",
-    "check":"biome check .",
+    "check": "biome check .",
     "check:fix": "biome check . --write"
   },
   "keywords": [
-    "moonbeam",
+    "qustream",
     "moonriver",
     "types",
     "bundle",
@@ -46,10 +46,10 @@
   ],
   "author": "Moonsong Labs",
   "license": "GPL-3.0-only",
-  "homepage": "https://github.com/moonbeam-foundation/moonbeam/tree/master/types-bundle#readme",
+  "homepage": "https://github.com/Asphere-xyz/QuStreamNetwork/tree/qustream/types-bundle#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moonbeam-foundation/moonbeam.git",
+    "url": "git+https://github.com/Asphere-xyz/QuStreamNetwork.git",
     "directory": "typescript-api"
   },
   "dependencies": {

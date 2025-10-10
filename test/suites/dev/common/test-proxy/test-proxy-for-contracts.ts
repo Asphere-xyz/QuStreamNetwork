@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { deployCreateCompiledContract, describeSuite, beforeAll, expect } from "@moonwall/cli";
 import { ALITH_ADDRESS, GLMR } from "@moonwall/util";
 import { alith } from "@moonwall/util";

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { expect, describeSuite } from "@moonwall/cli";
 import { THIRTY_MINS } from "@moonwall/util";
 // Ethereum use Patricia trees for the various trees in blocks.

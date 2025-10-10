@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, customDevRpcRequest } from "@moonwall/cli";
 import { createEthersTransaction, generateKeyringPair } from "@moonwall/util";
 

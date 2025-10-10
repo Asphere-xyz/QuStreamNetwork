@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { rateLimiter, checkTimeSliceForUpgrades } from "../../helpers/common.js";
 import type { FrameSystemEventRecord, XcmV3MultiLocation } from "@polkadot/types/lookup";
 import {

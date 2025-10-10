@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import type { u128 } from "@polkadot/types";
 import { BN, hexToU8a, u8aToHex } from "@polkadot/util";
 import { expect, type DevModeContext } from "@moonwall/cli";

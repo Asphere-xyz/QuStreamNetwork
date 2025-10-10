@@ -1,6 +1,6 @@
 import type { DefinitionRpc, DefinitionRpcSub } from "@polkadot/types/types";
 
-// Moonbeam specific rpc methods
+// QuStreamNetwork specific rpc methods
 export const rpcDefinitions: Record<string, Record<string, DefinitionRpc | DefinitionRpcSub>> = {
   txpool: {
     content: {

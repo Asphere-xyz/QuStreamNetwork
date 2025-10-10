@@ -24,8 +24,8 @@
   "dependencies": {
     "@acala-network/chopsticks": "1.1.1",
     "@biomejs/biome": "*",
-    "@moonbeam-network/api-augment": "workspace:*",
-    "@moonbeam-network/types-bundle": "workspace:*",
+    "@qustream-network/api-augment": "workspace:*",
+    "@qustream-network/types-bundle": "workspace:*",
     "@moonwall/cli": "5.15.1",
     "@moonwall/util": "5.15.1",
     "@openzeppelin/contracts": "*",

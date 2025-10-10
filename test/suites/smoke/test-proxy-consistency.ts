@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { ApiDecoration } from "@polkadot/api/types";
 import chalk from "chalk";
 import { expect, beforeAll, describeSuite } from "@moonwall/cli";
@@ -33,7 +33,7 @@ describeSuite({
       apiAt = await paraApi.at(await paraApi.rpc.chain.getBlockHash(atBlockNumber));
 
       // TEMPLATE: query the data
-      for (;;) {
+      for (; ;) {
         const query = await apiAt.query.proxy.proxies.entriesPaged({
           args: [],
           pageSize: limit,

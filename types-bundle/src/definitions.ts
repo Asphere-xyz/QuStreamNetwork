@@ -17,7 +17,7 @@ export const moduleDefinitions: Record<string, OverrideModuleType> = {
   },
 };
 
-export const moonbeamDefinitions: OverrideBundleDefinition = {
+export const qustreamDefinitions: OverrideBundleDefinition = {
   alias: moduleDefinitions,
   rpc: rpcDefinitions,
   instances: {
@@ -80,10 +80,10 @@ export const moonbeamDefinitions: OverrideBundleDefinition = {
   ],
 };
 
-export const moonbeamDefinitionsDeprecated: OverrideBundleDefinition = {
-  ...moonbeamDefinitions,
+export const qustreamDefinitionsDeprecated: OverrideBundleDefinition = {
+  ...qustreamDefinitions,
   types: [
-    ...(moonbeamDefinitions.types as OverrideVersionedType[]),
+    ...(qustreamDefinitions.types as OverrideVersionedType[]),
     {
       minmax: [900, undefined],
       types: Types.TYPES_900_undefined_deprecated,
@@ -93,19 +93,19 @@ export const moonbeamDefinitionsDeprecated: OverrideBundleDefinition = {
 
 export const typesBundle: OverrideBundleType = {
   spec: {
-    moonbeam: moonbeamDefinitions,
-    moonbeamDefinitions,
-    moonbase: moonbeamDefinitions,
-    moonriver: moonbeamDefinitions,
+    qustream: qustreamDefinitions,
+    qustreamDefinitions: qustreamDefinitions,
+    moonbase: qustreamDefinitions,
+    moonriver: qustreamDefinitions,
   },
 };
 
 export const typesBundleDeprecated: OverrideBundleType = {
   spec: {
-    moonbeam: moonbeamDefinitionsDeprecated,
-    moonbeamDefinitions: moonbeamDefinitionsDeprecated,
-    moonbase: moonbeamDefinitionsDeprecated,
-    moonriver: moonbeamDefinitionsDeprecated,
+    qustream: qustreamDefinitionsDeprecated,
+    qustreamDefinitions: qustreamDefinitionsDeprecated,
+    moonbase: qustreamDefinitionsDeprecated,
+    moonriver: qustreamDefinitionsDeprecated,
   },
 };
 

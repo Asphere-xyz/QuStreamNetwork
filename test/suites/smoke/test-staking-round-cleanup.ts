@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect, beforeAll } from "@moonwall/cli";
 import type { BN } from "@polkadot/util";
 import type { QueryableStorageEntry } from "@polkadot/api/types";
@@ -17,7 +17,7 @@ async function getKeysBeforeRound<
 >(lastUnpaidRound: BN, storage: T): Promise<InvalidRounds> {
   const invalidRounds: InvalidRounds = {};
   let startKey = "";
-  for (;;) {
+  for (; ;) {
     const result = await limiter.schedule(() =>
       storage.keysPaged({
         pageSize: 1000,
@@ -149,8 +149,8 @@ describeSuite({
           `[DelayedPayouts] lastUnpaidRound ${lastUnpaidRound.toString()},\
         found ${delayedPayoutsInvalidRoundsCount} invalid rounds: \
         ${Object.entries(delayedPayoutsInvalidRounds).map(
-          ([round, count]) => `${round}(${count})`
-        )}`
+            ([round, count]) => `${round}(${count})`
+          )}`
         ).to.equal(0);
 
         const atStakeInvalidRoundsCount = Object.keys(atStakeInvalidRounds).length;

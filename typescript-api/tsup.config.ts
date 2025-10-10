@@ -3,14 +3,14 @@ import { execSync } from "node:child_process";
 
 export default defineConfig([
   {
-    entry: ["src/moonbeam"],
-    outDir: "dist/moonbeam",
+    entry: ["src/qustream"],
+    outDir: "dist/qustream",
     format: ["esm", "cjs"],
     splitting: false,
     clean: true,
     onSuccess: async () => {
-      console.log("Running tsc for moonbeam...");
-      execSync("pnpm tsc -p src/moonbeam/tsconfig.json --emitDeclarationOnly", {
+      console.log("Running tsc for qustream...");
+      execSync("pnpm tsc -p src/qustream/tsconfig.json --emitDeclarationOnly", {
         stdio: "inherit"
       });
     }

@@ -1,5 +1,5 @@
-import "@moonbeam-network/api-augment";
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment";
+import "@qustream-network/api-augment/moonbase";
 import { describeSuite, expect, beforeAll } from "@moonwall/cli";
 import {
   ARBITRARY_ASSET_ID,

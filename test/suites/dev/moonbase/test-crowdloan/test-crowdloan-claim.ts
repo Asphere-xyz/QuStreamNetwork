@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect } from "@moonwall/cli";
 import { ALITH_ADDRESS, ALITH_GENESIS_FREE_BALANCE, GLMR, alith } from "@moonwall/util";
 import {
@@ -65,7 +65,7 @@ describeSuite({
 
         expect(
           (await context.viem().getBalance({ address: ALITH_ADDRESS })) -
-            ALITH_GENESIS_TRANSFERABLE_BALANCE
+          ALITH_GENESIS_TRANSFERABLE_BALANCE
         ).toBe(claimed - claimFee); // reduce the claim fee part;
         const account = await context.polkadotJs().query.system.account(ALITH_ADDRESS);
         expect(account.data.free.toBigInt() - ALITH_GENESIS_FREE_BALANCE).toBe(claimed - claimFee);

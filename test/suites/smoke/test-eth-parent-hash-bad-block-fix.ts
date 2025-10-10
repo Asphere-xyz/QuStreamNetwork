@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, beforeAll, expect } from "@moonwall/cli";
 import { THIRTY_MINS } from "@moonwall/util";
 import type { ApiDecoration } from "@polkadot/api/types";

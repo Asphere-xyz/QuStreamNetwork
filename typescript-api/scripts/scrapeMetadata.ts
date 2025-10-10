@@ -7,7 +7,7 @@ import {
 } from "node:child_process";
 import path from "node:path";
 
-const CHAINS = ["moonbase", "moonriver", "moonbeam"];
+const CHAINS = ["moonbase", "moonriver", "qustream"];
 
 function wrapSpawnWithLogging(
   command: string,
@@ -69,7 +69,7 @@ const nodes: { [key: string]: ChildProcessWithoutNullStreams } = {};
 
 async function main() {
   const runtimeChainSpec = process.argv[2];
-  const nodePath = path.join(process.cwd(), "..", "target", "release", "moonbeam");
+  const nodePath = path.join(process.cwd(), "..", "target", "release", "qustream");
 
   if (runtimeChainSpec) {
     console.log(`Bump package version to 0.${runtimeChainSpec}.0`);
@@ -77,7 +77,7 @@ async function main() {
   }
 
   if (!fs.existsSync(nodePath)) {
-    console.error("Moonbeam Node not found at path: ", nodePath);
+    console.error("QuStreamNetwork Node not found at path: ", nodePath);
     throw new Error("File not found");
   }
 

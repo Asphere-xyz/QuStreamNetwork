@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
 import { THIRTY_MINS, WEIGHT_PER_GAS, extractWeight, getBlockArray } from "@moonwall/util";
 import type { ApiPromise } from "@polkadot/api";
@@ -153,8 +153,7 @@ describeSuite({
         }
 
         log(
-          `Checking #${blockInfoArray[0].blockNum} - #${
-            blockInfoArray[blockInfoArray.length - 1].blockNum
+          `Checking #${blockInfoArray[0].blockNum} - #${blockInfoArray[blockInfoArray.length - 1].blockNum
           } block weight proportions.`
         );
 
@@ -171,8 +170,8 @@ describeSuite({
           const balTxnWeights = blockInfo.events
             .map((event) =>
               paraApi.events.system.ExtrinsicSuccess.is(event.event) &&
-              event.phase.isApplyExtrinsic &&
-              balTxns.includes(event.phase.asApplyExtrinsic.toNumber())
+                event.phase.isApplyExtrinsic &&
+                balTxns.includes(event.phase.asApplyExtrinsic.toNumber())
                 ? event.event.data.dispatchInfo.weight.refTime.toBigInt()
                 : 0n
             )
@@ -186,8 +185,8 @@ describeSuite({
             if (newRatio > 20n) {
               log(
                 `Block #${blockInfo.blockNum} is ${actualWeightUsed}% full with ` +
-                  ethBlock.transactions.length +
-                  ` transactions, non-transaction weight: ${newRatio}%`
+                ethBlock.transactions.length +
+                ` transactions, non-transaction weight: ${newRatio}%`
               );
             }
             return { blockNum: blockInfo.blockNum, nonTxn: newRatio };
@@ -227,8 +226,7 @@ describeSuite({
         }
 
         log(
-          `Checking if #${blockInfoArray[0].blockNum} - #${
-            blockInfoArray[blockInfoArray.length - 1].blockNum
+          `Checking if #${blockInfoArray[0].blockNum} - #${blockInfoArray[blockInfoArray.length - 1].blockNum
           } extrinsic weights sum up.`
         );
 
@@ -263,8 +261,8 @@ describeSuite({
             log(
               `Block #${blockInfo.blockNum} signed extrinsic weight - reported: ${signedExtTotal}, 
             accounted: ${normalWeights} (${difference > 0 ? "+" : "-"}${(difference * 100).toFixed(
-              2
-            )}%).`
+                2
+              )}%).`
             );
           }
           return { blockNum: blockInfo.blockNum, signedExtTotal, normalWeights, difference };
@@ -295,8 +293,7 @@ describeSuite({
         }
 
         log(
-          `Checking if #${blockInfoArray[0].blockNum} - #${
-            blockInfoArray[blockInfoArray.length - 1].blockNum
+          `Checking if #${blockInfoArray[0].blockNum} - #${blockInfoArray[blockInfoArray.length - 1].blockNum
           } weights match gasUsed`
         );
 

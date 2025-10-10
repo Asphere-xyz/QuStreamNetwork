@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { ApiDecoration } from "@polkadot/api/types";
 import { describeSuite, expect, beforeAll } from "@moonwall/cli";
 import type { ApiPromise } from "@polkadot/api";
@@ -73,8 +73,7 @@ describeSuite({
         ).to.be.lessThanOrEqual(Object.keys(foreignAssetIdType).length);
 
         log(
-          `Verified FOREIGN asset counter (${
-            Object.keys(foreignAssetIdType).length
+          `Verified FOREIGN asset counter (${Object.keys(foreignAssetIdType).length
           }) >= xcm fee payment assets: (${xcmWeightManagerSupportedAssets.length})`
         );
       },
@@ -100,8 +99,7 @@ describeSuite({
             .join(`, `)}`
         ).to.equal(0);
         log(
-          `Verified ${
-            Object.keys(foreignAssetIdType).length
+          `Verified ${Object.keys(foreignAssetIdType).length
           } assetId<->AssetType entries (at #${atBlockNumber})`
         );
       },
@@ -140,7 +138,7 @@ describeSuite({
         ).to.equal(0);
         log(
           `Verified ${xcmWeightManagerSupportedAssets.length} xcm ` +
-            `fee payment assets (at #${atBlockNumber})`
+          `fee payment assets (at #${atBlockNumber})`
         );
       },
     });

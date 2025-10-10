@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
 import { WEIGHT_PER_GAS, getBlockArray } from "@moonwall/util";
 import type { ApiPromise } from "@polkadot/api";
@@ -147,9 +147,9 @@ describeSuite({
       log(`Target block fullness: ${Number(targetFillPermill) / 10_000}%`);
       log(
         `Collecting ${hours} hours worth of data ` +
-          `[from #${blockNumArray[0]} ` +
-          `to #${blockNumArray[blockNumArray.length - 1]}] ` +
-          `(${blockNumArray.length} blocks, RT${specVersion.toNumber()})`
+        `[from #${blockNumArray[0]} ` +
+        `to #${blockNumArray[blockNumArray.length - 1]}] ` +
+        `(${blockNumArray.length} blocks, RT${specVersion.toNumber()})`
       );
 
       const getBlockData = async (blockNum: number) => {
@@ -251,7 +251,7 @@ describeSuite({
       if (result) {
         log(
           `Time slice of blocks intersects with upgrade ` +
-            `from RT ${onChainRt} to RT ${specVersion}, skipping tests.`
+          `from RT ${onChainRt} to RT ${specVersion}, skipping tests.`
         );
         skipAll = true;
       }
@@ -344,11 +344,11 @@ describeSuite({
 
             debug(
               `Block #${blockNum} with feeMultiplier ${change}\n` +
-                `  Limiting dimension: ${limitingDimension}\n` +
-                `  Normalized ref_time: ${refTimePercentFormatted}%, proof_size: ${proofSizePercentFormatted}%\n` +
-                `  Target weight: ${targetWeight}, Block weight: ${blockWeightValue}\n` +
-                `  Should increase multiplier: ${shouldIncrease}\n` +
-                `  Current multiplier: ${feeMultiplier}, MIN: ${minMultiplier}, MAX: ${maxMultiplier}`
+              `  Limiting dimension: ${limitingDimension}\n` +
+              `  Normalized ref_time: ${refTimePercentFormatted}%, proof_size: ${proofSizePercentFormatted}%\n` +
+              `  Target weight: ${targetWeight}, Block weight: ${blockWeightValue}\n` +
+              `  Should increase multiplier: ${shouldIncrease}\n` +
+              `  Current multiplier: ${feeMultiplier}, MIN: ${minMultiplier}, MAX: ${maxMultiplier}`
             );
           }
         );
@@ -429,11 +429,11 @@ describeSuite({
 
             debug(
               `Block #${blockNum} with feeMultiplier ${change}\n` +
-                `  Limiting dimension: ${limitingDimension}\n` +
-                `  Normalized ref_time: ${refTimePercentFormatted}%, proof_size: ${proofSizePercentFormatted}%\n` +
-                `  Target weight: ${targetWeight}, Block weight: ${blockWeightValue}\n` +
-                `  Should increase multiplier: ${shouldIncrease}\n` +
-                `  Current multiplier: ${feeMultiplier}, MIN: ${minMultiplier}, MAX: ${maxMultiplier}`
+              `  Limiting dimension: ${limitingDimension}\n` +
+              `  Normalized ref_time: ${refTimePercentFormatted}%, proof_size: ${proofSizePercentFormatted}%\n` +
+              `  Target weight: ${targetWeight}, Block weight: ${blockWeightValue}\n` +
+              `  Should increase multiplier: ${shouldIncrease}\n` +
+              `  Current multiplier: ${feeMultiplier}, MIN: ${minMultiplier}, MAX: ${maxMultiplier}`
             );
           }
         );
@@ -456,9 +456,9 @@ describeSuite({
         const failures = blockData.filter(({ baseFeePerGasInGwei }) => {
           return (
             ethers.parseUnits(baseFeePerGasInGwei, "gwei") <
-              RUNTIME_CONSTANTS[runtime].MIN_BASE_FEE.get(specVersion.toNumber()) ||
+            RUNTIME_CONSTANTS[runtime].MIN_BASE_FEE.get(specVersion.toNumber()) ||
             ethers.parseUnits(baseFeePerGasInGwei, "gwei") >
-              RUNTIME_CONSTANTS[runtime].MAX_BASE_FEE.get(specVersion.toNumber())
+            RUNTIME_CONSTANTS[runtime].MAX_BASE_FEE.get(specVersion.toNumber())
           );
         });
 

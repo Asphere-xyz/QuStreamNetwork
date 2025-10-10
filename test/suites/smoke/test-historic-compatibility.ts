@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { numberToHex } from "@polkadot/util";
 import { describeSuite, beforeAll, expect } from "@moonwall/cli";
 import { type NetworkTestArtifact, tracingTxns } from "../../helpers/tracing-txns.js";
@@ -51,7 +51,7 @@ describeSuite({
         if (skipTest.skip) {
           log(
             "No test data available for " +
-              `${skipTest.networkName} #${skipTest.chainId} , skipping test.`
+            `${skipTest.networkName} #${skipTest.chainId} , skipping test.`
           );
           return; // TODO: replace this with this.skip() when added to vitest
         }
@@ -77,7 +77,7 @@ describeSuite({
           if (a.error === true) {
             log(
               `Failure tracing in runtime ${a.runtime}, blocknumber ${a.blockNumber} ` +
-                `: ${a.result}`
+              `: ${a.result}`
             );
             return true;
           }
@@ -94,8 +94,8 @@ describeSuite({
         if (skipTest.skip) {
           log(
             "No test data available for " +
-              `${skipTest.networkName} #${skipTest.chainId}` +
-              " , skipping test."
+            `${skipTest.networkName} #${skipTest.chainId}` +
+            " , skipping test."
           );
           return; // TODO: replace this with this.skip() when added to vitest
         }
@@ -121,7 +121,7 @@ describeSuite({
           if (a.error === true) {
             log(
               `Failure fetching txn receipt on runtime ${a.runtime}, blocknumber ${a.blockNumber}` +
-                ` and result: ${JSON.stringify(a.result)}`
+              ` and result: ${JSON.stringify(a.result)}`
             );
             return true;
           }
@@ -261,7 +261,7 @@ describeSuite({
         if (skipTest.skip) {
           log(
             "No test data available for" +
-              `${skipTest.networkName} #${skipTest.chainId} , skipping test.`
+            `${skipTest.networkName} #${skipTest.chainId} , skipping test.`
           );
           return; // TODO: replace this with this.skip() when added to vitest
         }

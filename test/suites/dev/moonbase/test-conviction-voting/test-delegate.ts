@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { type DevModeContext, describeSuite, expect } from "@moonwall/cli";
 import {
   ALITH_ADDRESS,

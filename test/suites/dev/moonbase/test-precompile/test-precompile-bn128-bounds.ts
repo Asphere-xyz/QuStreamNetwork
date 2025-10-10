@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 
 import { describeSuite } from "@moonwall/cli";
 import { createViemTransaction, sendRawTransaction } from "@moonwall/util";

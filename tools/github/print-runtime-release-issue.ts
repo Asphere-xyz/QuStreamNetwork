@@ -61,7 +61,7 @@ with ${lastClientVersion} and master
 
 ## Pre-Release
 - [ ] Cleanup previous migrations (
-  https://github.com/moonbeam-foundation/moonbeam/blob/master/runtime/common/src/migrations.rs)
+  https://github.com/Asphere-xyz/QuStreamNetwork/blob/qustream/runtime/common/src/migrations.rs)
 - [ ] Check that proxy types are adapted to extrinsics changes (
   read all PR descriptions with B7-runtimenoteworthy)
 - [ ] Re-run all extrinsics/hooks benchmarks.

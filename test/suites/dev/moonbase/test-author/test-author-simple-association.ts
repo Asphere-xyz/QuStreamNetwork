@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import {
   ALITH_ADDRESS,
   ALITH_SESSION_ADDRESS,

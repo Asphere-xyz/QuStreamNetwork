@@ -1,4 +1,4 @@
-// import "@moonbeam-network/api-augment";
+// import "@qustream-network/api-augment";
 // TODO: rework this test, dispatch precompile disabled
 // describeDevMoonbeam("Precompile - Dispatch - fails on pallet-ethereum", (context) => {
 

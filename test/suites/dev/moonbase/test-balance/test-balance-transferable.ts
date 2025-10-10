@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
 import { ALITH_ADDRESS, GLMR, baltathar, checkBalance, generateKeyringPair } from "@moonwall/util";
 import { createProposal } from "../../../../helpers/voting.ts";

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { describeSuite, expect, beforeAll } from "@moonwall/cli";
 import { getBlockArray, TEN_MINS } from "@moonwall/util";
 import type { FrameSystemEventRecord } from "@polkadot/types/lookup";
@@ -324,9 +324,9 @@ describeSuite({
           filtered.forEach(({ blockNum }) =>
             log(
               "MultiLocationFull XCM error xcmpQueue. Fail in network " +
-                networkName +
-                " block #" +
-                blockNum
+              networkName +
+              " block #" +
+              blockNum
             )
           )
         );
@@ -417,9 +417,9 @@ describeSuite({
           filtered.forEach(({ blockNum }) =>
             log(
               "DestinationUnsupported XCM error xcmpQueue.Fail in network " +
-                networkName +
-                " block #" +
-                blockNum
+              networkName +
+              " block #" +
+              blockNum
             )
           )
         );
@@ -506,7 +506,7 @@ describeSuite({
           filtered.forEach(({ blockNum }) =>
             log(
               "FailedToDecode XCM error xcmpQueue." +
-                `Fail in network ${networkName} block #${blockNum}.`
+              `Fail in network ${networkName} block #${blockNum}.`
             )
           )
         );
@@ -553,9 +553,9 @@ describeSuite({
           filtered.forEach(({ blockNum }) =>
             log(
               "UnhandledXcmVersion XCM error xcmpQueue.Fail in network " +
-                networkName +
-                " block #" +
-                blockNum
+              networkName +
+              " block #" +
+              blockNum
             )
           )
         );
@@ -602,9 +602,9 @@ describeSuite({
           filtered.forEach(({ blockNum }) =>
             log(
               "WeightNotComputable XCM error xcmpQueue.Fail in network " +
-                networkName +
-                " block #" +
-                blockNum
+              networkName +
+              " block #" +
+              blockNum
             )
           )
         );

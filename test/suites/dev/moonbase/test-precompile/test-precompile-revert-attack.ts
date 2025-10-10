@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect } from "@moonwall/cli";
 import { ALITH_ADDRESS, MIN_GLMR_STAKING } from "@moonwall/util";
 
@@ -57,7 +57,7 @@ describeSuite({
             })
         ).rejects.toThrowError(
           "Module(ModuleError { index: 12, error: [10, 0, 0, 0], " +
-            'message: Some("DelegationBelowMin") })'
+          'message: Some("DelegationBelowMin") })'
         );
       },
     });

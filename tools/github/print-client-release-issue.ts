@@ -29,18 +29,18 @@ async function main() {
   - \`gh workflow run "Publish Binary Draft" -r 'master' ` +
     `-f from=runtime-${previousVersion} -f to=runtime-${newVersion}\`
 - [ ] Review the generated Draft and clean a bit the messages if needed (keep it draft).
-- [ ] Update moonbeam-networks stagenet (moonsama/moonlama) config.json to include:
+- [ ] Update qustream-networks stagenet config.json to include:
 \`\`\`
   "binaries": [
     {
-      "docker": "moonbeamfoundation/moonbeam:${newVersion}-rc",
-      "path": "/moonbeam/moonbeam",
-      "name": "moonbeam"
+      "docker": "Asphere-xyz/QuStreamNetwork:${newVersion}-rc",
+      "path": "/qustream/qustream",
+      "name": "qustream"
     },
     {
-      "docker": "moonbeamfoundation/moonbeam:${newVersion}-rc",
-      "path": "/moonbeam/moonbeam-skylake",
-      "name": "moonbeam-skylake"
+      "docker": "Asphere-xyz/QuStreamNetwork:${newVersion}-rc",
+      "path": "/qustream/qustream-skylake",
+      "name": "qustream-skylake"
     }
   ]
 \`\`\`

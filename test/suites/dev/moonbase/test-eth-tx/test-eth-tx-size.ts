@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { customDevRpcRequest, describeSuite, expect } from "@moonwall/cli";
 import { EXTRINSIC_GAS_LIMIT, createEthersTransaction } from "@moonwall/util";
 

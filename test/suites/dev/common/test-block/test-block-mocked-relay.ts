@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { expect, describeSuite, beforeAll } from "@moonwall/cli";
 import type { CumulusPrimitivesParachainInherentParachainInherentData } from "@polkadot/types/lookup";
 

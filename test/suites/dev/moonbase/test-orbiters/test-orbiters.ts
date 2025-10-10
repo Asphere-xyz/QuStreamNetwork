@@ -1,5 +1,5 @@
 import { describeSuite, expect } from "@moonwall/cli";
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { alith, baltathar, charleth, dorothy, ethan, faith, goliath } from "@moonwall/util";
 import { jumpRounds } from "../../../../helpers";
 

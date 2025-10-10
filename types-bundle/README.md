@@ -1,13 +1,13 @@
-# Moonbeam Types Bundle
+# QuStreamNetwork Types Bundle
 
-Exports npm package `@moonbeam-network/types-bundle`, formatted as per polkadot-js specification to use
+Exports npm package `@qustream-network/types-bundle`, formatted as per polkadot-js specification to use
 with the app or the API.
 
 # Development
 
 `typesBundlePre900` is of type OverrideBundleType to associate runtime names with correct definitions.
 
-`moonbeamDefinitions` is of types OverrideBundleDefinition and returns a different set of types for
+`qustreamDefinitions` is of types OverrideBundleDefinition and returns a different set of types for
 each runtime version.
 
 ## Print Types

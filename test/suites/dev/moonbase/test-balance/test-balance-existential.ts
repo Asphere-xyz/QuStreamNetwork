@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { expect, describeSuite, beforeEach, TransactionTypes } from "@moonwall/cli";
 import { ALITH_ADDRESS, baltathar, GLMR } from "@moonwall/util";
 import { createRawTransfer } from "@moonwall/util";

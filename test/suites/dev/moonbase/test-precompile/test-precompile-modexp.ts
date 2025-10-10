@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
 import { EXTRINSIC_GAS_LIMIT, createViemTransaction } from "@moonwall/util";
 import { hexToU8a, u8aToHex } from "@polkadot/util";

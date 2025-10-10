@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
 import { GLMR, generateKeyringPair } from "@moonwall/util";
 import type { XcmVersionedXcm } from "@polkadot/types/lookup";
@@ -343,7 +343,7 @@ describeSuite({
             })
         ).rejects.toThrowError(
           "Dispatched call failed with error: Module(ModuleError " +
-            '{ index: 28, error: [0, 0, 0, 0], message: Some("Unreachable") })'
+          '{ index: 28, error: [0, 0, 0, 0], message: Some("Unreachable") })'
         );
 
         const paraRawTxn = await context.writePrecompile!({
@@ -366,7 +366,7 @@ describeSuite({
             })
         ).rejects.toThrowError(
           "Dispatched call failed with error: Module(ModuleError " +
-            '{ index: 28, error: [0, 0, 0, 0], message: Some("Unreachable") })'
+          '{ index: 28, error: [0, 0, 0, 0], message: Some("Unreachable") })'
         );
 
         const paraRawTxn2 = await context.writePrecompile!({
@@ -389,7 +389,7 @@ describeSuite({
             })
         ).rejects.toThrowError(
           "Dispatched call failed with error: Module(ModuleError " +
-            '{ index: 28, error: [1, 0, 0, 0], message: Some("SendFailure") })'
+          '{ index: 28, error: [1, 0, 0, 0], message: Some("SendFailure") })'
         );
       },
     });

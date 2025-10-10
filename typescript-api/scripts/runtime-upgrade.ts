@@ -2,7 +2,7 @@ import { spawn, execSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import axios from "axios";
 
-const CHAINS = ["moonbase", "moonriver", "moonbeam"];
+const CHAINS = ["moonbase", "moonriver", "qustream"];
 
 async function startNode(chain: string): Promise<number> {
   const args = [
@@ -17,7 +17,7 @@ async function startNode(chain: string): Promise<number> {
     "--rpc-port=9933"
   ];
 
-  const child = spawn("../target/release/moonbeam", args, {
+  const child = spawn("../target/release/qustream", args, {
     detached: true,
     stdio: "ignore"
   });
@@ -83,9 +83,9 @@ async function main() {
     execSync(`npm version --no-git-tag-version 0.${runtimeChainSpec}.0`);
   }
 
-  // Check for moonbeam binary
-  if (!existsSync("../target/release/moonbeam")) {
-    console.error("Missing ../target/release/moonbeam binary");
+  // Check for qustream binary
+  if (!existsSync("../target/release/qustream")) {
+    console.error("Missing ../target/release/qustream binary");
     process.exit(1);
   }
 

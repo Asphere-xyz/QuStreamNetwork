@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { ApiDecoration } from "@polkadot/api/types";
 import { BN, hexToBigInt } from "@polkadot/util";
 import { describeSuite, expect, beforeAll } from "@moonwall/cli";
@@ -43,7 +43,7 @@ describeSuite({
         : (await paraApi.rpc.chain.getHeader()).number.toNumber();
       apiAt = await paraApi.at(await paraApi.rpc.chain.getBlockHash(atBlockNumber));
 
-      for (;;) {
+      for (; ;) {
         const query = await apiAt.query.randomness.requests.entriesPaged({
           args: [],
           pageSize: limit,
@@ -247,16 +247,16 @@ describeSuite({
             expect(requestCounts[epoch].toString()).to.equal(
               resultRequestCount.toString(),
               "Counted request count" +
-                `${requestCounts[epoch]} != ${resultRequestCount} for result:\n` +
-                `${result}`
+              `${requestCounts[epoch]} != ${resultRequestCount} for result:\n` +
+              `${result}`
             );
           } else {
             const local = (requestType as any).asLocal;
             expect(requestCounts[local].toString()).to.equal(
               resultRequestCount.toString(),
               "Counted request count" +
-                `${requestCounts[local]} != ${resultRequestCount} for result:\n` +
-                `${result}`
+              `${requestCounts[local]} != ${resultRequestCount} for result:\n` +
+              `${result}`
             );
           }
         });
@@ -495,7 +495,7 @@ describeSuite({
         const problematicByte = Object.keys(counts).find((byte) => counts[byte] > maxRepeats);
         log(
           `Count of ${problematicByte}: ${counts[problematicByte!]} > ${maxRepeats} maxRepeats\n` +
-            `Bytes: ${Array.from(bytes).toString()}`
+          `Bytes: ${Array.from(bytes).toString()}`
         );
       }
       return !exceededRepeats;

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { describeSuite, expect } from "@moonwall/cli";
 import { ALITH_PRIVATE_KEY, GLMR, alith } from "@moonwall/util";
 import type { Option } from "@polkadot/types";

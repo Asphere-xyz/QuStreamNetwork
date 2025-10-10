@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
 import { FIVE_MINS } from "@moonwall/util";
 import type { ApiPromise } from "@polkadot/api";
@@ -31,7 +31,7 @@ describeSuite({
       apiAt = await paraApi.at(await paraApi.rpc.chain.getBlockHash(atBlockNumber));
 
       // Query nimbus ids
-      for (;;) {
+      for (; ;) {
         const query = await apiAt.query.authorMapping.nimbusLookup.entriesPaged({
           args: [],
           pageSize: limit,

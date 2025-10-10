@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { beforeAll, beforeEach, describeSuite, expect } from "@moonwall/cli";
 import { BALTATHAR_ADDRESS, type KeyringPair, alith, generateKeyringPair } from "@moonwall/util";
 import { bnToHex } from "@polkadot/util";

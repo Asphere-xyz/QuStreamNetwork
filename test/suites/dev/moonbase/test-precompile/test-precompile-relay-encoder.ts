@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect } from "@moonwall/cli";
 import { ALITH_SESSION_ADDRESS, BALTATHAR_SESSION_ADDRESS } from "@moonwall/util";
 
@@ -103,8 +103,8 @@ describeSuite({
           })
         ).to.equal(
           "0x06050800d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7" +
-            "a56da27d008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa" +
-            "4794f26a48"
+          "a56da27d008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa" +
+          "4794f26a48"
         );
       },
     });
