@@ -1,4 +1,4 @@
-endpoint: wss://wss.api.qustream.network
+endpoint: wss://wss.api.qustream.com
 mock-signature-host: true
 db: ./tmp/db_mb.sqlite
 

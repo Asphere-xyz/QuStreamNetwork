@@ -3,7 +3,7 @@ name = "summarize-precompile-checks"
 authors = { workspace = true }
 description = "Summarize precompile checks in all runtimes"
 edition = "2021"
-homepage = "https://qustream.network"
+homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
 version = "0.0.0"
 

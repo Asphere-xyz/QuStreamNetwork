@@ -3,7 +3,7 @@ name = "moonbeam-finality-rpc"
 authors = { workspace = true }
 description = "An experimental RPC to check for block and transaction finality in the moonbeam parachain"
 edition = "2021"
-homepage = "https://qustream.network"
+homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.1.0"

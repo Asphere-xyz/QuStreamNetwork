@@ -2,7 +2,7 @@
 name = "moonbeam-rpc-debug"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://qustream.network"
+homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
 repository = { workspace = true }
 version = "0.1.0"

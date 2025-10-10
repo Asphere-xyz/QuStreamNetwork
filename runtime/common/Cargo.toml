@@ -2,7 +2,7 @@
 authors = { workspace = true }
 description = "Common code shared between runtimes"
 edition = "2021"
-homepage = "https://qustream.network"
+homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
 name = "moonbeam-runtime-common"
 version = "0.8.0-dev"

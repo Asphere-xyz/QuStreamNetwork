@@ -3,7 +3,7 @@ authors = { workspace = true }
 build = "build.rs"
 description = "QuStreamNetwork Runtime"
 edition = "2021"
-homepage = "https://qustream.network"
+homepage = "https://qustream.com"
 license = "GPL-3.0-only"
 name = "qustream-runtime"
 version = "0.8.4"

@@ -3,7 +3,7 @@ authors = { workspace = true }
 build = "build.rs"
 description = "Moonbase Runtime"
 edition = "2021"
-homepage = "https://qustream.network"
+homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
 name = "moonbase-runtime"
 version = "0.8.4"

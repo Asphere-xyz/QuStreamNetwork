@@ -2,7 +2,7 @@
 name = "moonbeam-service"
 authors = { workspace = true }
 edition = "2021"
-homepage = "https://qustream.network"
+homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
 version = "0.47.2"
 

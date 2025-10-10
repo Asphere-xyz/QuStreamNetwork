@@ -269,21 +269,21 @@
           "name": "ethers",
           "type": "ethers",
           "endpoints": [
-            "wss://wss.moonriver.qustream.network"
+            "wss://wss.moonriver.qustream.com"
           ]
         },
         {
           "name": "viem",
           "type": "viem",
           "endpoints": [
-            "wss://wss.moonriver.qustream.network"
+            "wss://wss.moonriver.qustream.com"
           ]
         },
         {
           "name": "para",
           "type": "polkadotJs",
           "endpoints": [
-            "wss://wss.moonriver.qustream.network"
+            "wss://wss.moonriver.qustream.com"
           ],
           "rpc": {
             "moon": {
@@ -340,21 +340,21 @@
           "name": "ethers",
           "type": "ethers",
           "endpoints": [
-            "wss://wss.api.qustream.network"
+            "wss://wss.api.qustream.com"
           ]
         },
         {
           "name": "viem",
           "type": "viem",
           "endpoints": [
-            "wss://wss.api.qustream.network"
+            "wss://wss.api.qustream.com"
           ]
         },
         {
           "name": "para",
           "type": "polkadotJs",
           "endpoints": [
-            "wss://wss.api.qustream.network"
+            "wss://wss.api.qustream.com"
           ],
           "rpc": {
             "moon": {
@@ -414,21 +414,21 @@
           "name": "ethers",
           "type": "ethers",
           "endpoints": [
-            "wss://wss.api.moonbase.qustream.network"
+            "wss://wss.api.moonbase.qustream.com"
           ]
         },
         {
           "name": "viem",
           "type": "viem",
           "endpoints": [
-            "wss://wss.api.moonbase.qustream.network"
+            "wss://wss.api.moonbase.qustream.com"
           ]
         },
         {
           "name": "para",
           "type": "polkadotJs",
           "endpoints": [
-            "wss://wss.api.moonbase.qustream.network"
+            "wss://wss.api.moonbase.qustream.com"
           ],
           "rpc": {
             "moon": {
@@ -449,7 +449,7 @@
           "name": "relay",
           "type": "polkadotJs",
           "endpoints": [
-            "wss://relay.api.moonbase.qustream.network"
+            "wss://relay.api.moonbase.qustream.com"
           ]
         }
       ]
@@ -510,7 +510,7 @@
               "rpcPort": 9944
             },
             "defaultForkConfig": {
-              "url": "https://trace.api.qustream.network",
+              "url": "https://trace.api.qustream.com",
               "stateOverridePath": "tmp/lazyLoadingStateOverrides.json",
               "verbose": true
             }
