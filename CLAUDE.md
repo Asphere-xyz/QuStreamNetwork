@@ -54,10 +54,10 @@ pnpm check  # Runs Biome linter
 ### Running Development Node
 ```bash
 # Using built binary
-./target/release/moonbeam --dev --alice --sealing 6000 --rpc-port 9944
+./target/release/qustream --dev --alice --sealing 6000 --rpc-port 9944
 
 # Using Docker
-docker run --network="host" moonbeamfoundation/moonbeam:v0.46.0 --dev --alice --sealing 6000 --rpc-port 9944
+docker run --network="host" Asphere-xyz/QuStreamNetwork:v0.46.0 --dev --alice --sealing 6000 --rpc-port 9944
 ```
 
 ### Runtime Benchmarking
@@ -75,8 +75,8 @@ docker run --network="host" moonbeamfoundation/moonbeam:v0.46.0 --dev --alice --
 ## Architecture Overview
 
 ### Runtime Architecture
-The runtime is the on-chain logic compiled to WASM. Moonbeam has three runtime variants:
-- **moonbeam**: Production runtime for Polkadot
+The runtime is the on-chain logic compiled to WASM. QuStream Network has three runtime variants:
+- **qustream**: Production runtime for Polkadot
 - **moonriver**: Production runtime for Kusama
 - **moonbase**: TestNet runtime for Westend
 
@@ -106,7 +106,7 @@ Tests are split into:
 
 | Network        | Chain ID | Runtime   | Purpose           |
 | -------------- | -------- | --------- | ----------------- |
-| QuStream       | 5041     | moonbeam  | Polkadot MainNet  |
+| QuStream       | 5041     | qustream  | Polkadot MainNet  |
 | Moonriver      | 1285     | moonriver | Kusama parachain  |
 | Moonbase Alpha | 1287     | moonbase  | Public TestNet    |
 | Development    | 1281     | moonbase  | Local development |
