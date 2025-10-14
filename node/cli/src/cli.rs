@@ -328,7 +328,7 @@ pub struct RunCmd {
 	#[clap(long)]
 	pub no_hardware_benchmarks: bool,
 
-	/// Removes moonbeam prefix from Prometheus metrics
+	/// Removes qustream prefix from Prometheus metrics
 	#[clap(long)]
 	pub no_prometheus_prefix: bool,
 

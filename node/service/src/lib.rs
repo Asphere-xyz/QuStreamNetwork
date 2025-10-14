@@ -49,14 +49,14 @@ use maplit::hashmap;
 #[cfg(feature = "moonbase-native")]
 pub use moonbase_runtime;
 use moonbeam_cli_opt::{EthApi as EthApiCmd, FrontierBackendConfig, RpcConfig};
-#[cfg(feature = "moonbeam-native")]
-pub use qustream_runtime;
 use moonbeam_vrf::VrfDigestsProvider;
 #[cfg(feature = "moonriver-native")]
 pub use moonriver_runtime;
 use nimbus_consensus::NimbusManualSealConsensusDataProvider;
 use nimbus_primitives::{DigestsProvider, NimbusId};
 use polkadot_primitives::{AbridgedHostConfiguration, AsyncBackingParams, Slot, UpgradeGoAhead};
+#[cfg(feature = "moonbeam-native")]
+pub use qustream_runtime;
 use sc_client_api::{
 	backend::{AuxStore, Backend, StateBackend, StorageProvider},
 	ExecutorProvider,
@@ -214,7 +214,7 @@ impl ClientCustomizations for MoonbaseCustomizations {
 #[derive(Clone)]
 pub enum RuntimeVariant {
 	#[cfg(feature = "moonbeam-native")]
-	Moonbeam,
+	QuStreamNetwork,
 	#[cfg(feature = "moonriver-native")]
 	Moonriver,
 	#[cfg(feature = "moonbase-native")]
@@ -226,7 +226,7 @@ impl RuntimeVariant {
 	pub fn from_chain_spec(chain_spec: &Box<dyn ChainSpec>) -> Self {
 		match chain_spec {
 			#[cfg(feature = "moonbeam-native")]
-			spec if spec.is_moonbeam() => Self::Moonbeam,
+			spec if spec.is_qustream() => Self::QuStreamNetwork,
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => Self::Moonriver,
 			#[cfg(feature = "moonbase-native")]
@@ -243,7 +243,7 @@ pub trait IdentifyVariant {
 	fn is_moonbase(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonbeam` network.
-	fn is_moonbeam(&self) -> bool;
+	fn is_qustream(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonriver` network.
 	fn is_moonriver(&self) -> bool;
@@ -257,8 +257,8 @@ impl IdentifyVariant for Box<dyn ChainSpec> {
 		self.id().starts_with("moonbase")
 	}
 
-	fn is_moonbeam(&self) -> bool {
-		self.id().starts_with("moonbeam")
+	fn is_qustream(&self) -> bool {
+		self.id().starts_with("qustream")
 	}
 
 	fn is_moonriver(&self) -> bool {
@@ -378,7 +378,7 @@ pub fn new_chain_ops(
 			MoonriverCustomizations,
 		>(config, rpc_config, legacy_block_import_strategy),
 		#[cfg(feature = "moonbeam-native")]
-		spec if spec.is_moonbeam() => new_chain_ops_inner::<
+		spec if spec.is_qustream() => new_chain_ops_inner::<
 			qustream_runtime::RuntimeApi,
 			MoonbeamCustomizations,
 		>(config, rpc_config, legacy_block_import_strategy),
@@ -434,7 +434,7 @@ where
 	))
 }
 
-// If we're using prometheus, use a registry with a prefix of `moonbeam`.
+// If we're using prometheus, use a registry with a prefix of `qustream`.
 fn set_prometheus_registry(
 	config: &mut Configuration,
 	skip_prefix: bool,
@@ -446,7 +446,7 @@ fn set_prometheus_registry(
 		let prefix = if skip_prefix {
 			None
 		} else {
-			Some("moonbeam".into())
+			Some("qustream".into())
 		};
 
 		*registry = Registry::new_custom(prefix, Some(labels))?;
