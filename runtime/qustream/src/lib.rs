@@ -298,7 +298,7 @@ impl frame_system::Config for Runtime {
 	type BaseCallFilter = MaintenanceMode;
 	type SystemWeightInfo = moonbeam_weights::frame_system::WeightInfo<Runtime>;
 	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
-	type SS58Prefix = ConstU16<1284>;
+	type SS58Prefix = ConstU16<5041>;
 	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
 	type SingleBlockMigrations = migrations::SingleBlockMigrations<Runtime>;

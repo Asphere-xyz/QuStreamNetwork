@@ -414,7 +414,7 @@ impl KeyCmd {
 				Warning: This command is deprecated, please use `generate-moonbeam-key` instead.
 
 				The `generate-account-key` command used Ethereum's derivation path (m/44'/60'/0'/0/n)
-				while `generate-moonbeam-key` uses Moonbeam's derivation path (m/44'/1284'/0'/0/n).
+				while `generate-moonbeam-key` uses Moonbeam's derivation path (m/44'/5041'/0'/0/n).
 				Furthermore, it supports derivation paths for Moonriver, Moonbase, and Ethereum.
 
 				For more information, see: https://github.com/moonbeam-foundation/moonbeam/pull/3090

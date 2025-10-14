@@ -19,10 +19,10 @@ interface Sample {
 
 const networks: Network[] = [
   {
-    name: "moonbeam",
-    endpoint: "https://deo-moon-rpc-1-moonbeam-rpc-graph-1.moonbeam.ol-infra.network",
-    id: 1284,
-    currency: "GMLR",
+    name: "qustream",
+    endpoint: "https://TBD",
+    id: 5041,
+    currency: "QST",
   },
   {
     name: "moonriver",
@@ -73,8 +73,7 @@ const main = async () => {
 
     for (const runtime of relevantRuntimes) {
       console.log(
-        `Runtime ${runtime.specVersion} has block number ${
-          runtime.blockNumber[network.name as keyof typeof runtime.blockNumber]
+        `Runtime ${runtime.specVersion} has block number ${runtime.blockNumber[network.name as keyof typeof runtime.blockNumber]
         }`
       );
       let block = await client.getBlock({
@@ -88,8 +87,7 @@ const main = async () => {
         });
       }
       console.log(
-        `Runtime ${network.name}-${runtime.specVersion}: Block ${
-          block.number + blocksAhead
+        `Runtime ${network.name}-${runtime.specVersion}: Block ${block.number + blocksAhead
         } found ${blocksAhead} blocks ahead has ${block.transactions.length} transactions`
       );
 

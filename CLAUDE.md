@@ -106,7 +106,7 @@ Tests are split into:
 
 | Network        | Chain ID | Runtime   | Purpose           |
 | -------------- | -------- | --------- | ----------------- |
-| Moonbeam       | 1284     | moonbeam  | Polkadot MainNet  |
+| QuStream       | 5041     | moonbeam  | Polkadot MainNet  |
 | Moonriver      | 1285     | moonriver | Kusama parachain  |
 | Moonbase Alpha | 1287     | moonbase  | Public TestNet    |
 | Development    | 1281     | moonbase  | Local development |
