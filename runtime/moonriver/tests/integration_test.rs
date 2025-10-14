@@ -2972,8 +2972,8 @@ mod bridge_tests {
 						PalletInstance(<Balances as PalletInfoAccess>::index() as u8)
 					]
 				),
-				name: "xcGLMR",
-				symbol: "xcGLMR",
+				name: "xcQST",
+				symbol: "xcQST",
 				decimals: 18,
 				balances: vec![(AccountId::from(ALICE), 1_000_000_000_000_000)],
 			}])

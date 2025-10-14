@@ -10,8 +10,8 @@ import {
   ETHAN,
   DEFAULT_GENESIS_BALANCE,
   ALITH_PRIVKEY,
-  MIN_GLMR_NOMINATOR,
-  MIN_GLMR_STAKING,
+  MIN_QST_NOMINATOR,
+  MIN_QST_STAKING,
 } from "../test-constants";
 
 function assert(condition: boolean, msg: string) {
@@ -40,8 +40,7 @@ async function test() {
   let lastBlock = Date.now();
   polkadotApi.derive.chain.subscribeNewHeads((header) => {
     console.log(
-      `New Block: #${header.number}: ${header.author}, time since last block: ${
-        (Date.now() - lastBlock) / 1000
+      `New Block: #${header.number}: ${header.author}, time since last block: ${(Date.now() - lastBlock) / 1000
       } sec`
     );
     lastBlock = Date.now();
@@ -75,7 +74,7 @@ async function test() {
   const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
   await new Promise<void>(async (res) => {
     const unsub = await polkadotApi.tx.parachainStaking
-      .joinCandidates(MIN_GLMR_STAKING)
+      .joinCandidates(MIN_QST_STAKING)
       .signAndSend(ethan, ({ events = [], status }) => {
         console.log(`Current status is ${status.type}`);
         if (status.isInBlock) {
@@ -118,7 +117,7 @@ async function test() {
   // Candidate bond more
   await new Promise<void>(async (res) => {
     const unsub = await polkadotApi.tx.parachainStaking
-      .candidateBondMore(MIN_GLMR_STAKING)
+      .candidateBondMore(MIN_QST_STAKING)
       .signAndSend(ethan, ({ events = [], status }) => {
         console.log(`Current status is ${status.type}`);
         if (status.isInBlock) {
@@ -153,7 +152,7 @@ async function test() {
   // Candidate bond less
   await new Promise<void>(async (res) => {
     const unsub = await polkadotApi.tx.parachainStaking
-      .candidateBondLess(MIN_GLMR_STAKING)
+      .candidateBondLess(MIN_QST_STAKING)
       .signAndSend(ethan, ({ events = [], status }) => {
         console.log(`Current status is ${status.type}`);
         if (status.isInBlock) {
@@ -190,7 +189,7 @@ async function test() {
   const alith = await keyringAlith.addFromUri(ALITH_PRIVKEY, null, "ethereum");
   await new Promise<void>(async (res) => {
     const unsub = await polkadotApi.tx.parachainStaking
-      .nominate(GERALD, MIN_GLMR_NOMINATOR)
+      .nominate(GERALD, MIN_QST_NOMINATOR)
       .signAndSend(alith, ({ events = [], status }) => {
         console.log(`Current status is ${status.type}`);
         if (status.isInBlock) {
