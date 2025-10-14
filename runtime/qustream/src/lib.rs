@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The Moonbeam Runtime.
+//! The QuStreamNetwork Runtime.
 //!
 //! Primary features of this runtime include:
 //! * Ethereum compatibility
-//! * Moonbeam tokenomics
+//! * QuStreamNetwork tokenomics
 
 #![cfg_attr(not(feature = "std"), no_std)]
 // `construct_runtime!` does a lot of recursion and requires us to increase the limit to 512.
@@ -209,8 +209,8 @@ pub mod opaque {
 /// changes which can be skipped.
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: Cow::Borrowed("moonbeam"),
-	impl_name: Cow::Borrowed("moonbeam"),
+	spec_name: Cow::Borrowed("qustream"),
+	impl_name: Cow::Borrowed("qustream"),
 	authoring_version: 3,
 	spec_version: 3900,
 	impl_version: 0,
@@ -764,16 +764,7 @@ impl pallet_parachain_staking::PayoutCollatorReward<Runtime> for PayoutCollatorO
 		collator_id: AccountId,
 		amount: Balance,
 	) -> Weight {
-		let extra_weight =
-			if MoonbeamOrbiters::is_collator_pool_with_active_orbiter(for_round, collator_id) {
-				MoonbeamOrbiters::distribute_rewards(for_round, collator_id, amount)
-			} else {
-				ParachainStaking::mint_collator_reward(for_round, collator_id, amount)
-			};
-
-		<Runtime as frame_system::Config>::DbWeight::get()
-			.reads(1)
-			.saturating_add(extra_weight)
+		Weight::zero()
 	}
 }
 
@@ -813,7 +804,7 @@ impl Get<Slot> for RelayChainSlotProvider {
 
 parameter_types! {
 	// Voted by the moonbeam community on this referenda: https://moonbeam.polkassembly.network/referenda/116
-	pub const LinearInflationThreshold: Option<Balance> = Some(1_200_000_000 * currency::QST);
+	pub const LinearInflationThreshold: Option<Balance> = None;
 }
 
 impl pallet_parachain_staking::Config for Runtime {
@@ -885,7 +876,7 @@ impl pallet_async_backing::Config for Runtime {
 parameter_types! {
 	pub const InitializationPayment: Perbill = Perbill::from_percent(30);
 	pub const RelaySignaturesThreshold: Perbill = Perbill::from_percent(100);
-	pub const SignatureNetworkIdentifier:  &'static [u8] = b"moonbeam-";
+	pub const SignatureNetworkIdentifier:  &'static [u8] = b"qustream-";
 }
 
 impl pallet_crowdloan_rewards::Config for Runtime {

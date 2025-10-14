@@ -46,30 +46,23 @@ const BLOCKS_PER_ROUND: u32 = 6 * HOURS;
 const BLOCKS_PER_YEAR: u32 = 31_557_600 / 12;
 const NUM_SELECTED_CANDIDATES: u32 = 8;
 
-pub fn moonbeam_inflation_config() -> InflationInfo<Balance> {
-	fn to_round_inflation(annual: Range<Perbill>) -> Range<Perbill> {
-		use pallet_parachain_staking::inflation::perbill_annual_to_perbill_round;
-		perbill_annual_to_perbill_round(
-			annual,
-			// rounds per year
-			BLOCKS_PER_YEAR / BLOCKS_PER_ROUND,
-		)
-	}
-	let annual = Range {
-		min: Perbill::from_percent(4),
-		ideal: Perbill::from_percent(5),
-		max: Perbill::from_percent(5),
-	};
+pub fn zero_inflation_config() -> InflationInfo<Balance> {
 	InflationInfo {
-		// staking expectations
 		expect: Range {
-			min: 100_000 * QST * SUPPLY_FACTOR,
-			ideal: 200_000 * QST * SUPPLY_FACTOR,
-			max: 500_000 * QST * SUPPLY_FACTOR,
+			min: 0,
+			ideal: 0,
+			max: 0,
 		},
-		// annual inflation
-		annual,
-		round: to_round_inflation(annual),
+		annual: Range {
+			min: Perbill::zero(),
+			ideal: Perbill::zero(),
+			max: Perbill::zero(),
+		},
+		round: Range {
+			min: Perbill::zero(),
+			ideal: Perbill::zero(),
+			max: Perbill::zero(),
+		},
 	}
 }
 
@@ -138,7 +131,7 @@ pub fn testnet_genesis(
 				.map(|(account, _, bond)| (account, bond))
 				.collect(),
 			delegations,
-			inflation_config: moonbeam_inflation_config(),
+			inflation_config: zero_inflation_config(),
 			collator_commission: COLLATOR_COMMISSION,
 			parachain_bond_reserve_percent: PARACHAIN_BOND_RESERVE_PERCENT,
 			blocks_per_round: BLOCKS_PER_ROUND,
