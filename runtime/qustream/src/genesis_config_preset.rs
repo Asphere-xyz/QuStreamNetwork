@@ -17,7 +17,7 @@
 extern crate alloc;
 
 use crate::{
-	currency::GLMR, currency::SUPPLY_FACTOR, AccountId, AuthorFilterConfig, AuthorMappingConfig,
+	currency::QST, currency::SUPPLY_FACTOR, AccountId, AuthorFilterConfig, AuthorMappingConfig,
 	Balance, Balances, BalancesConfig, BridgeKusamaGrandpaConfig, BridgeKusamaMessagesConfig,
 	BridgeKusamaParachainsConfig, BridgeXcmOverMoonriverConfig, CrowdloanRewardsConfig, EVMConfig,
 	EligibilityValue, EthereumChainIdConfig, EthereumConfig, EvmForeignAssetsConfig, InflationInfo,
@@ -63,9 +63,9 @@ pub fn moonbeam_inflation_config() -> InflationInfo<Balance> {
 	InflationInfo {
 		// staking expectations
 		expect: Range {
-			min: 100_000 * GLMR * SUPPLY_FACTOR,
-			ideal: 200_000 * GLMR * SUPPLY_FACTOR,
-			max: 500_000 * GLMR * SUPPLY_FACTOR,
+			min: 100_000 * QST * SUPPLY_FACTOR,
+			ideal: 200_000 * QST * SUPPLY_FACTOR,
+			max: 500_000 * QST * SUPPLY_FACTOR,
 		},
 		// annual inflation
 		annual,
@@ -210,7 +210,7 @@ pub fn testnet_genesis(
 						PalletInstance(<Balances as PalletInfoAccess>::index() as u8),
 					],
 				),
-				relative_price: GLMR,
+				relative_price: QST,
 			}],
 			_phantom: Default::default(),
 		},
@@ -280,7 +280,7 @@ pub fn development() -> serde_json::Value {
 				"f24FF3a9CF04c71Dbc94D0b566f7A27B94566cac"
 			)),
 			NimbusId::from(Sr25519Keyring::Alice.public()),
-			20_000 * GLMR * SUPPLY_FACTOR,
+			20_000 * QST * SUPPLY_FACTOR,
 		)],
 		// Delegations
 		vec![],
@@ -298,7 +298,7 @@ pub fn development() -> serde_json::Value {
 				"773539d4Ac0e786233D90A233654ccEE26a613D9"
 			)),
 		],
-		1_500_000 * GLMR * SUPPLY_FACTOR,
+		1_500_000 * QST * SUPPLY_FACTOR,
 		Default::default(), // para_id
 		1281,               //ChainId
 	)

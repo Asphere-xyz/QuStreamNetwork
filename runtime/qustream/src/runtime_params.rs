@@ -38,16 +38,16 @@ pub mod dynamic_params {
 	pub mod pallet_randomness {
 		#[codec(index = 0)]
 		pub static Deposit: BoundedU128<
-			{ 1 * currency::GLMR * currency::SUPPLY_FACTOR },
-			{ 1_000 * currency::GLMR * currency::SUPPLY_FACTOR },
-		> = BoundedU128::const_new::<{ 1 * currency::GLMR * currency::SUPPLY_FACTOR }>();
+			{ 1 * currency::QST * currency::SUPPLY_FACTOR },
+			{ 1_000 * currency::QST * currency::SUPPLY_FACTOR },
+		> = BoundedU128::const_new::<{ 1 * currency::QST * currency::SUPPLY_FACTOR }>();
 	}
 
 	#[dynamic_pallet_params]
 	#[codec(index = 2)]
 	pub mod xcm_config {
 		#[codec(index = 0)]
-		pub static ForeignAssetCreationDeposit: u128 = 10_000 * currency::GLMR;
+		pub static ForeignAssetCreationDeposit: u128 = 10_000 * currency::QST;
 	}
 }
 

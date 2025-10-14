@@ -23,7 +23,7 @@ use frame_support::{
 	traits::{OnFinalize, OnInitialize},
 };
 pub use qustream_runtime::{
-	currency::GLMR, AccountId, AsyncBacking, AuthorInherent, Balance, Ethereum, InflationInfo,
+	currency::QST, AccountId, AsyncBacking, AuthorInherent, Balance, Ethereum, InflationInfo,
 	ParachainStaking, Range, Runtime, RuntimeCall, RuntimeEvent, System, TransactionConverter,
 	UncheckedExtrinsic, HOURS,
 };
@@ -158,9 +158,9 @@ impl Default for ExtBuilder {
 			collators: vec![],
 			inflation: InflationInfo {
 				expect: Range {
-					min: 100_000 * GLMR,
-					ideal: 200_000 * GLMR,
-					max: 500_000 * GLMR,
+					min: 100_000 * QST,
+					ideal: 200_000 * QST,
+					max: 500_000 * QST,
 				},
 				// not used
 				annual: Range {
@@ -387,7 +387,7 @@ impl ExtBuilder {
 				XcmWeightTrader::add_asset(
 					root_origin(),
 					xcm_asset_initialization.xcm_location,
-					GLMR,
+					QST,
 				)
 				.expect("failed to register asset in weight trader");
 

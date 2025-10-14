@@ -144,7 +144,7 @@ use governance::councils::*;
 pub(crate) use weights as moonbeam_weights;
 pub use weights::xcm as moonbeam_xcm_weights;
 
-/// GLMR, the native token, uses 18 decimals of precision.
+/// QST, the native token, uses 18 decimals of precision.
 pub mod currency {
 	use super::Balance;
 
@@ -155,17 +155,17 @@ pub mod currency {
 	pub const KILOWEI: Balance = 1_000;
 	pub const MEGAWEI: Balance = 1_000_000;
 	pub const GIGAWEI: Balance = 1_000_000_000;
-	pub const MICROGLMR: Balance = 1_000_000_000_000;
-	pub const MILLIGLMR: Balance = 1_000_000_000_000_000;
-	pub const GLMR: Balance = 1_000_000_000_000_000_000;
-	pub const KILOGLMR: Balance = 1_000_000_000_000_000_000_000;
+	pub const MICROQST: Balance = 1_000_000_000_000;
+	pub const MILLIQST: Balance = 1_000_000_000_000_000;
+	pub const QST: Balance = 1_000_000_000_000_000_000;
+	pub const KILOQST: Balance = 1_000_000_000_000_000_000_000;
 
 	pub const TRANSACTION_BYTE_FEE: Balance = 1 * GIGAWEI * SUPPLY_FACTOR;
-	pub const STORAGE_BYTE_FEE: Balance = 100 * MICROGLMR * SUPPLY_FACTOR;
+	pub const STORAGE_BYTE_FEE: Balance = 100 * MICROQST * SUPPLY_FACTOR;
 	pub const WEIGHT_FEE: Balance = 50 * KILOWEI * SUPPLY_FACTOR / 4;
 
 	pub const fn deposit(items: u32, bytes: u32) -> Balance {
-		items as Balance * 100 * MILLIGLMR * SUPPLY_FACTOR + (bytes as Balance) * STORAGE_BYTE_FEE
+		items as Balance * 100 * MILLIQST * SUPPLY_FACTOR + (bytes as Balance) * STORAGE_BYTE_FEE
 	}
 }
 
@@ -555,7 +555,7 @@ impl pallet_scheduler::Config for Runtime {
 }
 
 parameter_types! {
-	pub const PreimageBaseDeposit: Balance = 5 * currency::GLMR * currency::SUPPLY_FACTOR ;
+	pub const PreimageBaseDeposit: Balance = 5 * currency::QST * currency::SUPPLY_FACTOR ;
 	pub const PreimageByteDeposit: Balance = currency::STORAGE_BYTE_FEE;
 	pub const PreimageHoldReason: RuntimeHoldReason =
 		RuntimeHoldReason::Preimage(pallet_preimage::HoldReason::Preimage);
@@ -813,7 +813,7 @@ impl Get<Slot> for RelayChainSlotProvider {
 
 parameter_types! {
 	// Voted by the moonbeam community on this referenda: https://moonbeam.polkassembly.network/referenda/116
-	pub const LinearInflationThreshold: Option<Balance> = Some(1_200_000_000 * currency::GLMR);
+	pub const LinearInflationThreshold: Option<Balance> = Some(1_200_000_000 * currency::QST);
 }
 
 impl pallet_parachain_staking::Config for Runtime {
@@ -845,9 +845,9 @@ impl pallet_parachain_staking::Config for Runtime {
 	/// Maximum delegations per delegator
 	type MaxDelegationsPerDelegator = ConstU32<100>;
 	/// Minimum stake required to be reserved to be a candidate
-	type MinCandidateStk = ConstU128<{ 5_000 * currency::GLMR * currency::SUPPLY_FACTOR }>;
+	type MinCandidateStk = ConstU128<{ 5_000 * currency::QST * currency::SUPPLY_FACTOR }>;
 	/// Minimum stake required to be reserved to be a delegator
-	type MinDelegation = ConstU128<{ 500 * currency::MILLIGLMR * currency::SUPPLY_FACTOR }>;
+	type MinDelegation = ConstU128<{ 500 * currency::MILLIQST * currency::SUPPLY_FACTOR }>;
 	type BlockAuthor = AuthorInherent;
 	type OnCollatorPayout = ();
 	type PayoutCollatorReward = PayoutCollatorOrOrbiterReward;
@@ -910,7 +910,7 @@ impl pallet_crowdloan_rewards::Config for Runtime {
 impl pallet_author_mapping::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type DepositCurrency = Balances;
-	type DepositAmount = ConstU128<{ 100 * currency::GLMR * currency::SUPPLY_FACTOR }>;
+	type DepositAmount = ConstU128<{ 100 * currency::QST * currency::SUPPLY_FACTOR }>;
 	type Keys = session_keys_primitives::VrfId;
 	type WeightInfo = moonbeam_weights::pallet_author_mapping::WeightInfo<Runtime>;
 }
@@ -1975,30 +1975,30 @@ mod tests {
 			get!(pallet_transaction_payment, OperationalFeeMultiplier, u8),
 			5_u8
 		);
-		assert_eq!(STORAGE_BYTE_FEE, Balance::from(10 * MILLIGLMR));
+		assert_eq!(STORAGE_BYTE_FEE, Balance::from(10 * MILLIQST));
 
 		// pallet_identity deposits
 		assert_eq!(
 			get!(pallet_identity, BasicDeposit, u128),
-			Balance::from(10 * GLMR + 2580 * MILLIGLMR)
+			Balance::from(10 * QST + 2580 * MILLIQST)
 		);
 		assert_eq!(
 			get!(pallet_identity, ByteDeposit, u128),
-			Balance::from(10 * MILLIGLMR)
+			Balance::from(10 * MILLIQST)
 		);
 		assert_eq!(
 			get!(pallet_identity, SubAccountDeposit, u128),
-			Balance::from(10 * GLMR + 530 * MILLIGLMR)
+			Balance::from(10 * QST + 530 * MILLIQST)
 		);
 
 		// staking minimums
 		assert_eq!(
 			get!(pallet_parachain_staking, MinCandidateStk, u128),
-			Balance::from(500_000 * GLMR)
+			Balance::from(500_000 * QST)
 		);
 		assert_eq!(
 			get!(pallet_parachain_staking, MinDelegation, u128),
-			Balance::from(50 * GLMR)
+			Balance::from(50 * QST)
 		);
 
 		// crowdloan min reward
@@ -2010,25 +2010,25 @@ mod tests {
 		// deposit for AuthorMapping
 		assert_eq!(
 			get!(pallet_author_mapping, DepositAmount, u128),
-			Balance::from(10 * KILOGLMR)
+			Balance::from(10 * KILOQST)
 		);
 
 		// proxy deposits
 		assert_eq!(
 			get!(pallet_proxy, ProxyDepositBase, u128),
-			Balance::from(10 * GLMR + 80 * MILLIGLMR)
+			Balance::from(10 * QST + 80 * MILLIQST)
 		);
 		assert_eq!(
 			get!(pallet_proxy, ProxyDepositFactor, u128),
-			Balance::from(210 * MILLIGLMR)
+			Balance::from(210 * MILLIQST)
 		);
 		assert_eq!(
 			get!(pallet_proxy, AnnouncementDepositBase, u128),
-			Balance::from(10 * GLMR + 80 * MILLIGLMR)
+			Balance::from(10 * QST + 80 * MILLIQST)
 		);
 		assert_eq!(
 			get!(pallet_proxy, AnnouncementDepositFactor, u128),
-			Balance::from(560 * MILLIGLMR)
+			Balance::from(560 * MILLIQST)
 		);
 	}
 

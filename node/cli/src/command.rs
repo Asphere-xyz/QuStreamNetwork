@@ -68,7 +68,7 @@ fn load_spec(
 			Box::new(chain_spec::moonbase::development_chain_spec(None, None))
 		}
 		#[cfg(feature = "moonbeam-native")]
-		"staking" => Box::new(chain_spec::moonbeam::get_chain_spec(para_id)),
+		"staking" => Box::new(chain_spec::qustream::get_chain_spec(para_id)),
 		// Moonriver networks
 		"moonriver" => Box::new(chain_spec::RawChainSpec::from_json_bytes(
 			&include_bytes!("../../../specs/moonriver/parachain-embedded-specs.json")[..],
@@ -83,9 +83,9 @@ fn load_spec(
 			&include_bytes!("../../../specs/moonbeam/parachain-embedded-specs.json")[..],
 		)?),
 		#[cfg(feature = "moonbeam-native")]
-		"qustream-dev" => Box::new(chain_spec::moonbeam::development_chain_spec(None, None)),
+		"qustream-dev" => Box::new(chain_spec::qustream::development_chain_spec(None, None)),
 		#[cfg(feature = "moonbeam-native")]
-		"qustream-local" => Box::new(chain_spec::moonbeam::get_chain_spec(para_id)),
+		"qustream-local" => Box::new(chain_spec::qustream::get_chain_spec(para_id)),
 
 		// Specs provided as json specify which runtime to use in their file name. For example,
 		// `moonbeam-custom.json` uses the moonbeam runtime.
@@ -106,7 +106,7 @@ fn load_spec(
 			} else if run_cmd.force_moonriver || starts_with("moonriver") {
 				Box::new(chain_spec::moonriver::ChainSpec::from_json_file(path)?)
 			} else {
-				Box::new(chain_spec::moonbeam::ChainSpec::from_json_file(path)?)
+				Box::new(chain_spec::qustream::ChainSpec::from_json_file(path)?)
 			}
 		}
 	})
@@ -237,7 +237,7 @@ pub fn run() -> Result<()> {
 				if params.mnemonic.is_some() || params.accounts.is_some() {
 					if config.chain_spec.is_moonbeam() {
 						params.base.run(
-							Box::new(chain_spec::moonbeam::development_chain_spec(
+							Box::new(chain_spec::qustream::development_chain_spec(
 								params.mnemonic.clone(),
 								params.accounts,
 							)),

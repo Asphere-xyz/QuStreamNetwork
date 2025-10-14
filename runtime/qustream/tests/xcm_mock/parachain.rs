@@ -804,7 +804,7 @@ pub type ForeignAssetManagerOrigin = EitherOf<
 moonbeam_runtime_common::impl_evm_runner_precompile_or_eth_xcm!();
 
 parameter_types! {
-	pub ForeignAssetCreationDeposit: u128 = 100 * currency::GLMR;
+	pub ForeignAssetCreationDeposit: u128 = 100 * currency::QST;
 }
 
 impl pallet_moonbeam_foreign_assets::Config for Runtime {
