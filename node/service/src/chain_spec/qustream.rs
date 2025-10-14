@@ -57,8 +57,8 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 			para_id: Default::default(),
 		},
 	)
-	.with_name("Moonbeam Development Testnet")
-	.with_id("moonbeam_dev")
+	.with_name("QuStreamNetwork Development Testnet")
+	.with_id("qustream_dev")
 	.with_chain_type(ChainType::Development)
 	.with_properties(
 		serde_json::from_str(
@@ -99,9 +99,9 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	)
 	// TODO Apps depends on this string to determine whether the chain is an ethereum compat
 	// or not. We should decide the proper strings, and update Apps accordingly.
-	// Or maybe Apps can be smart enough to say if the string contains "moonbeam" at all...
-	.with_name("Moonbeam Local Testnet")
-	.with_id("moonbeam_local")
+	// Or maybe Apps can be smart enough to say if the string contains "qustream" at all...
+	.with_name("QuStreamNetwork Local Testnet")
+	.with_id("qustream_local")
 	.with_chain_type(ChainType::Local)
 	.with_properties(
 		serde_json::from_str(
