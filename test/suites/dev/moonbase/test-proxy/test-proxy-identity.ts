@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeEach, describeSuite, expect } from "@moonwall/cli";
 import { GLMR, type KeyringPair, alith, generateKeyringPair } from "@moonwall/util";
 import { BN, u8aToU8a } from "@polkadot/util";

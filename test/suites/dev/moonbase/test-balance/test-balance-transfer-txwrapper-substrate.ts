@@ -1,6 +1,6 @@
 // // As inspired by https://github.com/paritytech/txwrapper/blob/master/examples/polkadot.ts
 // // This flow is used by some exchange partners like kraken
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, customDevRpcRequest, describeSuite, expect } from "@moonwall/cli";
 import { ALITH_ADDRESS, alith, checkBalance } from "@moonwall/util";
 import { TypeRegistry, getSpecTypes } from "@substrate/txwrapper-core";
@@ -96,8 +96,8 @@ describeSuite({
         const balance = await context.polkadotJs().query.system.account(ALITH_ADDRESS);
         expect(await context.viem().getBalance({ address: ALITH_ADDRESS })).to.equal(
           balance.data.free.toBigInt() +
-            balance.data.reserved.toBigInt() -
-            balance.data.frozen.toBigInt()
+          balance.data.reserved.toBigInt() -
+          balance.data.frozen.toBigInt()
         );
       },
     });

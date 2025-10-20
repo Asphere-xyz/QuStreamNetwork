@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { afterEach, beforeAll, describeSuite, expect } from "@moonwall/cli";
 
 import { sovereignAccountOfSibling, sendCallAsPara } from "../../../../helpers/xcm.js";

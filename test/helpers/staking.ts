@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { DevModeContext } from "@moonwall/cli";
 
 export async function getRewardedAndCompoundedEvents(context: DevModeContext, blockHash: string) {

@@ -27,7 +27,7 @@ docker cp moonbeam_container:moonbeam/moonbeam tmp/moonbeam_rt
 docker rm -f moonbeam_container
 
 chmod uog+x tmp/moonbeam_rt
-chmod uog+x ../target/release/moonbeam
+chmod uog+x ../target/release/qustream
 echo "Building plain Moonbase specs..."
 tmp/moonbeam_rt build-spec --chain $CHAIN-local > tmp/$CHAIN\-plain-spec.json
 pnpm tsx scripts/modify-plain-specs.ts process tmp/$CHAIN\-plain-spec.json tmp/$CHAIN\-modified-spec.json

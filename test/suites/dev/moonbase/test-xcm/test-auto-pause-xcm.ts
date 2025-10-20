@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, customDevRpcRequest, describeSuite, expect } from "@moonwall/cli";
 
 import type { KeyringPair } from "@polkadot/keyring/types";

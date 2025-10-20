@@ -27,7 +27,7 @@ use frame_support::{
 	weights::Weight,
 	PalletId,
 };
-pub use moonbeam_runtime::xcm_config::AssetType;
+pub use qustream_runtime::xcm_config::AssetType;
 
 use frame_system::{pallet_prelude::BlockNumberFor, EnsureNever, EnsureRoot};
 use moonbeam_runtime_common::{
@@ -1166,7 +1166,7 @@ pub(crate) fn para_events() -> Vec<RuntimeEvent> {
 use frame_support::traits::{
 	ConstBool, Disabled, OnFinalize, OnInitialize, UncheckedOnRuntimeUpgrade,
 };
-use moonbeam_runtime::{currency, xcm_config::LocationToH160, BLOCK_STORAGE_LIMIT, MAX_POV_SIZE};
+use qustream_runtime::{currency, xcm_config::LocationToH160, BLOCK_STORAGE_LIMIT, MAX_POV_SIZE};
 use pallet_evm::FrameSystemAccountProvider;
 use sp_weights::constants::WEIGHT_REF_TIME_PER_SECOND;
 use xcm_primitives::AsAssetType;

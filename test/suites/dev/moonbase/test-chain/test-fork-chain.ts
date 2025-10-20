@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeEach, describeSuite, expect, TransactionTypes } from "@moonwall/cli";
 import { createRawTransfer } from "@moonwall/util";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, describeSuite, expect, deployCreateCompiledContract } from "@moonwall/cli";
 import { sendRawTransaction } from "@moonwall/util";
 import { encodeFunctionData, decodeFunctionResult, type Abi, parseEther } from "viem";

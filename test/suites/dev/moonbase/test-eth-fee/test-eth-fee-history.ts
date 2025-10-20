@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect, fetchCompiledContract, customDevRpcRequest } from "@moonwall/cli";
 import { ALITH_ADDRESS } from "@moonwall/util";
 import { hexToNumber, numberToHex } from "@polkadot/util";

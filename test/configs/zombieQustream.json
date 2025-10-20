@@ -43,12 +43,12 @@
   "parachains": [
     {
       "id": 1000,
-      "chain": "moonbeam-local",
-      "chain_spec_path": "tmp/moonbeam-modified-raw-spec.json",
+      "chain": "qustream-local",
+      "chain_spec_path": "tmp/qustream-modified-raw-spec.json",
       "collators": [
         {
           "name": "alith",
-          "command": "../target/release/moonbeam",
+          "command": "../target/release/qustream",
           "rpc_port": 33345,
           "args": [
             "--no-hardware-benchmarks",
@@ -63,7 +63,7 @@
           "validator": false,
           "rpc_port": 33048,
           "p2p_port": 33049,
-          "command": "../target/release/moonbeam",
+          "command": "../target/release/qustream",
           "args": [
             "--no-hardware-benchmarks",
             "-lparachain=debug",

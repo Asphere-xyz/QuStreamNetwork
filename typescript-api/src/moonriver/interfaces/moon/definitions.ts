@@ -1,8 +1,8 @@
-import { moonbeamDefinitions, types } from "@moonbeam-network/types-bundle";
+import { qustreamDefinitions, types } from "@qustream-network/types-bundle";
 
 export default {
   types: {},
   rpc: {
-    ...moonbeamDefinitions.rpc?.moon
+    ...qustreamDefinitions.rpc?.moon
   }
 };

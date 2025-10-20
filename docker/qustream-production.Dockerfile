@@ -1,11 +1,11 @@
-# Production Node for Moonbeam
+# Production Node for QuStream
 #
 # Requires to run from repository root and to copy the binary in the build folder (part of the release workflow)
 
 FROM docker.io/library/ubuntu:22.04 AS builder
 
-# Branch or tag to build moonbeam from
-ARG COMMIT="master"
+# Branch or tag to build qustream from
+ARG COMMIT="qustream"
 ARG RUSTFLAGS=""
 ENV RUSTFLAGS=$RUSTFLAGS
 ENV DEBIAN_FRONTEND=noninteractive
@@ -24,47 +24,47 @@ ENV PATH="/root/.cargo/bin:$PATH"
 RUN rustup default stable
 # rustup version are pinned in the rust-toolchain file
 
-# Clone the Moonbeam repository
-RUN echo "*** Cloning Moonbeam ***" && \
-	if git ls-remote --heads https://github.com/moonbeam-foundation/moonbeam.git $COMMIT | grep -q $COMMIT; then \
+# Clone the QuStreamNetwork repository
+RUN echo "*** Cloning QuStreamNetwork ***" && \
+	if git ls-remote --heads https://github.com/Asphere-xyz/QuStreamNetwork.git $COMMIT | grep -q $COMMIT; then \
 	echo "Cloning branch $COMMIT"; \
-	git clone --depth=1 --branch $COMMIT https://github.com/moonbeam-foundation/moonbeam.git; \
-	elif git ls-remote --tags https://github.com/moonbeam-foundation/moonbeam.git $COMMIT | grep -q $COMMIT; then \
+	git clone --depth=1 --branch $COMMIT https://github.com/Asphere-xyz/QuStreamNetwork.git; \
+	elif git ls-remote --tags https://github.com/Asphere-xyz/QuStreamNetwork.git $COMMIT | grep -q $COMMIT; then \
 	echo "Cloning tag $COMMIT"; \
-	git clone --depth=1 --branch $COMMIT https://github.com/moonbeam-foundation/moonbeam.git; \
+	git clone --depth=1 --branch $COMMIT https://github.com/Asphere-xyz/QuStreamNetwork.git; \
 	else \
 	echo "Cloning specific commit $COMMIT"; \
-	git clone --depth=1 https://github.com/moonbeam-foundation/moonbeam.git && \
-	cd moonbeam && \
+	git clone --depth=1 https://github.com/Asphere-xyz/QuStreamNetwork.git && \
+	cd QuStreamNetwork && \
 	git fetch origin $COMMIT && \
 	git checkout $COMMIT; \
 	fi
 
-WORKDIR /moonbeam/moonbeam
+WORKDIR /qustream/qustream
 
 # Print target cpu
 RUN rustc --print target-cpus
 
-RUN echo "*** Building Moonbeam ***"
+RUN echo "*** Building QuStreamNetwork ***"
 RUN cargo build --profile=production --all
 
 FROM debian:stable-slim
-LABEL maintainer="alan@moonsonglabs.com"
-LABEL description="Production Binary for Moonbeam Nodes"
+LABEL maintainer="t.emin@asphere.xyz"
+LABEL description="Production Binary for QuStreamNetwork Nodes"
 
-RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbeam moonbeam && \
-	mkdir -p /moonbeam/.local/share && \
+RUN useradd -m -u 1000 -U -s /bin/sh -d /qustream qustream && \
+	mkdir -p /qustream/.local/share && \
 	mkdir /data && \
-	chown -R moonbeam:moonbeam /data && \
-	ln -s /data /moonbeam/.local/share/moonbeam && \
+	chown -R qustream:qustream /data && \
+	ln -s /data /qustream/.local/share/qustream && \
 	rm -rf /usr/sbin
 
-USER moonbeam
+USER qustream
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=builder --chown=moonbeam /moonbeam/target/production/moonbeam /moonbeam/moonbeam
+COPY --from=builder --chown=qustream /qustream/target/production/qustream /qustream/qustream
 
-RUN chmod uog+x /moonbeam/moonbeam
+RUN chmod uog+x /qustream/qustream
 
 # 30333 for parachain p2p
 # 30334 for relaychain p2p
@@ -74,4 +74,4 @@ EXPOSE 30333 30334 9944 9615
 
 VOLUME ["/data"]
 
-ENTRYPOINT ["/moonbeam/moonbeam"]
+ENTRYPOINT ["/qustream/qustream"]

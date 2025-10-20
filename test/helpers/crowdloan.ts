@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { DevModeContext } from "@moonwall/cli";
 import { VESTING_PERIOD } from "./constants.js";
 

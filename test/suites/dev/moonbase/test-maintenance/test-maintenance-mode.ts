@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeEach, describeSuite, expect, execOpenTechCommitteeProposal } from "@moonwall/cli";
 import { alith } from "@moonwall/util";
 import type { Result } from "@polkadot/types";

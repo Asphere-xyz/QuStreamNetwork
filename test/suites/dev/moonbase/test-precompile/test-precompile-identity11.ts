@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, describeSuite, expect, fetchCompiledContract } from "@moonwall/cli";
 import { BALTATHAR_PRIVATE_KEY, baltathar, charleth } from "@moonwall/util";
 import { decodeEventLog, toHex } from "viem";

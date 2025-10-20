@@ -28,7 +28,7 @@ use sp_core::{ByteArray, H160, H256, U256};
 use fp_rpc::runtime_decl_for_ethereum_runtime_rpc_api::EthereumRuntimeRPCApi;
 use moonbeam_core_primitives::Header;
 use moonbeam_rpc_primitives_txpool::runtime_decl_for_tx_pool_runtime_api::TxPoolRuntimeApi;
-use moonbeam_runtime::{Executive, TransactionPaymentAsGasPrice};
+use qustream_runtime::{Executive, TransactionPaymentAsGasPrice};
 use nimbus_primitives::runtime_decl_for_nimbus_api::NimbusApi;
 use std::{collections::BTreeMap, str::FromStr};
 
@@ -301,7 +301,7 @@ fn txpool_runtime_api_extrinsic_filter() {
 			.into(),
 		);
 		let eth_uxt = unchecked_eth_tx(VALID_ETH_TX);
-		let txpool = <Runtime as TxPoolRuntimeApi<moonbeam_runtime::Block>>::extrinsic_filter(
+		let txpool = <Runtime as TxPoolRuntimeApi<qustream_runtime::Block>>::extrinsic_filter(
 			vec![eth_uxt.clone(), non_eth_uxt.clone()],
 			vec![unchecked_eth_tx(VALID_ETH_TX), non_eth_uxt],
 		);

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 
 import { deployCreateCompiledContract, describeSuite } from "@moonwall/cli";
 import { expectEVMResult } from "../../../../helpers";

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { alith, ALITH_ADDRESS, BALTATHAR_SESSION_ADDRESS } from "@moonwall/util";
 import { expect, describeSuite } from "@moonwall/cli";
 import { getMappingInfo } from "../../../../helpers";

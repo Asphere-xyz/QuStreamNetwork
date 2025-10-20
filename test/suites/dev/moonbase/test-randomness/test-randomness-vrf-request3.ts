@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { describeSuite, expect } from "@moonwall/cli";
 import {
   CONTRACT_RANDOMNESS_STATUS_DOES_NOT_EXISTS,

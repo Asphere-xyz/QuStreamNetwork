@@ -3,7 +3,7 @@ set -e
 source scripts/_init_var.sh
 
 echo "=================== Alphanet ==================="
-$MOONBEAM_BINARY build-spec \
+$QUSTREAM_BINARY build-spec \
   --disable-default-bootnode \
   --chain 'moonbase-local' \
   | grep '\"code\"' \
@@ -15,19 +15,19 @@ sed -e "/\"<runtime_code>\"/{r $ALPHANET_PARACHAIN_SPEC_TMP" -e 'd;}'  $ALPHANET
   > $ALPHANET_PARACHAIN_SPEC_PLAIN	
 echo $ALPHANET_PARACHAIN_SPEC_PLAIN generated
 
-$MOONBEAM_BINARY build-spec \
+$QUSTREAM_BINARY build-spec \
   --disable-default-bootnode \
   --raw \
   --chain $ALPHANET_PARACHAIN_SPEC_PLAIN \
   > $ALPHANET_PARACHAIN_SPEC_RAW
 echo $ALPHANET_PARACHAIN_SPEC_RAW generated
 
-$MOONBEAM_BINARY export-genesis-wasm \
+$QUSTREAM_BINARY export-genesis-wasm \
   --chain $ALPHANET_PARACHAIN_SPEC_RAW \
   > $ALPHANET_WASM;
 echo $ALPHANET_WASM generated
 
-$MOONBEAM_BINARY export-genesis-state \
+$QUSTREAM_BINARY export-genesis-state \
   --parachain-id $ALPHANET_PARACHAIN_ID \
   --chain $ALPHANET_PARACHAIN_SPEC_RAW \
   > $ALPHANET_GENESIS;

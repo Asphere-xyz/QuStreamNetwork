@@ -17,7 +17,7 @@ jobs:
       contents: read
     strategy:
       matrix:
-        runtime: [moonbeam, moonbase, moonriver]
+        runtime: [qustream, moonbase, moonriver]
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -35,20 +35,20 @@ jobs:
         id: previous-runtime
         run: |
           COMMIT=`git rev-list -n 1 'runtime-${{ github.event.inputs.last_spec_version }}'`
-          PREVIOUS_RUNTIME_BUILD=$(gh run -R moonbeam-foundation/moonbeam list -w Build --limit=500 --json databaseId,status,conclusion,headSha --jq ".[] | select(.headSha == \"$COMMIT\" and .status == \"completed\") | .databaseId" | head -1)
+          PREVIOUS_RUNTIME_BUILD=$(gh run -R Asphere-xyz/QuStreamNetwork list -w Build --limit=500 --json databaseId,status,conclusion,headSha --jq ".[] | select(.headSha == \"$COMMIT\" and .status == \"completed\") | .databaseId" | head -1)
           echo "Latest build for runtime-${{ github.event.inputs.last_spec_version }}: $PREVIOUS_RUNTIME_BUILD"
           echo "PREVIOUS_RUNTIME_BUILD=$PREVIOUS_RUNTIME_BUILD" >> $GITHUB_OUTPUT
       - name: Lookup next runtime release build
         id: next-runtime
         run: |
           COMMIT=`git rev-list -n 1 'runtime-${{ github.event.inputs.spec_version }}'`
-          RUNTIME_BUILD=$(gh run -R moonbeam-foundation/moonbeam list -w Build --limit=100 --json databaseId,status,conclusion,headSha --jq ".[] | select(.headSha == \"$COMMIT\" and .status == \"completed\") | .databaseId" | head -1)
+          RUNTIME_BUILD=$(gh run -R Asphere-xyz/QuStreamNetwork list -w Build --limit=100 --json databaseId,status,conclusion,headSha --jq ".[] | select(.headSha == \"$COMMIT\" and .status == \"completed\") | .databaseId" | head -1)
           echo "Latest build for runtime-${{ github.event.inputs.spec_version }}: $RUNTIME_BUILD"
           echo "NEXT_RUNTIME_BUILD=$RUNTIME_BUILD" >> $GITHUB_OUTPUT
       - name: "Download previous runtime release binary"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: previous-runtime-release
           merge-multiple: true
           github-token: ${{ github.token }}
@@ -56,15 +56,15 @@ jobs:
       - name: "Download next runtime release binary"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: next-runtime-release
           merge-multiple: true
           github-token: ${{ github.token }}
           run-id: ${{ steps.next-runtime.outputs.NEXT_RUNTIME_BUILD }}
       - name: Run previous runtime
         run: |
-          chmod +x previous-runtime-release/moonbeam
-          nohup sh -c './previous-runtime-release/moonbeam \
+          chmod +x previous-runtime-release/qustream
+          nohup sh -c './previous-runtime-release/qustream \
           --chain=${{ matrix.runtime }}-dev \
           --no-hardware-benchmarks \
           --no-telemetry \
@@ -81,8 +81,8 @@ jobs:
           --tmp' > 9911.out &
       - name: Run current runtime
         run: |
-          chmod +x next-runtime-release/moonbeam
-          nohup sh -c './next-runtime-release/moonbeam \
+          chmod +x next-runtime-release/qustream
+          nohup sh -c './next-runtime-release/qustream \
           --chain=${{ matrix.runtime }}-dev \
           --no-hardware-benchmarks \
           --no-telemetry \
@@ -110,7 +110,7 @@ jobs:
       - name: Stop Node Services
         if: always()
         run: |
-          pkill moonbeam
+          pkill qustream
 
       - name: Upload diff artifacts
         uses: actions/upload-artifact@v4
@@ -136,8 +136,8 @@ jobs:
       - name: Download diff artifacts
         uses: actions/download-artifact@v5
         with:
-          name: runtime-diff-moonbeam-${{ github.event.inputs.spec_version }}
-          path: runtime-diffs/moonbeam
+          name: runtime-diff-qustream-${{ github.event.inputs.spec_version }}
+          path: runtime-diffs/qustream
       - name: Download diff artifacts
         uses: actions/download-artifact@v5
         with:
@@ -146,7 +146,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          base: master
+          base: qustream
           branch: "runtime-diff-${{ github.event.inputs.spec_version }}"
           commit-message: "runtime diff: v0.${{ github.event.inputs.spec_version }}.0"
           draft: true

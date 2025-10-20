@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect } from "@moonwall/cli";
 import { FAITH_ADDRESS, FAITH_PRIVATE_KEY, getBlockExtrinsic } from "@moonwall/util";
 import { originalKeys, setAuthorMappingKeysViaPrecompile } from "../../../../helpers";

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect, beforeEach } from "@moonwall/cli";
 import { u8aToHex } from "@polkadot/util";
 

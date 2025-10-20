@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, beforeAll, expect } from "@moonwall/cli";
 import { MIN_GLMR_DELEGATOR, alith, baltathar, ethan } from "@moonwall/util";
 import { jumpToRound } from "../../../../helpers/block.js";

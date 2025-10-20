@@ -8,5 +8,5 @@ repository = { workspace = true }
 version = "0.1.0"
 
 [dependencies]
-ethereum-types = { workspace = true, features = [ "std" ] }
-serde = { workspace = true, features = [ "derive" ] }
+ethereum-types = { workspace = true, features = ["std"] }
+serde = { workspace = true, features = ["derive"] }

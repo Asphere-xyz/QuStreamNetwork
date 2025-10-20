@@ -18,6 +18,6 @@
 
 #![warn(missing_docs)]
 
-fn main() -> moonbeam_cli::Result<()> {
-	moonbeam_cli::run()
+fn main() -> qustream_cli::Result<()> {
+	qustream_cli::run()
 }

@@ -12,9 +12,9 @@
 # Loading binary/specs variables
 source scripts/_init_var.sh
 
-if [ ! -f "$MOONBEAM_BINARY" ]; then
-  echo "Moonbeam binary $MOONBEAM_BINARY is missing"
-  echo "Please run: cargo build --release"
+if [ ! -f "$QUSTREAM_BINARY" ]; then
+  echo "Moonbeam binary $QUSTREAM_BINARY is missing"
+  echo "Please run: cargo build --release --locked"
   exit 1
 fi
 
@@ -45,9 +45,9 @@ else
   BASE_PATH="$BASE_PREFIX-relay-$STANDALONE_INDEX"
 fi
 
-EXECUTABLE=$MOONBEAM_BINARY
+EXECUTABLE=$QUSTREAM_BINARY
 if [ ! -z "$PERF" ]; then
-  EXECUTABLE="$PERF $MOONBEAM_BINARY"
+  EXECUTABLE="$PERF $QUSTREAM_BINARY"
 fi
 
 $EXECUTABLE \

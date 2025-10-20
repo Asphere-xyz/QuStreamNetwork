@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-cli"
+name = "qustream-cli"
 authors = { workspace = true }
 edition = "2021"
 version = "0.47.2"
@@ -40,11 +40,7 @@ polkadot-service = { workspace = true }
 substrate-build-script-utils = { workspace = true }
 
 [features]
-default = [
-    "moonbase-native",
-    "moonbeam-native",
-    "moonriver-native"
-]
+default = ["moonbase-native", "moonbeam-native", "moonriver-native"]
 
 lazy-loading = ["moonbeam-service/lazy-loading"]
 

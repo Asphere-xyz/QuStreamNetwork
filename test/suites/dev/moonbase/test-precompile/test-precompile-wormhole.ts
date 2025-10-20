@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, describeSuite, expect, fetchCompiledContract } from "@moonwall/cli";
 import { ALITH_ADDRESS, ALITH_PRIVATE_KEY, alith, createEthersTransaction } from "@moonwall/util";
 import { Enum, Struct } from "@polkadot/types";
@@ -301,8 +301,7 @@ describeSuite({
           .getTransactionReceipt({ hash: assetMetaResult!.result!.hash as `0x${string}` })
       ).logs[0].address;
       log(
-        `Created Wrapped Asset ${wrappedToken} => ${assetMetaResult.result!.hash} (${
-          assetMetaResult.result!.error || "good"
+        `Created Wrapped Asset ${wrappedToken} => ${assetMetaResult.result!.hash} (${assetMetaResult.result!.error || "good"
         })`
       );
 

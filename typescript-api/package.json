@@ -1,14 +1,14 @@
 {
-  "name": "@moonbeam-network/api-augment",
+  "name": "@qustream-network/api-augment",
   "version": "0.3900.0",
   "type": "module",
-  "description": "Moonbeam types augment for @polkadot/api",
+  "description": "QuStreamNetwork types augment for @polkadot/api",
   "author": "Moonsong Labs",
   "license": "GPL-3.0-only",
-  "homepage": "https://github.com/moonbeam-foundation/moonbeam/tree/master/typescript-api#readme",
+  "homepage": "https://github.com/Asphere-xyz/QuStreamNetwork/tree/qustream/typescript-api#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/moonbeam-foundation/moonbeam.git",
+    "url": "https://github.com/Asphere-xyz/QuStreamNetwork.git",
     "directory": "typescript-api"
   },
   "engines": {
@@ -19,19 +19,19 @@
     "scrape": "pnpm tsx scripts/scrapeMetadata.ts",
     "generate": "pnpm generate:defs && pnpm generate:meta",
     "postgenerate": "pnpm build && pnpm fmt:fix",
-    "load:meta": "pnpm load:meta:moonbase && pnpm load:meta:moonriver && pnpm load:meta:moonbeam",
+    "load:meta": "pnpm load:meta:moonbase && pnpm load:meta:moonriver && pnpm load:meta:qustream",
     "load:meta:local": "curl -s -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' http://localhost:9933 > metadata-moonbase.json",
     "load:meta:moonbase": "curl -s -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' https://rpc.api.moonbase.moonbeam.network > metadata-moonbase.json",
     "load:meta:moonriver": "curl -s -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' https://rpc.api.moonriver.moonbeam.network > metadata-moonriver.json",
-    "load:meta:moonbeam": "curl -s -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' https://rpc.api.moonbeam.network > metadata-moonbeam.json",
-    "generate:defs": "pnpm run generate:defs:moonbase && pnpm generate:defs:moonriver && pnpm generate:defs:moonbeam",
-    "generate:defs:moonbase": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-defs.mjs --package @moonbeam-network/api-augment/moonbase/interfaces --input ./src/moonbase/interfaces --endpoint ./metadata-moonbase.json",
-    "generate:defs:moonriver": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-defs.mjs --package @moonbeam-network/api-augment/moonriver/interfaces --input ./src/moonriver/interfaces --endpoint ./metadata-moonriver.json",
-    "generate:defs:moonbeam": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-defs.mjs --package @moonbeam-network/api-augment/moonbeam/interfaces --input ./src/moonbeam/interfaces --endpoint ./metadata-moonbeam.json",
-    "generate:meta": "pnpm run generate:meta:moonbase && pnpm generate:meta:moonriver && pnpm generate:meta:moonbeam",
-    "generate:meta:moonbase": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-chain.mjs --endpoint ./metadata-moonbase.json --package @moonbeam-network/api-augment/moonbeam/interfaces --output ./src/moonbase/interfaces",
-    "generate:meta:moonriver": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-chain.mjs --endpoint ./metadata-moonriver.json --package @moonbeam-network/api-augment/moonbeam/interfaces --output ./src/moonriver/interfaces",
-    "generate:meta:moonbeam": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-chain.mjs --endpoint ./metadata-moonbeam.json --package @moonbeam-network/api-augment/moonbeam/interfaces --output ./src/moonbeam/interfaces",
+    "load:meta:moonbeam": "curl -s -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' https://rpc.api.qustream.com > metadata-qustream.json",
+    "generate:defs": "pnpm run generate:defs:moonbase && pnpm generate:defs:moonriver && pnpm generate:defs:qustream",
+    "generate:defs:moonbase": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-defs.mjs --package @qustream-network/api-augment/moonbase/interfaces --input ./src/moonbase/interfaces --endpoint ./metadata-moonbase.json",
+    "generate:defs:moonriver": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-defs.mjs --package @qustream-network/api-augment/moonriver/interfaces --input ./src/moonriver/interfaces --endpoint ./metadata-moonriver.json",
+    "generate:defs:qustream": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-defs.mjs --package @qustream-network/api-augment/qustream/interfaces --input ./src/qustream/interfaces --endpoint ./metadata-qustream.json",
+    "generate:meta": "pnpm run generate:meta:moonbase && pnpm generate:meta:moonriver && pnpm generate:meta:qustream",
+    "generate:meta:moonbase": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-chain.mjs --endpoint ./metadata-moonbase.json --package @qustream-network/api-augment/qustream/interfaces --output ./src/moonbase/interfaces",
+    "generate:meta:moonriver": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-chain.mjs --endpoint ./metadata-moonriver.json --package @qustream-network/api-augment/qustream/interfaces --output ./src/moonriver/interfaces",
+    "generate:meta:qustream": "pnpm tsx node_modules/@polkadot/typegen/scripts/polkadot-types-from-chain.mjs --endpoint ./metadata-qustream.json --package @qustream-network/api-augment/qustream/interfaces --output ./src/qustream/interfaces",
     "build": "tsup",
     "deploy": "pnpm generate && pnpm build && pnpm publish",
     "fmt": "biome format .",
@@ -39,19 +39,19 @@
     "check": "biome check .",
     "check:fix": "biome check . --write"
   },
-  "main": "./dist/moonbeam/index.cjs",
-  "module": "./dist/moonbeam/index.js",
-  "types": "./dist/moonbeam/index.d.ts",
+  "main": "./dist/qustream/index.cjs",
+  "module": "./dist/qustream/index.js",
+  "types": "./dist/qustream/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/moonbeam/index.d.ts",
-      "require": "./dist/moonbeam/index.cjs",
-      "import": "./dist/moonbeam/index.js"
+      "types": "./dist/qustream/index.d.ts",
+      "require": "./dist/qustream/index.cjs",
+      "import": "./dist/qustream/index.js"
     },
-    "./moonbeam": {
-      "types": "./dist/moonbeam/index.d.ts",
-      "require": "./dist/moonbeam/index.cjs",
-      "import": "./dist/moonbeam/index.js"
+    "./qustream": {
+      "types": "./dist/qustream/index.d.ts",
+      "require": "./dist/qustream/index.cjs",
+      "import": "./dist/qustream/index.js"
     },
     "./moonriver": {
       "types": "./dist/moonriver/index.d.ts",
@@ -66,8 +66,8 @@
   },
   "typesVersions": {
     "*": {
-      "moonbeam": [
-        "./dist/moonbeam/index.d.ts"
+      "qustream": [
+        "./dist/qustream/index.d.ts"
       ],
       "moonriver": [
         "./dist/moonriver/index.d.ts"
@@ -78,7 +78,7 @@
     }
   },
   "keywords": [
-    "moonbeam",
+    "qustream",
     "moonriver",
     "types",
     "polkadot",
@@ -86,7 +86,7 @@
   ],
   "dependencies": {
     "@biomejs/biome": "*",
-    "@moonbeam-network/types-bundle": "workspace:*",
+    "@qustream-network/types-bundle": "workspace:*",
     "@polkadot/api": "*",
     "@polkadot/api-base": "*",
     "@polkadot/rpc-core": "*",

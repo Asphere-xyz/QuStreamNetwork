@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, customDevRpcRequest, beforeAll, expect } from "@moonwall/cli";
 import { createEthersTransaction } from "@moonwall/util";
 import { type Abi, encodeFunctionData } from "viem";
@@ -15,10 +15,10 @@ describeSuite({
       blockNumber?: number;
       expectedGas: string;
     }[] = [
-      { count: 0, expectedGas: "0x53da" },
-      { count: 100, expectedGas: "0x14422" },
-      { count: 1000, expectedGas: "0x67192" },
-    ];
+        { count: 0, expectedGas: "0x53da" },
+        { count: 100, expectedGas: "0x14422" },
+        { count: 1000, expectedGas: "0x67192" },
+      ];
 
     let looperAddress: `0x${string}`;
     let looperAbi: Abi;

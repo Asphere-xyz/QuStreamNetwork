@@ -1,31 +1,34 @@
 [package]
-name = "moonbeam"
+name = "qustream"
 authors = { workspace = true }
-description = "Moonbeam Collator"
+description = "QuStreamNetwork Collator"
 edition = "2021"
-homepage = "https://moonbeam.network"
+homepage = "https://qustream.com"
 license = "GPL-3.0-only"
 version = "0.47.2"
 
 [[bin]]
-name = 'moonbeam'
+name = 'qustream'
 path = 'src/main.rs'
 
 [dependencies]
 
-moonbeam-cli = { workspace = true }
+qustream-cli = { workspace = true }
 
 [features]
-default = [ "moonbase-native", "moonbeam-native", "moonriver-native", "lazy-loading" ]
-
-moonbase-native = [ "moonbeam-cli/moonbase-native" ]
-moonbeam-native = [ "moonbeam-cli/moonbeam-native" ]
-moonriver-native = [ "moonbeam-cli/moonriver-native" ]
-
-lazy-loading = ["moonbeam-cli/lazy-loading"]
-
-metadata-hash = ["moonbeam-cli/metadata-hash"]
-
-runtime-benchmarks = [
-	"moonbeam-cli/runtime-benchmarks"
+default = [
+	"moonbase-native",
+	"moonbeam-native",
+	"moonriver-native",
+	"lazy-loading",
 ]
+
+moonbase-native = ["qustream-cli/moonbase-native"]
+moonbeam-native = ["qustream-cli/moonbeam-native"]
+moonriver-native = ["qustream-cli/moonriver-native"]
+
+lazy-loading = ["qustream-cli/lazy-loading"]
+
+metadata-hash = ["qustream-cli/metadata-hash"]
+
+runtime-benchmarks = ["qustream-cli/runtime-benchmarks"]

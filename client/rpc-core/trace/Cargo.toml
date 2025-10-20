@@ -8,8 +8,8 @@ repository = { workspace = true }
 version = "0.6.0"
 
 [dependencies]
-ethereum-types = { workspace = true, features = [ "std" ] }
-jsonrpsee = { workspace = true, features = [ "macros", "server" ] }
+ethereum-types = { workspace = true, features = ["std"] }
+jsonrpsee = { workspace = true, features = ["macros", "server"] }
 moonbeam-client-evm-tracing = { workspace = true }
 moonbeam-rpc-core-types = { workspace = true }
-serde = { workspace = true, features = [ "derive" ] }
+serde = { workspace = true, features = ["derive"] }

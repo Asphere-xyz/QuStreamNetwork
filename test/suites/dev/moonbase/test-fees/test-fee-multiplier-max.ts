@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { beforeEach, describeSuite, expect, deployCreateCompiledContract } from "@moonwall/cli";
 import { alith, baltathar, createEthersTransaction } from "@moonwall/util";
 import { nToHex } from "@polkadot/util";

@@ -3,7 +3,7 @@
 ## Requirements:
 
 1. Clone [polkadot-fellows/runtimes](https://github.com/polkadot-fellows/runtimes.git) repository
-2. Build `cargo build --release --features fast-runtime`
+2. Build `cargo build --release --locked --features fast-runtime`
 
 Generate the chain spec files with the following commands:
 

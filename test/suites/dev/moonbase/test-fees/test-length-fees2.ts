@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect } from "@moonwall/cli";
 import { createViemTransaction } from "@moonwall/util";
 import { ConstantStore } from "../../../../helpers/constants";

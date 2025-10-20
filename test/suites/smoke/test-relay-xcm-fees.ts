@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { ApiDecoration } from "@polkadot/api/types";
 import { describeSuite, expect, beforeAll } from "@moonwall/cli";
 import { extractWeight } from "@moonwall/util";
@@ -50,8 +50,8 @@ describeSuite({
         const units = relayRuntime.startsWith("polkadot")
           ? 10_000_000_000n
           : relayRuntime.startsWith("kusama") ||
-              relayRuntime.startsWith("rococo") ||
-              relayRuntime.startsWith("westend")
+            relayRuntime.startsWith("rococo") ||
+            relayRuntime.startsWith("westend")
             ? 1_000_000_000_000n
             : 1_000_000_000_000n;
 
@@ -59,8 +59,8 @@ describeSuite({
 
         const cent =
           relayRuntime.startsWith("polkadot") ||
-          relayRuntime.startsWith("rococo") ||
-          relayRuntime.startsWith("westend")
+            relayRuntime.startsWith("rococo") ||
+            relayRuntime.startsWith("westend")
             ? units / 100n
             : relayRuntime.startsWith("kusama")
               ? units / 3_000n
@@ -83,19 +83,18 @@ describeSuite({
         expect(
           feePerSecondValueForRelay.toBigInt() >= expectedFeePerSecond,
           "failed check: feePerSecond: " +
-            `${feePerSecondValueForRelay} > expected ${expectedFeePerSecond}`
+          `${feePerSecondValueForRelay} > expected ${expectedFeePerSecond}`
         ).to.be.true;
         expect(
           // Conservative approach to allow up to 2 time the fees
           feePerSecondValueForRelay.toBigInt() < expectedFeePerSecond * 2n,
-          `failed check: feePerSecond: ${feePerSecondValueForRelay} < expected ${
-            expectedFeePerSecond * 2n
+          `failed check: feePerSecond: ${feePerSecondValueForRelay} < expected ${expectedFeePerSecond * 2n
           }`
         ).to.be.true;
 
         log(
           `Verified feePerSecond for relayMultiLocation transactInfos ` +
-            `within relay base weight range`
+          `within relay base weight range`
         );
       },
     });

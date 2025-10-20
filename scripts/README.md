@@ -1,6 +1,6 @@
 # Scripts
 
-This folder contains a list of script useful to develop/test the Moonbeam Node
+This folder contains a list of script useful to develop/test the QuStreamNetwork Node
 
 ## Requirements
 
@@ -55,7 +55,7 @@ export USER_PORT=<XX000>
 ### Building the nodes
 
 ```bash
-cargo build --release
+cargo build --release --locked
 ```
 
 # Standalone nodes
@@ -64,7 +64,7 @@ The standalone nodes are made to be executed without explicitly supplied specs.
 They also don't require any runtime wasm file or genesis state.
 
 ```bash
-./target/release/moonbeam --dev
+./target/release/qustream --dev
 ```
 
 It will creatte a new block each time a new transaction is received.
@@ -73,7 +73,7 @@ You can change this behavior by providing `--sealing 12000`
 
 ## Running complete local network
 
-Moonbeam rely on `polkadot-launch` to provide a simple command to create a local network including
+QuStreamNetwork rely on `polkadot-launch` to provide a simple command to create a local network including
 the relay and the parachain nodes.
 
 The script [tools/launch.ts] contains a list of presets to execute the different possible networks.

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { ApiPromise } from "@polkadot/api";
 import type { PalletParachainStakingRoundInfo } from "@polkadot/types/lookup";
 import { type BN, BN_ONE, BN_ZERO } from "@polkadot/util";

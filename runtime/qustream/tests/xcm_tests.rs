@@ -25,7 +25,7 @@ use frame_support::{
 	weights::{constants::WEIGHT_REF_TIME_PER_SECOND, Weight},
 	BoundedVec,
 };
-use moonbeam_runtime::xcm_config::AssetType;
+use qustream_runtime::xcm_config::AssetType;
 use pallet_xcm_transactor::{
 	Currency, CurrencyPayment, HrmpInitParams, HrmpOperation, TransactWeights,
 };

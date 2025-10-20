@@ -1,9 +1,9 @@
-name: Publish moonbeam-types-bundle
+name: Publish qustream-types-bundle
 on:
   workflow_dispatch:
     inputs:
       TargetSHA:
-        description: full sha of commit to publish moonbeam-types-bundle from
+        description: full sha of commit to publish qustream-types-bundle from
         required: true
       DryRun:
         description: Dry run mode
@@ -11,7 +11,7 @@ on:
         default: "false"
 
 jobs:
-  publish-moonbeam-types-bundle:
+  publish-qustream-types-bundle:
     runs-on: ubuntu-latest
     permissions:
       contents: read

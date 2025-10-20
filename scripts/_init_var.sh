@@ -12,7 +12,7 @@ mkdir -p $BUILD_FOLDER
 TMP_FOLDER=${TMP_FOLDER:-"$BUILD_FOLDER/tmp"}
 mkdir -p $TMP_FOLDER
 
-MOONBEAM_BINARY=${MOONBEAM_BINARY:-"target/release/moonbeam"}
+QUSTREAM_BINARY=${QUSTREAM_BINARY:-"target/release/qustream"}
 
 # filename declarations
 PARACHAIN_SPEC_TEMPLATE_FILENAME=${PARACHAIN_SPEC_TEMPLATE_FILENAME:-"parachain-specs-template.json"}

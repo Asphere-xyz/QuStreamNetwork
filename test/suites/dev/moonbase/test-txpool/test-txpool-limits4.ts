@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect, fetchCompiledContract } from "@moonwall/cli";
 import { ALITH_ADDRESS, createEthersTransaction } from "@moonwall/util";
 import { encodeDeployData } from "viem";
@@ -43,7 +43,7 @@ describeSuite({
         expect(txPoolSize).toBe(8192);
 
         let blocks = 1;
-        for (;;) {
+        for (; ;) {
           await context.createBlock();
 
           const inspectBlob = (await context

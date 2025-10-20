@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect } from "@moonwall/cli";
 import { GLMR, MIN_GLMR_DELEGATOR, MIN_GLMR_STAKING, alith } from "@moonwall/util";
 import { chunk, createAccounts, countExtrinsics } from "../../../../helpers";
@@ -39,7 +39,7 @@ describeSuite({
         expect(
           (await context.polkadotJs().query.parachainStaking.delegatorState.keys()).length,
           "Not all delegations were made, check batch size matches" +
-            " delegateWithAutoCompound max qty per block"
+          " delegateWithAutoCompound max qty per block"
         ).to.equal(maxTransactions);
 
         await context.createBlock(

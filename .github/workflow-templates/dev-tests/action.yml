@@ -1,6 +1,6 @@
 name: Moonwall Build Contracts and Run Tests
 description: |
-  Setup and run moonwall Dev tests against a local moonbeam node.
+  Setup and run moonwall Dev tests against a local QuStream node.
 
 inputs:
   moonwall_environment:
@@ -34,7 +34,7 @@ runs:
         DEBUG_COLOURS: "1"
         NODE_OPTIONS: "--max-old-space-size=12288"
       run: |
-        chmod uog+x target/release/moonbeam
+        chmod uog+x target/release/qustream
         cd test
         pnpm install
         pnpm compile-solidity

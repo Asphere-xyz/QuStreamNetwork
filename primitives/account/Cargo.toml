@@ -38,5 +38,5 @@ std = [
 	"sha3/std",
 	"sp-core/std",
 	"sp-io/std",
-	"sp-runtime/std"
+	"sp-runtime/std",
 ]

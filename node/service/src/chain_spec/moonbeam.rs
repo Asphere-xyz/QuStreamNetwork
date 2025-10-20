@@ -25,7 +25,7 @@ use crate::chain_spec::{generate_accounts, get_from_seed, Extensions};
 use crate::HostFunctions;
 use cumulus_primitives_core::ParaId;
 use hex_literal::hex;
-use moonbeam_runtime::{
+use qustream_runtime::{
 	currency::{GLMR, SUPPLY_FACTOR},
 	genesis_config_preset::testnet_genesis,
 	AccountId, WASM_BINARY,

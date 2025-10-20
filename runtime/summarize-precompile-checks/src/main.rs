@@ -18,7 +18,7 @@ use clap::Parser;
 use moonbase_runtime::{
 	MoonbasePrecompiles, PrecompileName as MoonbaseNames, Runtime as MoonbaseRuntime,
 };
-use moonbeam_runtime::{
+use qustream_runtime::{
 	MoonbeamPrecompiles, PrecompileName as MoonbeamNames, Runtime as MoonbeamRuntime,
 };
 use moonriver_runtime::{

@@ -22,7 +22,7 @@ use frame_support::{
 	assert_ok,
 	traits::{OnFinalize, OnInitialize},
 };
-pub use moonbeam_runtime::{
+pub use qustream_runtime::{
 	currency::GLMR, AccountId, AsyncBacking, AuthorInherent, Balance, Ethereum, InflationInfo,
 	ParachainStaking, Range, Runtime, RuntimeCall, RuntimeEvent, System, TransactionConverter,
 	UncheckedExtrinsic, HOURS,
@@ -36,8 +36,8 @@ use sp_runtime::{traits::Dispatchable, BuildStorage, Digest, DigestItem, Perbill
 use cumulus_pallet_parachain_system::{MessagingStateSnapshot, ValidationData};
 use cumulus_primitives_core::AbridgedHrmpChannel;
 use fp_rpc::ConvertTransaction;
-use moonbeam_runtime::bridge_config::XcmOverKusamaInstance;
-use moonbeam_runtime::{EvmForeignAssets, XcmWeightTrader};
+use qustream_runtime::bridge_config::XcmOverKusamaInstance;
+use qustream_runtime::{EvmForeignAssets, XcmWeightTrader};
 use std::collections::BTreeMap;
 use xcm::latest::{InteriorLocation, Location};
 
@@ -332,12 +332,12 @@ impl ExtBuilder {
 		ext.execute_with(|| {
 			if self.asset_hub_migration_started {
 				// Indicate that the asset-hub migration has already started
-				moonbeam_runtime::xcm_config::AssetHubMigrationStartsAtRelayBlock::set(&0);
+				qustream_runtime::xcm_config::AssetHubMigrationStartsAtRelayBlock::set(&0);
 
 				let mut validation_data = ValidationData::<Runtime>::get().unwrap_or_default();
 
 				validation_data.relay_parent_number =
-					moonbeam_runtime::xcm_config::AssetHubMigrationStartsAtRelayBlock::get();
+					qustream_runtime::xcm_config::AssetHubMigrationStartsAtRelayBlock::get();
 				ValidationData::<Runtime>::set(Some(validation_data));
 			}
 

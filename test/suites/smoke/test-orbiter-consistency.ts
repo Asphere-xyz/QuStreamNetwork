@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { ApiDecoration } from "@polkadot/api/types";
 import type { bool, Option, u32 } from "@polkadot/types-codec";
 import type {
@@ -102,7 +102,7 @@ describeSuite({
               expect(
                 poolOrbiters,
                 `Selected orbiter ${selectedOrbiter} is removed but ` +
-                  `still in the pool ${collator} orbiters`
+                `still in the pool ${collator} orbiters`
               ).to.not.include(selectedOrbiter);
             } else {
               expect(

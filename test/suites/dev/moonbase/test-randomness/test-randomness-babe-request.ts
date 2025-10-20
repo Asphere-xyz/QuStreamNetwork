@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect } from "@moonwall/cli";
 import { CONTRACT_RANDOMNESS_STATUS_DOES_NOT_EXISTS, GLMR, alith } from "@moonwall/util";
 import { SIMPLE_SALT } from "../../../../helpers";

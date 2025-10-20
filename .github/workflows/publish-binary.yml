@@ -62,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: tools
         run: |
-          mv ../build/moonbeam-x86-64 ../build/moonbeam 
+          mv ../build/qustream-x86-64 ../build/qustream
           yarn
           yarn -s run ts-node github/generate-release-body.ts --owner "${{ github.repository_owner }}" --repo "$(basename ${{ github.repository }})" --from "${{ github.event.inputs.from }}" --to "${{ github.event.inputs.to }}" --srtool-report-folder '../build/' > ../body.md
       - name: Create draft release
@@ -72,7 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.to }}
-          release_name: Moonbeam ${{ github.event.inputs.to }}
+          release_name: QuStreamNetwork ${{ github.event.inputs.to }}
           body_path: body.md
           draft: true
 
@@ -84,14 +84,14 @@ jobs:
     strategy:
       matrix:
         cpu: ["x86-64", "skylake", "znver3"]
-        node: ["moonbeam"]
+        node: ["qustream"]
     steps:
       - uses: actions/download-artifact@v5
         with:
           pattern: binaries-*
           merge-multiple: true
           path: build
-      - name: Upload moonbeam
+      - name: Upload QuStream
         uses: actions/upload-release-asset@v1
         if: ${{ matrix.cpu == 'x86-64' }}
         env:
@@ -101,7 +101,7 @@ jobs:
           asset_path: build/${{matrix.node}}-${{matrix.cpu}}
           asset_name: ${{matrix.node}}
           asset_content_type: application/octet-stream
-      - name: Upload moonbeam custom binary
+      - name: Upload QuStream custom binary
         uses: actions/upload-release-asset@v1
         if: ${{ matrix.cpu != 'x86-64' }}
         env:
@@ -130,12 +130,12 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=moonbeamfoundation/moonbeam
+          DOCKER_IMAGE=Asphere-xyz/QuStreamNetwork
           VERSION="${{ github.event.inputs.to }}"
           TAG="${VERSION}-rc"
 
           # Rename binary
-          mv build/moonbeam-x86-64 build/moonbeam
+          mv build/qustream-x86-64 build/qustream
 
           echo "tags=${DOCKER_IMAGE}:${TAG}" >> $GITHUB_OUTPUT
           echo "created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_OUTPUT

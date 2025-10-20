@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import type { ApiDecoration } from "@polkadot/api/types";
 import type { AccountId20 } from "@polkadot/types/interfaces/runtime";
 import type { StorageKey, Option } from "@polkadot/types";
@@ -101,8 +101,7 @@ describeSuite({
         }
 
         log(
-          `Verified ${Object.keys(allCandidateInfo).length} candidates and ${
-            allDelegatorState.length
+          `Verified ${Object.keys(allCandidateInfo).length} candidates and ${allDelegatorState.length
           } delegators`
         );
       },
@@ -184,8 +183,7 @@ describeSuite({
         }
 
         log(
-          `Verified ${Object.keys(allCandidateInfo).length} candidates and ${
-            allDelegatorState.length
+          `Verified ${Object.keys(allCandidateInfo).length} candidates and ${allDelegatorState.length
           } delegators`
         );
       },
@@ -279,8 +277,7 @@ describeSuite({
         );
 
         log(
-          `Verified ${Object.keys(allCandidateInfo).length} candidates info and ${
-            candidatePool.length
+          `Verified ${Object.keys(allCandidateInfo).length} candidates info and ${candidatePool.length
           } in the pool`
         );
       },

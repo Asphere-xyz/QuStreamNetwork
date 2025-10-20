@@ -10,10 +10,10 @@ version = "0.1.0"
 
 [dependencies]
 async-trait = { workspace = true }
-jsonrpsee = { workspace = true, features = [ "macros", "server" ] }
+jsonrpsee = { workspace = true, features = ["macros", "server"] }
 
 fc-api = { workspace = true }
 fc-rpc = { workspace = true }
 sp-blockchain = { workspace = true }
-sp-core = { workspace = true, features = [ "std" ] }
-sp-runtime = { workspace = true, features = [ "std" ] }
+sp-core = { workspace = true, features = ["std"] }
+sp-runtime = { workspace = true, features = ["std"] }

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
 import { CONTRACT_RANDOMNESS_STATUS_PENDING, GLMR } from "@moonwall/util";
 import {

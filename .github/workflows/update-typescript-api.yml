@@ -19,7 +19,7 @@ jobs:
       - name: Upload Node
         uses: actions/upload-artifact@v4
         with:
-          name: moonbeam
+          name: qustream
           path: build
 
   update-typescript-api:
@@ -34,7 +34,7 @@ jobs:
       - name: Download Node
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -49,14 +49,14 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Run Typegen
         run: |
-          chmod uog+x target/release/moonbeam
+          chmod uog+x target/release/qustream
           pnpm i
           cd test
           pnpm typegen
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          base: master
+          base: qustream
           branch: "update-typescript-api-${{ github.run_id }}"
           commit-message: "Update Rust/TS bindings"
           draft: true

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, beforeAll, expect } from "@moonwall/cli";
 import type { ApiPromise } from "@polkadot/api";
 import { encodeFunctionData, type Hash } from "viem";
@@ -237,21 +237,21 @@ type TraceTransactionSchema = {
   Parameters: [
     hash: Hash,
     options:
-      | {
-          disableStorage?: boolean;
-          disableStack?: boolean;
-          enableMemory?: boolean;
-          enableReturnData?: boolean;
-          tracer?: string;
-        }
-      | {
-          timeout?: string;
-          tracerConfig?: {
-            onlyTopCall?: boolean;
-            withLog?: boolean;
-          };
-        }
-      | undefined,
+    | {
+      disableStorage?: boolean;
+      disableStack?: boolean;
+      enableMemory?: boolean;
+      enableReturnData?: boolean;
+      tracer?: string;
+    }
+    | {
+      timeout?: string;
+      tracerConfig?: {
+        onlyTopCall?: boolean;
+        withLog?: boolean;
+      };
+    }
+    | undefined,
   ];
   ReturnType: {
     from: string;

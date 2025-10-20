@@ -37,5 +37,5 @@ std = [
     "frame-support/std",
     "sp-api/std",
     "sp-runtime/std",
-    "xcm/std"
+    "xcm/std",
 ]

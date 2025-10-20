@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { beforeEach, describeSuite, expect } from "@moonwall/cli";
 import {
   ALITH_ADDRESS,
@@ -135,8 +135,8 @@ describeSuite({
 
         expect(await context.viem().getBalance({ blockNumber, address: ALITH_ADDRESS })).to.equal(
           balance.data.free.toBigInt() +
-            balance.data.reserved.toBigInt() -
-            balance.data.frozen.toBigInt()
+          balance.data.reserved.toBigInt() -
+          balance.data.frozen.toBigInt()
         );
       },
     });

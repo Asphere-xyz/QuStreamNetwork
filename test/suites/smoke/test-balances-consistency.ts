@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import type { ApiDecoration } from "@polkadot/api/types";
 import { xxhashAsU8a } from "@polkadot/util-crypto";
 import { hexToBigInt, u8aConcat, u8aToHex } from "@polkadot/util";
@@ -209,21 +209,21 @@ describeSuite({
       const delegatorStakingMigrationAccounts =
         delegatorStakingMigrations !== undefined
           ? (delegatorStakingMigrations.reduce((p, migration: any) => {
-              if (migration[1].isTrue) {
-                p[`0x${migration[0].toHex().slice(-40)}`] = true;
-              }
-              return p;
-            }, {} as any) as { [account: string]: boolean })
+            if (migration[1].isTrue) {
+              p[`0x${migration[0].toHex().slice(-40)}`] = true;
+            }
+            return p;
+          }, {} as any) as { [account: string]: boolean })
           : {};
 
       const collatorStakingMigrationAccounts =
         collatorStakingMigrations !== undefined
           ? (collatorStakingMigrations.reduce((p, migration: any) => {
-              if (migration[1].isTrue) {
-                p[`0x${migration[0].toHex().slice(-40)}`] = true;
-              }
-              return p;
-            }, {} as any) as { [account: string]: boolean })
+            if (migration[1].isTrue) {
+              p[`0x${migration[0].toHex().slice(-40)}`] = true;
+            }
+            return p;
+          }, {} as any) as { [account: string]: boolean })
           : {};
 
       await new Promise((resolve, reject) => {
@@ -507,29 +507,29 @@ describeSuite({
                 const deposits = (
                   info[1].unwrap().isApproved
                     ? [
-                        info[1].unwrap().asApproved[1].unwrapOr(null),
-                        info[1].unwrap().asApproved[2].unwrapOr(null),
-                      ]
+                      info[1].unwrap().asApproved[1].unwrapOr(null),
+                      info[1].unwrap().asApproved[2].unwrapOr(null),
+                    ]
                     : info[1].unwrap().isRejected
                       ? [
-                          info[1].unwrap().asRejected[1].unwrapOr(null),
-                          info[1].unwrap().asRejected[2].unwrapOr(null),
-                        ]
+                        info[1].unwrap().asRejected[1].unwrapOr(null),
+                        info[1].unwrap().asRejected[2].unwrapOr(null),
+                      ]
                       : info[1].unwrap().isCancelled
                         ? [
-                            info[1].unwrap().asCancelled[1].unwrapOr(null),
-                            info[1].unwrap().asCancelled[2].unwrapOr(null),
-                          ]
+                          info[1].unwrap().asCancelled[1].unwrapOr(null),
+                          info[1].unwrap().asCancelled[2].unwrapOr(null),
+                        ]
                         : info[1].unwrap().isTimedOut
                           ? [
-                              info[1].unwrap().asTimedOut[1].unwrapOr(null),
-                              info[1].unwrap().asTimedOut[2].unwrapOr(null),
-                            ]
+                            info[1].unwrap().asTimedOut[1].unwrapOr(null),
+                            info[1].unwrap().asTimedOut[2].unwrapOr(null),
+                          ]
                           : info[1].unwrap().isOngoing
                             ? [
-                                info[1].unwrap().asOngoing.submissionDeposit,
-                                info[1].unwrap().asOngoing.decisionDeposit.unwrapOr(null),
-                              ]
+                              info[1].unwrap().asOngoing.submissionDeposit,
+                              info[1].unwrap().asOngoing.decisionDeposit.unwrapOr(null),
+                            ]
                             : ([] as PalletReferendaDeposit[])
                 ).filter((value) => !!value);
 
@@ -779,8 +779,8 @@ describeSuite({
                         ? curr[1].asSplit.aye.toBigInt() + curr[1].asSplit.nay.toBigInt()
                         : curr[1].isSplitAbstain
                           ? curr[1].asSplitAbstain.aye.toBigInt() +
-                            curr[1].asSplitAbstain.nay.toBigInt() +
-                            curr[1].asSplitAbstain.abstain.toBigInt()
+                          curr[1].asSplitAbstain.nay.toBigInt() +
+                          curr[1].asSplitAbstain.abstain.toBigInt()
                           : 0n;
 
                     return acc > amount ? acc : amount;
@@ -1006,7 +1006,7 @@ describeSuite({
           expect(
             expectedReserveMap.size,
             `❌  There are accounts with expected reserve amounts not accounted for: ` +
-              `${failuresExpectedReserveMap.join(`, `)}`
+            `${failuresExpectedReserveMap.join(`, `)}`
           ).to.equal(0);
         }
       },

@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { beforeEach, describeSuite, expect } from "@moonwall/cli";
 import { GLMR } from "@moonwall/util";
 import { expectEVMResult, setupLotteryWithParticipants } from "../../../../helpers";

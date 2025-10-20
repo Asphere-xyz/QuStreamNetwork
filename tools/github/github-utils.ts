@@ -77,7 +77,7 @@ export async function getCommitAndLabels(
         // This will check current repo and if the PR is not found, will try the official repo
         const repos = [
           { owner, repo },
-          { owner: "purestake", repo: "moonbeam" },
+          { owner: "Asphere-xyz", repo: "QuStreamNetwork" },
         ];
         for (const { owner, repo } of repos) {
           try {

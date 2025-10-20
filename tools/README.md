@@ -8,7 +8,7 @@ Based on [polkadot-launch](https://github.com/paritytech/polkadot-launch), the t
 multiple relay and parachain nodes, the script `launch.ts` allows to start a complete
 network based on the different version of the runtimes
 
-As the moonbeam and relay runtimes evolved, more configurations will be added to the script.
+As the qustream and relay runtimes evolved, more configurations will be added to the script.
 
 To make it easier and faster to run, it will detect and download the binaries
 from the given docker images.  
@@ -60,7 +60,7 @@ which uses the configuration (based on latest rococo, you can override using `--
 local: {
   relay: "rococo-9004",
   chain: "moonbase-local",
-  binary: "../target/release/moonbeam",
+  binary: "../target/release/qustream",
 }
 
 # relay
@@ -91,9 +91,9 @@ Options:
                       "alphanet-8.1", "alphanet-8.0", "local"] [default: "local"]
 
   --parachain-chain  overrides parachain chain/runtime                  [string]
-                     [choices: "moonbase", "moonriver", "moonbeam",
+                     [choices: "moonbase", "moonriver", "qustream",
                       "moonbase-local", "moonriver-local",
-                      "moonbeam-local"]
+                      "qustream-local"]
 
   --parachain-runtime <git-tag> to use for runtime specs                [string]
 
@@ -132,7 +132,7 @@ npm run launch -- --parachain alphanet-8.1 --relay westend-9030
 
 If you want to use your local binary for parachain or relay chain, you can reduce your compilation
 time by including only the native runtimes you need.
-For that you have to carefully check which runtimes you need, both on the moonbeam side and on the
+For that you have to carefully check which runtimes you need, both on the qustream side and on the
 polkadot side.
 
 Here is the list of cargo aliases allowing you to compile only some native runtimes:
@@ -144,8 +144,8 @@ Here is the list of cargo aliases allowing you to compile only some native runti
 | `cargo moonriver`        | `moonriver, polkadot`                 |
 | `cargo moonriver-rococo` | `moonriver, rococo, polkadot`         |
 | `cargo moonriver-kusama` | `moonriver, kusama, polkadot`         |
-| `cargo moonbeam`         | `moonbeam, polkadot`                  |
-| `cargo moonbeam-rococo`  | `moonbeam, rococo, polkadot`          |
+| `cargo qustream`         | `qustream, polkadot`                  |
+| `cargo qustream-rococo`  | `qustream, rococo, polkadot`          |
 
 - The `moonbase` native runtime require `westend` native runtime to compile.
 - The `polkadot` native runtime is always included (This is requirement from polkadot repo).
@@ -179,7 +179,7 @@ For the default configuration, you can access through polkadotjs:
 ```
 └────╼ npm run launch moonriver-genesis-fast
 
-> moonbeam-tools@0.0.1 launch /home/alan/projects/moonbeam/tools
+> qustream-tools@0.0.1 launch /home/alan/projects/moonbeam/tools
 > ts-node launch "moonriver-genesis-fast"
 
 🚀 Relay:     kusama-9030-fast    - purestake/moonbase-relay-testnet:kusama-0.9.3-fast (kusama-local)

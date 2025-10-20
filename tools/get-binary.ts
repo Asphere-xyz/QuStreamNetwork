@@ -26,9 +26,9 @@ export async function getDockerBuildBinary(
     );
     process.exit(1);
   }
-  child_process.execSync(`docker create --name moonbeam-tmp ${dockerImage} && \
-      docker cp moonbeam-tmp:/moonbeam/moonbeam ${binaryPath} && \
-      docker rm moonbeam-tmp`);
+  child_process.execSync(`docker create --name qustream-tmp ${dockerImage} && \
+      docker cp qustream-tmp:/qustream/qustream ${binaryPath} && \
+      docker rm qustream-tmp`);
   return binaryPath;
 }
 
@@ -38,20 +38,20 @@ export async function getGithubReleaseBinary(url: string, binaryPath: string): P
 }
 
 // Downloads the binary and return the filepath
-export async function getMoonbeamBinary(binaryTag: string, binaryPath: string): Promise<string> {
+export async function getQustreamBinary(binaryTag: string, binaryPath: string): Promise<string> {
   if (binaryTag.startsWith(`v`)) {
     return getGithubReleaseBinary(
-      `https://github.com/moonbeam-foundation/moonbeam/releases/download/${binaryTag}/moonbeam`,
+      `https://github.com/Asphere-xyz/QuStreamNetwork/releases/download/${binaryTag}/qustream`,
       binaryPath
     );
   } else if (binaryTag.startsWith(`sha`)) {
-    return getDockerBuildBinary(`moonbeamfoundation/moonbeam:${binaryTag}`, binaryPath);
+    return getDockerBuildBinary(`Asphere-xyz/QuStreamNetwork:${binaryTag}`, binaryPath);
   } else if (/^[0-9]/g.test(binaryTag)) {
     // sha given without prefix
-    return getDockerBuildBinary(`moonbeamfoundation/moonbeam:sha-${binaryTag}`, binaryPath);
+    return getDockerBuildBinary(`Asphere-xyz/QuStreamNetwork:sha-${binaryTag}`, binaryPath);
   } else {
     const sha = child_process.execSync(`git rev-list -n 1 ${binaryTag}`).toString();
-    return getDockerBuildBinary(`moonbeamfoundation/moonbeam:sha-${sha.slice(0, 8)}`, binaryPath);
+    return getDockerBuildBinary(`Asphere-xyz/QuStreamNetwork:sha-${sha.slice(0, 8)}`, binaryPath);
   }
 }
 
@@ -74,9 +74,9 @@ async function start() {
     })
     .help().argv;
 
-  const binaryPath = path.join(argv["output-dir"], `/moonbeam-${argv.tag}`);
+  const binaryPath = path.join(argv["output-dir"], `/qustream-${argv.tag}`);
   console.log(`Downloading ${argv.tag}...`);
-  await getMoonbeamBinary(argv.tag, binaryPath);
+  await getQustreamBinary(argv.tag, binaryPath);
   child_process.execSync(`chmod uog+x ${binaryPath}`);
   console.log(`Copied binary ${argv.tag} to ${binaryPath}`);
 }

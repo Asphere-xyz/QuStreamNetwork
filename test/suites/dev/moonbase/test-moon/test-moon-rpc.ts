@@ -1,7 +1,7 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { beforeEach, describeSuite, expect } from "@moonwall/cli";
 import { BALTATHAR_ADDRESS, createViemTransaction } from "@moonwall/util";
-import { types as BundledTypes } from "@moonbeam-network/types-bundle";
+import { types as BundledTypes } from "@qustream-network/types-bundle";
 import { DEFAULT_TXN_MAX_BASE_FEE } from "../../../../helpers";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 

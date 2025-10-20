@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { describeSuite, expect, beforeAll } from "@moonwall/cli";
 
 describeSuite({

@@ -144,7 +144,7 @@ async function runAll(pallet: string, benchmark: string, parameters: string[]): 
 
     const rawFilename = "raw-output.json";
 
-    const binary = process.env["BINARY"] || "./target/release/moonbeam";
+    const binary = process.env["BINARY"] || "./target/release/qustream";
     const { stdout, stderr } = await exec(
       `${binary} benchmark pallet \
         --chain dev \
@@ -510,14 +510,14 @@ async function analyze(inputs: string[], output: string) {
             data: {
               labels: ${JSON.stringify(labels)},
               datasets: ${JSON.stringify(
-                proofSizeMultiple.map((p, i) => ({
-                  label: inputs[i],
-                  data: p,
-                  fill: false,
-                  borderColor: colors[i],
-                  tension: 0.1,
-                }))
-              )}
+      proofSizeMultiple.map((p, i) => ({
+        label: inputs[i],
+        data: p,
+        fill: false,
+        borderColor: colors[i],
+        tension: 0.1,
+      }))
+    )}
             },
             options: {
               responsive: true,
@@ -569,24 +569,24 @@ async function analyze(inputs: string[], output: string) {
               data: {
                 labels: ${JSON.stringify(labels)},
                 datasets: ${JSON.stringify([
-                  ...totalReadsMultiple.map((p, i) => ({
-                    label: `Reads - ${inputs[i]}`,
-                    data: p,
-                    fill: false,
-                    borderColor: colors[i].replace("1.0", "0.5"),
-                    tension: 0.1,
-                    index: i,
-                  })),
-                  ...totalWritesMultiple.map((p, i) => ({
-                    label: `Writes - ${inputs[i]}`,
-                    data: p,
-                    fill: false,
-                    borderColor: colors[i],
-                    borderDash: [5, 5],
-                    tension: 0.1,
-                    index: i,
-                  })),
-                ])}
+      ...totalReadsMultiple.map((p, i) => ({
+        label: `Reads - ${inputs[i]}`,
+        data: p,
+        fill: false,
+        borderColor: colors[i].replace("1.0", "0.5"),
+        tension: 0.1,
+        index: i,
+      })),
+      ...totalWritesMultiple.map((p, i) => ({
+        label: `Writes - ${inputs[i]}`,
+        data: p,
+        fill: false,
+        borderColor: colors[i],
+        borderDash: [5, 5],
+        tension: 0.1,
+        index: i,
+      })),
+    ])}
               },
               options: {
                 responsive: true,
@@ -630,14 +630,14 @@ async function analyze(inputs: string[], output: string) {
               data: {
                 labels: ${JSON.stringify(labels)},
                 datasets: ${JSON.stringify(
-                  extrinsicTimeMultiple.map((p, i) => ({
-                    label: inputs[i],
-                    data: p,
-                    fill: false,
-                    borderColor: colors[i],
-                    tension: 0.1,
-                  }))
-                )}
+      extrinsicTimeMultiple.map((p, i) => ({
+        label: inputs[i],
+        data: p,
+        fill: false,
+        borderColor: colors[i],
+        tension: 0.1,
+      }))
+    )}
               },
               options: {
                 responsive: true,

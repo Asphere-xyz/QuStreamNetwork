@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment/moonbase";
+import "@qustream-network/api-augment/moonbase";
 import { TWO_MINS, getBlockArray } from "@moonwall/util";
 import type { ApiPromise } from "@polkadot/api";
 import { beforeAll, describeSuite, expect } from "@moonwall/cli";
@@ -114,7 +114,7 @@ describeSuite({
           matchedEvents.forEach((a: any) => {
             log(
               `ETH txn at block #${blockNum} extrinsic #${a.phase.asApplyExtrinsic.toNumber()}` +
-                ": pays_fee = Yes"
+              ": pays_fee = Yes"
             );
           });
         });
@@ -140,7 +140,7 @@ describeSuite({
         }
         log(
           `Checking ${blockData.reduce((curr, acc) => curr + acc.extrinsics.length, 0)}` +
-            " eth extrinsics all have corresponding ExtrinsicSuccess events."
+          " eth extrinsics all have corresponding ExtrinsicSuccess events."
         );
         const blockWithFailures = blockData
           .map(({ blockNum, extrinsics, events }) => {
@@ -158,9 +158,9 @@ describeSuite({
                       if (paraApi.events.system.ExtrinsicFailed.is(event)) {
                         log(
                           `ethereum.transact has ExtrinsicFailed event - Block: ${blockNum}` +
-                            " extrinsic: " +
-                            phase.asApplyExtrinsic.toNumber() +
-                            `.`
+                          " extrinsic: " +
+                          phase.asApplyExtrinsic.toNumber() +
+                          `.`
                         );
                       }
                       return paraApi.events.system.ExtrinsicSuccess.is(event);
@@ -206,8 +206,8 @@ describeSuite({
         failures.forEach((a) =>
           log(
             `Block #${a.blockNum} has mismatching amounts - ` +
-              `${a.ethEvents} eth extrinsics vs ` +
-              `${a.ethTxns} eth txns.`
+            `${a.ethEvents} eth extrinsics vs ` +
+            `${a.ethTxns} eth txns.`
           )
         );
 
@@ -240,8 +240,8 @@ describeSuite({
         failures.forEach((a) =>
           log(
             `Block #${a.blockNum} has mismatching amounts - ` +
-              `${a.ethEvents} eth extrinsics vs ` +
-              `${a.ethReceipts} eth receipts.`
+            `${a.ethEvents} eth extrinsics vs ` +
+            `${a.ethReceipts} eth receipts.`
           )
         );
 

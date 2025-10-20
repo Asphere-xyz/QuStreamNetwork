@@ -1,5 +1,5 @@
 Description: User is able to transfer GLMR from Moonbeam to Moonriver
-Network: {{ENV_PATH}}/../../../../configs/moonbeam-polkadot.toml
+Network: {{ENV_PATH}}/../../../../configs/qustream-polkadot.toml
 Creds: config
 
 # send 5 GLMR to //Alice from Moonbeam to Moonriver

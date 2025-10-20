@@ -1,4 +1,4 @@
-import "@moonbeam-network/api-augment";
+import "@qustream-network/api-augment";
 import { expect, describeSuite, beforeAll } from "@moonwall/cli";
 import { dorothy, getBlockExtrinsic } from "@moonwall/util";
 import type { ApiPromise } from "@polkadot/api";

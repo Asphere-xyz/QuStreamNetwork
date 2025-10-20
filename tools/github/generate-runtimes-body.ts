@@ -40,17 +40,17 @@ function authorizeUpgradeHash(runtimeName: string, srtool: any): string {
   if (runtimeName === "moonbase") {
     return blake2AsHex(
       MOONBASE_PREFIX_SYSTEM_AUTHORIZE_UPGRADE +
-        srtool.runtimes.compressed.blake2_256.substr(2) // remove "0x" prefix
+      srtool.runtimes.compressed.blake2_256.substr(2) // remove "0x" prefix
     );
   } else if (runtimeName === "moonriver") {
     return blake2AsHex(
       MOONRIVER_PREFIX_SYSTEM_AUTHORIZE_UPGRADE +
-        srtool.runtimes.compressed.blake2_256.substr(2) // remove "0x" prefix
+      srtool.runtimes.compressed.blake2_256.substr(2) // remove "0x" prefix
     );
   } else {
     return blake2AsHex(
       MOONBEAM_PREFIX_SYSTEM_AUTHORIZE_UPGRADE +
-        srtool.runtimes.compressed.blake2_256.substr(2) // remove "0x" prefix
+      srtool.runtimes.compressed.blake2_256.substr(2) // remove "0x" prefix
     );
   }
 }
@@ -96,7 +96,7 @@ async function main() {
   const previousTag = argv.from;
   const newTag = argv.to;
 
-  const runtimes = ["moonbase", "moonriver", "moonbeam"].map((runtimeName) =>
+  const runtimes = ["moonbase", "moonriver", "qustream"].map((runtimeName) =>
     getRuntimeInfo(argv["srtool-report-folder"], runtimeName)
   );
 
@@ -124,13 +124,12 @@ async function main() {
 
   //
 
-  const template = `${
-    runtimes.length > 0
+  const template = `${runtimes.length > 0
       ? `## Runtimes
 
 ${runtimes
-  .map(
-    (runtime) => `### ${capitalize(runtime.name)}
+        .map(
+          (runtime) => `### ${capitalize(runtime.name)}
 \`\`\`
 ✨ spec_version                : ${runtime.version}
 🏋 size                        : ${runtime.srtool.runtimes.compressed.size}
@@ -138,11 +137,11 @@ ${runtimes
 #️⃣ blake2-256                  : ${runtime.srtool.runtimes.compressed.blake2_256}
 🗳️ proposal (authorizeUpgrade) : ${authorizeUpgradeHash(runtime.name, runtime.srtool)}
 \`\`\``
-  )
-  .join(`\n\n`)}
+        )
+        .join(`\n\n`)}
 `
       : ""
-  }
+    }
 
 ## Build information
 
