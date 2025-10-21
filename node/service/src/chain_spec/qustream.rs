@@ -25,12 +25,12 @@ use crate::chain_spec::{generate_accounts, get_from_seed, Extensions};
 use crate::HostFunctions;
 use cumulus_primitives_core::ParaId;
 use hex_literal::hex;
+use nimbus_primitives::NimbusId;
 use qustream_runtime::{
-	currency::{GLMR, SUPPLY_FACTOR},
+	currency::{QST, SUPPLY_FACTOR},
 	genesis_config_preset::testnet_genesis,
 	AccountId, WASM_BINARY,
 };
-use nimbus_primitives::NimbusId;
 use sc_service::ChainType;
 #[cfg(test)]
 use sp_core::ecdsa;
@@ -57,12 +57,12 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 			para_id: Default::default(),
 		},
 	)
-	.with_name("Moonbeam Development Testnet")
-	.with_id("moonbeam_dev")
+	.with_name("QuStreamNetwork Development Testnet")
+	.with_id("qustream_dev")
 	.with_chain_type(ChainType::Development)
 	.with_properties(
 		serde_json::from_str(
-			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"GLMR\", \"SS58Prefix\": 1284}",
+			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"QST\", \"SS58Prefix\": 5041}",
 		)
 		.expect("Provided valid json map"),
 	)
@@ -75,12 +75,12 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 		vec![(
 			accounts[0],
 			get_from_seed::<NimbusId>("Alice"),
-			20_000 * GLMR * SUPPLY_FACTOR,
+			20_000 * QST * SUPPLY_FACTOR,
 		)],
 		// Delegations
 		vec![],
 		accounts.clone(),
-		1_500_000 * GLMR * SUPPLY_FACTOR,
+		1_500_000 * QST * SUPPLY_FACTOR,
 		Default::default(), // para_id
 		1281,               //ChainId
 	))
@@ -99,13 +99,13 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	)
 	// TODO Apps depends on this string to determine whether the chain is an ethereum compat
 	// or not. We should decide the proper strings, and update Apps accordingly.
-	// Or maybe Apps can be smart enough to say if the string contains "moonbeam" at all...
-	.with_name("Moonbeam Local Testnet")
-	.with_id("moonbeam_local")
+	// Or maybe Apps can be smart enough to say if the string contains "qustream" at all...
+	.with_name("QuStreamNetwork Local Testnet")
+	.with_id("qustream_local")
 	.with_chain_type(ChainType::Local)
 	.with_properties(
 		serde_json::from_str(
-			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"GLMR\", \"SS58Prefix\": 1284}",
+			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"QST\", \"SS58Prefix\": 5041}",
 		)
 		.expect("Provided valid json map"),
 	)
@@ -127,13 +127,13 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 			(
 				AccountId::from(hex!("f24FF3a9CF04c71Dbc94D0b566f7A27B94566cac")),
 				get_from_seed::<NimbusId>("Alice"),
-				20_000 * GLMR * SUPPLY_FACTOR,
+				20_000 * QST * SUPPLY_FACTOR,
 			),
 			// Bob -> Baltathar
 			(
 				AccountId::from(hex!("3Cd0A705a2DC65e5b1E1205896BaA2be8A07c6e0")),
 				get_from_seed::<NimbusId>("Bob"),
-				20_000 * GLMR * SUPPLY_FACTOR,
+				20_000 * QST * SUPPLY_FACTOR,
 			),
 		],
 		// Delegations
@@ -145,7 +145,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 			AccountId::from(hex!("798d4Ba9baf0064Ec19eB4F0a1a45785ae9D6DFc")),
 			AccountId::from(hex!("773539d4Ac0e786233D90A233654ccEE26a613D9")),
 		],
-		1_500_000 * GLMR * SUPPLY_FACTOR,
+		1_500_000 * QST * SUPPLY_FACTOR,
 		para_id,
 		1280, //ChainId
 	))

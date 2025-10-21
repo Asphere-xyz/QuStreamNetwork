@@ -328,7 +328,7 @@ pub struct RunCmd {
 	#[clap(long)]
 	pub no_hardware_benchmarks: bool,
 
-	/// Removes moonbeam prefix from Prometheus metrics
+	/// Removes qustream prefix from Prometheus metrics
 	#[clap(long)]
 	pub no_prometheus_prefix: bool,
 
@@ -397,10 +397,10 @@ pub enum KeyCmd {
 	#[clap(flatten)]
 	BaseCli(sc_cli::KeySubcommand),
 	/// Generate an Ethereum account.
-	#[clap(about = "This command is deprecated, please use `generate-moonbeam-key` instead.")]
+	#[clap(about = "This command is deprecated, please use `generate-qustream-key` instead.")]
 	GenerateAccountKey(GenerateAccountKey),
-	/// Generate a Moonbeam account.
-	GenerateMoonbeamKey(GenerateAccountKey),
+	/// Generate a QuStream account.
+	GenerateQuStreamKey(GenerateAccountKey),
 }
 
 impl KeyCmd {
@@ -411,10 +411,10 @@ impl KeyCmd {
 			KeyCmd::GenerateAccountKey(cmd) => {
 				let deprecation_msg = r#"
 
-				Warning: This command is deprecated, please use `generate-moonbeam-key` instead.
+				Warning: This command is deprecated, please use `generate-qustream-key` instead.
 
 				The `generate-account-key` command used Ethereum's derivation path (m/44'/60'/0'/0/n)
-				while `generate-moonbeam-key` uses Moonbeam's derivation path (m/44'/1284'/0'/0/n).
+				while `generate-qustream-key` uses QuStream's derivation path (m/44'/5041'/0'/0/n).
 				Furthermore, it supports derivation paths for Moonriver, Moonbase, and Ethereum.
 
 				For more information, see: https://github.com/moonbeam-foundation/moonbeam/pull/3090
@@ -428,7 +428,7 @@ impl KeyCmd {
 				cmd.run();
 				Ok(())
 			}
-			KeyCmd::GenerateMoonbeamKey(cmd) => {
+			KeyCmd::GenerateQuStreamKey(cmd) => {
 				cmd.run();
 				Ok(())
 			}

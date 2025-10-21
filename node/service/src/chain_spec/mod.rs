@@ -26,10 +26,10 @@ use sp_core::{ecdsa, Pair, Public, H160, H256};
 
 #[cfg(feature = "moonbase-native")]
 pub mod moonbase;
-#[cfg(feature = "moonbeam-native")]
-pub mod moonbeam;
 #[cfg(feature = "moonriver-native")]
 pub mod moonriver;
+#[cfg(feature = "moonbeam-native")]
+pub mod qustream;
 
 pub type RawChainSpec = sc_service::GenericChainSpec<Extensions>;
 

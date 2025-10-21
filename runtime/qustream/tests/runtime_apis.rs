@@ -44,14 +44,14 @@ fn ethereum_runtime_rpc_api_account_basic() {
 	ExtBuilder::default()
 		.with_balances(vec![(
 			AccountId::from(ALICE),
-			2_000 * GLMR + existential_deposit(),
+			2_000 * QST + existential_deposit(),
 		)])
 		.build()
 		.execute_with(|| {
 			assert_eq!(
 				Runtime::account_basic(H160::from(ALICE)),
 				EVMAccount {
-					balance: U256::from(2_000 * GLMR),
+					balance: U256::from(2_000 * QST),
 					nonce: U256::zero()
 				}
 			);
@@ -95,19 +95,19 @@ fn ethereum_runtime_rpc_api_account_code_at() {
 #[test]
 fn ethereum_runtime_rpc_api_author() {
 	ExtBuilder::default()
-		.with_collators(vec![(AccountId::from(ALICE), 100_000 * GLMR)])
+		.with_collators(vec![(AccountId::from(ALICE), 100_000 * QST)])
 		.with_mappings(vec![(
 			NimbusId::from_slice(&ALICE_NIMBUS).unwrap(),
 			AccountId::from(ALICE),
 		)])
 		.with_balances(vec![
-			(AccountId::from(ALICE), 200_000 * GLMR),
-			(AccountId::from(BOB), 100_000 * GLMR),
+			(AccountId::from(ALICE), 200_000 * QST),
+			(AccountId::from(BOB), 100_000 * QST),
 		])
 		.with_delegations(vec![(
 			AccountId::from(BOB),
 			AccountId::from(ALICE),
-			50_000 * GLMR,
+			50_000 * QST,
 		)])
 		.build()
 		.execute_with(|| {
@@ -151,8 +151,8 @@ fn ethereum_runtime_rpc_api_storage_at() {
 fn ethereum_runtime_rpc_api_call() {
 	ExtBuilder::default()
 		.with_balances(vec![
-			(AccountId::from(ALICE), 2_000 * GLMR),
-			(AccountId::from(BOB), 2_000 * GLMR),
+			(AccountId::from(ALICE), 2_000 * QST),
+			(AccountId::from(BOB), 2_000 * QST),
 		])
 		.build()
 		.execute_with(|| {
@@ -176,7 +176,7 @@ fn ethereum_runtime_rpc_api_call() {
 #[test]
 fn ethereum_runtime_rpc_api_create() {
 	ExtBuilder::default()
-		.with_balances(vec![(AccountId::from(ALICE), 2_000 * GLMR)])
+		.with_balances(vec![(AccountId::from(ALICE), 2_000 * QST)])
 		.build()
 		.execute_with(|| {
 			let execution_result = Runtime::create(
@@ -202,20 +202,20 @@ fn ethereum_runtime_rpc_api_current_transaction_statuses() {
 			.expect("internal H160 is valid; qed"),
 	);
 	ExtBuilder::default()
-		.with_collators(vec![(AccountId::from(ALICE), 100_000 * GLMR)])
+		.with_collators(vec![(AccountId::from(ALICE), 100_000 * QST)])
 		.with_mappings(vec![(
 			NimbusId::from_slice(&ALICE_NIMBUS).unwrap(),
 			AccountId::from(ALICE),
 		)])
 		.with_balances(vec![
-			(alith, 200_000 * GLMR),
-			(AccountId::from(ALICE), 200_000 * GLMR),
-			(AccountId::from(BOB), 100_000 * GLMR),
+			(alith, 200_000 * QST),
+			(AccountId::from(ALICE), 200_000 * QST),
+			(AccountId::from(BOB), 100_000 * QST),
 		])
 		.with_delegations(vec![(
 			AccountId::from(BOB),
 			AccountId::from(ALICE),
-			50_000 * GLMR,
+			50_000 * QST,
 		)])
 		.build()
 		.execute_with(|| {
@@ -233,19 +233,19 @@ fn ethereum_runtime_rpc_api_current_transaction_statuses() {
 #[test]
 fn ethereum_runtime_rpc_api_current_block() {
 	ExtBuilder::default()
-		.with_collators(vec![(AccountId::from(ALICE), 100_000 * GLMR)])
+		.with_collators(vec![(AccountId::from(ALICE), 100_000 * QST)])
 		.with_mappings(vec![(
 			NimbusId::from_slice(&ALICE_NIMBUS).unwrap(),
 			AccountId::from(ALICE),
 		)])
 		.with_balances(vec![
-			(AccountId::from(ALICE), 200_000 * GLMR),
-			(AccountId::from(BOB), 100_000 * GLMR),
+			(AccountId::from(ALICE), 200_000 * QST),
+			(AccountId::from(BOB), 100_000 * QST),
 		])
 		.with_delegations(vec![(
 			AccountId::from(BOB),
 			AccountId::from(ALICE),
-			50_000 * GLMR,
+			50_000 * QST,
 		)])
 		.build()
 		.execute_with(|| {
@@ -263,20 +263,20 @@ fn ethereum_runtime_rpc_api_current_receipts() {
 			.expect("internal H160 is valid; qed"),
 	);
 	ExtBuilder::default()
-		.with_collators(vec![(AccountId::from(ALICE), 100_000 * GLMR)])
+		.with_collators(vec![(AccountId::from(ALICE), 100_000 * QST)])
 		.with_mappings(vec![(
 			NimbusId::from_slice(&ALICE_NIMBUS).unwrap(),
 			AccountId::from(ALICE),
 		)])
 		.with_balances(vec![
-			(alith, 200_000 * GLMR),
-			(AccountId::from(ALICE), 200_000 * GLMR),
-			(AccountId::from(BOB), 100_000 * GLMR),
+			(alith, 200_000 * QST),
+			(AccountId::from(ALICE), 200_000 * QST),
+			(AccountId::from(BOB), 100_000 * QST),
 		])
 		.with_delegations(vec![(
 			AccountId::from(BOB),
 			AccountId::from(ALICE),
-			50_000 * GLMR,
+			50_000 * QST,
 		)])
 		.build()
 		.execute_with(|| {
@@ -296,7 +296,7 @@ fn txpool_runtime_api_extrinsic_filter() {
 		let non_eth_uxt = UncheckedExtrinsic::new_bare(
 			pallet_balances::Call::<Runtime>::transfer_allow_death {
 				dest: AccountId::from(BOB),
-				value: 1 * GLMR,
+				value: 1 * QST,
 			}
 			.into(),
 		);
@@ -314,10 +314,10 @@ fn txpool_runtime_api_extrinsic_filter() {
 fn can_author_when_selected_is_empty() {
 	ExtBuilder::default()
 		.with_balances(vec![
-			(AccountId::from(ALICE), 20_000_000 * GLMR),
-			(AccountId::from(BOB), 10_000_000 * GLMR),
+			(AccountId::from(ALICE), 20_000_000 * QST),
+			(AccountId::from(BOB), 10_000_000 * QST),
 		])
-		.with_collators(vec![(AccountId::from(ALICE), 2_000_000 * GLMR)])
+		.with_collators(vec![(AccountId::from(ALICE), 2_000_000 * QST)])
 		.with_mappings(vec![(
 			NimbusId::from_slice(&ALICE_NIMBUS).unwrap(),
 			AccountId::from(ALICE),

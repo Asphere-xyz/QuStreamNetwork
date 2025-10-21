@@ -15,8 +15,8 @@ export interface RuntimeTestArtifact {
 
 export const tracingTxns: NetworkTestArtifact[] = [
   {
-    chainId: 1284,
-    networkLabel: "Moonbeam",
+    chainId: 5041,
+    networkLabel: "QuStream",
     WETH: "0xAcc15dC74880C9944775448304B263D191c6077F",
     testData: [
       {

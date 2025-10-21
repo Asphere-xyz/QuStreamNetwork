@@ -191,8 +191,8 @@ pub fn testnet_genesis(
 		evm_foreign_assets: EvmForeignAssetsConfig {
 			assets: vec![EvmForeignAssetInfo {
 				asset_id: 1001,
-				name: b"xcGLMR".to_vec().try_into().expect("Invalid asset name"),
-				symbol: b"xcGLMR".to_vec().try_into().expect("Invalid asset symbol"),
+				name: b"xcQST".to_vec().try_into().expect("Invalid asset name"),
+				symbol: b"xcQST".to_vec().try_into().expect("Invalid asset symbol"),
 				decimals: 18,
 				xcm_location: Location::new(
 					2,

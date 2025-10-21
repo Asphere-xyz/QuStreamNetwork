@@ -54,7 +54,7 @@ pub type ForeignAssetInstance = ();
 // as this will only be called by root with the forced arguments
 // No deposit is substracted with those methods
 parameter_types! {
-	pub const AssetDeposit: Balance = 100 * currency::GLMR * currency::SUPPLY_FACTOR;
+	pub const AssetDeposit: Balance = 100 * currency::QST * currency::SUPPLY_FACTOR;
 	pub const ApprovalDeposit: Balance = 0;
 	pub const AssetsStringLimit: u32 = 50;
 	pub const MetadataDepositBase: Balance = currency::deposit(1,68);

@@ -21,7 +21,7 @@
 //! 3. pallet-referenda
 
 use super::*;
-use crate::currency::{GLMR, SUPPLY_FACTOR};
+use crate::currency::{QST, SUPPLY_FACTOR};
 use frame_support::traits::{EitherOf, MapSuccess};
 use frame_system::EnsureRootWithSuccess;
 use sp_runtime::traits::Replace;
@@ -46,7 +46,7 @@ impl pallet_conviction_voting::Config for Runtime {
 
 parameter_types! {
 	pub const AlarmInterval: BlockNumber = 1;
-	pub const SubmissionDeposit: Balance = 10 * GLMR * SUPPLY_FACTOR;
+	pub const SubmissionDeposit: Balance = 10 * QST * SUPPLY_FACTOR;
 	pub const UndecidingTimeout: BlockNumber = 21 * DAYS;
 }
 

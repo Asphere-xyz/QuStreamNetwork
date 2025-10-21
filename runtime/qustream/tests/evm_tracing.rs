@@ -38,16 +38,16 @@ mod tests {
 		);
 		ExtBuilder::default()
 			.with_balances(vec![
-				(alith, 2_000 * GLMR),
-				(AccountId::from(ALICE), 2_000 * GLMR),
-				(AccountId::from(BOB), 1_000 * GLMR),
+				(alith, 2_000 * QST),
+				(AccountId::from(ALICE), 2_000 * QST),
+				(AccountId::from(BOB), 1_000 * QST),
 			])
 			.build()
 			.execute_with(|| {
 				let non_eth_uxt = UncheckedExtrinsic::new_bare(
 					pallet_balances::Call::<Runtime>::transfer_allow_death {
 						dest: AccountId::from(BOB),
-						value: 1 * GLMR,
+						value: 1 * QST,
 					}
 					.into(),
 				);
@@ -77,16 +77,16 @@ mod tests {
 		);
 		ExtBuilder::default()
 			.with_balances(vec![
-				(alith, 2_000 * GLMR),
-				(AccountId::from(ALICE), 2_000 * GLMR),
-				(AccountId::from(BOB), 1_000 * GLMR),
+				(alith, 2_000 * QST),
+				(AccountId::from(ALICE), 2_000 * QST),
+				(AccountId::from(BOB), 1_000 * QST),
 			])
 			.build()
 			.execute_with(|| {
 				let non_eth_uxt = UncheckedExtrinsic::new_bare(
 					pallet_balances::Call::<Runtime>::transfer_allow_death {
 						dest: AccountId::from(BOB),
-						value: 1 * GLMR,
+						value: 1 * QST,
 					}
 					.into(),
 				);
@@ -123,7 +123,7 @@ mod tests {
 		let alith_account_id =
 			<Runtime as pallet_evm::Config>::AddressMapping::into_account_id(alith);
 		ExtBuilder::default()
-			.with_balances(vec![(alith_account_id, 100 * GLMR)])
+			.with_balances(vec![(alith_account_id, 100 * QST)])
 			.build()
 			.execute_with(|| {
 				assert!(Runtime::trace_call(

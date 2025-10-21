@@ -17,7 +17,7 @@
 //! Track configurations for governance.
 
 use super::*;
-use crate::currency::{GLMR, KILOGLMR, SUPPLY_FACTOR};
+use crate::currency::{KILOQST, QST, SUPPLY_FACTOR};
 use core::str::from_utf8;
 use sp_std::str::FromStr;
 
@@ -41,7 +41,7 @@ const TRACKS_DATA: [Track<u16, Balance, BlockNumber>; 6] = [
 			// For Root origin this should generally be just one.
 			max_deciding: 5,
 			// Amount that must be placed on deposit before a decision can be made.
-			decision_deposit: 20 * KILOGLMR * SUPPLY_FACTOR,
+			decision_deposit: 20 * KILOQST * SUPPLY_FACTOR,
 			// Amount of time this must be submitted for before a decision can be made.
 			prepare_period: 1 * DAYS,
 			// Amount of time that a decision may take to be approved prior to cancellation.
@@ -63,7 +63,7 @@ const TRACKS_DATA: [Track<u16, Balance, BlockNumber>; 6] = [
 		info: pallet_referenda::TrackInfo {
 			name: s("whitelisted_caller"),
 			max_deciding: 100,
-			decision_deposit: 2 * KILOGLMR * SUPPLY_FACTOR,
+			decision_deposit: 2 * KILOQST * SUPPLY_FACTOR,
 			prepare_period: 10 * MINUTES,
 			decision_period: 14 * DAYS,
 			confirm_period: 10 * MINUTES,
@@ -77,7 +77,7 @@ const TRACKS_DATA: [Track<u16, Balance, BlockNumber>; 6] = [
 		info: pallet_referenda::TrackInfo {
 			name: s("general_admin"),
 			max_deciding: 10,
-			decision_deposit: 100 * GLMR * SUPPLY_FACTOR,
+			decision_deposit: 100 * QST * SUPPLY_FACTOR,
 			prepare_period: 1 * HOURS,
 			decision_period: 14 * DAYS,
 			confirm_period: 1 * DAYS,
@@ -91,7 +91,7 @@ const TRACKS_DATA: [Track<u16, Balance, BlockNumber>; 6] = [
 		info: pallet_referenda::TrackInfo {
 			name: s("referendum_canceller"),
 			max_deciding: 20,
-			decision_deposit: 2 * KILOGLMR * SUPPLY_FACTOR,
+			decision_deposit: 2 * KILOQST * SUPPLY_FACTOR,
 			prepare_period: 1 * HOURS,
 			decision_period: 14 * DAYS,
 			confirm_period: 3 * HOURS,
@@ -105,7 +105,7 @@ const TRACKS_DATA: [Track<u16, Balance, BlockNumber>; 6] = [
 		info: pallet_referenda::TrackInfo {
 			name: s("referendum_killer"),
 			max_deciding: 100,
-			decision_deposit: 4 * KILOGLMR * SUPPLY_FACTOR,
+			decision_deposit: 4 * KILOQST * SUPPLY_FACTOR,
 			prepare_period: 1 * HOURS,
 			decision_period: 14 * DAYS,
 			confirm_period: 3 * HOURS,
@@ -119,7 +119,7 @@ const TRACKS_DATA: [Track<u16, Balance, BlockNumber>; 6] = [
 		info: pallet_referenda::TrackInfo {
 			name: s("fast_general_admin"),
 			max_deciding: 10,
-			decision_deposit: 100 * GLMR * SUPPLY_FACTOR,
+			decision_deposit: 100 * QST * SUPPLY_FACTOR,
 			prepare_period: 1 * HOURS,
 			decision_period: 14 * DAYS,
 			confirm_period: 3 * HOURS,
