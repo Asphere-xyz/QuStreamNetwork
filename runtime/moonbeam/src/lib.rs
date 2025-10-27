@@ -813,7 +813,7 @@ impl Get<Slot> for RelayChainSlotProvider {
 
 parameter_types! {
 	// Voted by the moonbeam community on this referenda: https://moonbeam.polkassembly.network/referenda/116
-	pub const LinearInflationThreshold: Option<Balance> = Some(1_200_000_000 * currency::GLMR);
+	pub const LinearInflationThreshold: Option<Balance> = None;
 }
 
 impl pallet_parachain_staking::Config for Runtime {
