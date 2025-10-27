@@ -114,7 +114,7 @@ fn load_spec(
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Moonbeam Parachain Collator".into()
+		"QuStream Parachain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -123,7 +123,7 @@ impl SubstrateCli for Cli {
 
 	fn description() -> String {
 		format!(
-			"Moonbase Parachain Collator\n\nThe command-line arguments provided first will be \
+			"QuStream Parachain Collator\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		{} [parachain-args] -- [relaychain-args]",
@@ -165,7 +165,7 @@ impl Cli {
 
 impl SubstrateCli for RelayChainCli {
 	fn impl_name() -> String {
-		"Moonbeam Parachain Collator".into()
+		"QuStream Parachain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -173,7 +173,7 @@ impl SubstrateCli for RelayChainCli {
 	}
 
 	fn description() -> String {
-		"Moonbeam Parachain Collator\n\nThe command-line arguments provided first will be \
+		"QuStream Parachain Collator\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		parachain-collator [parachain-args] -- [relaychain-args]"
