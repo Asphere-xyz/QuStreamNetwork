@@ -1,61 +1,19 @@
-# ![Moonbeam](media/Banner.jpg)
-
-# Information
-
-[![Tests](https://github.com/moonbeam-foundation/moonbeam/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/moonbeam-foundation/moonbeam/actions/workflows/build.yml?query=branch:master)
+# QuStream Network
 
 **An Ethereum compatible [Parachain](https://polkadot.com/rollups) built with the [Polkadot-SDK](https://github.com/paritytech/polkadot-sdk).**
 
-👉 _Discover the Moonbeam project at [moonbeam.network](https://moonbeam.network)._<br>
-👉 _Learn to [use the Moonbeam network](https://docs.moonbeam.network/) with our technical docs._<br>
-👉 _Reference our [crate-level docs (rustdocs)](https://moonbeam-foundation.github.io/moonbeam) to contribute._
+👉 _Discover the QuStreamNetwork project at [qustream.com](https://qustream.com)._<br>
 
-## Run Moonbeam with zombienet
-```bash
-# Start Polkadot relay with Moonbeam parachain
-make start-zombienet-moonbeam
-# Start Kusama relay with Moonriver parachain
-make start-zombienet-moonriver
-```
-
-## Run a Moonbase Alpha (Moonbeam TestNet) Node with Docker
-
-Docker images are published for every tagged release. Learn more with `moonbeam --help`.
+## Run QuStreamNetwork with zombienet for local development
 
 ```bash
-# Join the public testnet
-docker run --network="host" moonbeamfoundation/moonbeam:v0.46.0 --chain alphanet
-```
-
-You can find more detailed instructions to [run a full node in our TestNet](https://docs.moonbeam.network/node-operators/networks/run-a-node/overview/)
-
-## Run a Local Development Node with Docker
-
-Developers who are building dApps to run on Moonbeam, may want a lightweight node to work with
-locally. You can quickly set up a single node without a relay chain backing it using the development service.
-
-```bash
-# Run a dev service node
-docker run --network="host" moonbeamfoundation/moonbeam:v0.46.0 --dev
-```
-
-For more information, see our detailed instructions to [run a development node](https://docs.moonbeam.network/builders/get-started/networks/moonbeam-dev/)
-
-### Sealing Options
-
-The above command will start the node in instant seal mode. It creates a block when a transaction arrives, similar to Ganache's auto-mine. You can also choose to author blocks at a regular interval, or control authoring manually through the RPC.
-
-```bash
-# Author a block every 6 seconds.
-docker run --network="host" moonbeamfoundation/moonbeam:v0.46.0 --dev --sealing 6000
-
-# Manually control the block authorship and finality
-docker run --network="host" moonbeamfoundation/moonbeam:v0.46.0 --dev --sealing manual
+# Start Polkadot relay with QuStreamNetwork parachain
+make start-zombienet-qustream
 ```
 
 ### Prefunded Development Addresses
 
-Running Moonbeam in development mode will pre-fund several well-known addresses that (mostly) contain the letters "th" in their names to remind you that they are for ethereum-compatible usage. These addresses are derived from
+Running QuStreamNetwork in development mode will pre-fund several well-known addresses that (mostly) contain the letters "th" in their names to remind you that they are for ethereum-compatible usage. These addresses are derived from
 Substrate's canonical mnemonic: `bottom drive obey lake curtain smoke basket hold race lonely fit walk`
 
 ```
@@ -108,26 +66,26 @@ Additionally, the prefunded default account for testing purposes is as follows:
 - PrivKey: 0x99b3c12287537e38c90a9219d4cb074a89a16e9cdb20bf85728ebd97c343e342
 ```
 
-## Build the Moonbeam Node
+## Build the QuStreamNetwork Node
 
-To build Moonbeam, a proper Substrate development environment is required. If you're new to working with Substrate-based blockchains, consider starting with the [Getting Started with a Moonbeam Development Node](https://docs.moonbeam.network/builders/get-started/networks/moonbeam-dev/) documentation.
+To build QuStreamNetwork, a proper Substrate development environment is required. If you're new to working with Substrate-based blockchains, consider starting with the [Getting Started with a Moonbeam Development Node](https://docs.moonbeam.network/builders/get-started/networks/moonbeam-dev/) documentation.
 
 If you need a refresher setting up your Substrate environment, see [Substrate's Getting Started Guide](https://substrate.dev/docs/en/knowledgebase/getting-started/).
 
-Please note that cloning the master branch might result in an unstable build. If you want a stable version, check out the [latest releases](https://github.com/moonbeam-foundation/moonbeam/releases).
+Please note that cloning the qustream branch might result in an unstable build. If you want a stable version, check out the [latest releases](https://github.com/Asphere-xyz/QuStreamNetwork/releases).
 
 ```bash
 # Fetch the code
-git clone https://github.com/moonbeam-foundation/moonbeam
-cd moonbeam
+git clone https://github.com/Asphere-xyz/QuStreamNetwork
+cd QuStreamNetwork
 
 # Build the node (The first build will be long (~30min))
-cargo build --release
+cargo build --release --locked
 ```
 
 ## Run Tests
 
-Moonbeam incorporates Rust unit tests and TypeScript integration tests, which are executed in CI and can also be run locally.
+QuStreamNetwork incorporates Rust unit tests and TypeScript integration tests, which are executed in CI and can also be run locally.
 
 ```bash
 # Run the Rust unit tests
@@ -150,32 +108,28 @@ make run-bridge-integration-tests
 
 ## Chain IDs
 
-The Ethereum specification describes a numeric Chain Id. The Moonbeam mainnet will have a Chain Id 
-of 1284, symbolizing the 1284 milliseconds it takes for a Moonbeam to reach Earth.
+The Ethereum specification describes a numeric Chain Id. The QuStream mainnet will have a Chain Id 
+of 5041.
 
-Moonbeam nodes support a variety of public chains and testnets, each with their respective Chain Ids as follows:
+QuStream nodes support both mainnet and testnet, each with their respective Chain Ids as follows:
 
 | Network Description                | Chain ID    | Target Relay Runtime |
 | ---------------------------------- | ----------- | -------------------- |
-| Local Parachain TestNet            | 1280        |                      |
-| Local Development TestNet          | 1281        |                      |
-| Reserved for other TestNets        | 1282 - 1283 |                      |
-| Moonbeam                           | 1284        | Polkadot             |
-| Moonriver                          | 1285        | Kusama               |
-| Moonrock                           | 1286        | Rococo               |
-| Moonbase Alpha TestNet             | 1287        | Westend              |
-| Reserved for other public networks | 1288 - 1289 |                      |
+| Local Parachain TestNet            | 5041        |                      |
+| Local Development TestNet          | 5041        |                      |
+| QuStream Mainnet                   | 5041        | Polkadot             |
+| QuStream Testnet                   | 5042        | Polkadot             |
 
 Note that the runtimes can also be configured to target different relay networks.
 
 ## Runtime Architecture
 
-The Moonbeam Runtime, built using FRAME, comprises pallets from Polkadot-SDK, Frontier, and the `pallets/` directory.
+The QuStreamNetwork Runtime, built using FRAME, comprises pallets from Polkadot-SDK, Frontier, and the `pallets/` directory.
 
 From Polkadot-SDK:
 
 - _Utility_: Allows users to use derivative accounts, and batch calls
-- _Balances_: Tracks GLMR token balances
+- _Balances_: Tracks QST token balances
 - _Sudo_: Allows a privileged account to make arbitrary runtime changes. This will be removed before launch.
 - _Timestamp_: On-Chain notion of time
 - _Transaction Payment_: Transaction payment (fee) management
@@ -185,25 +139,18 @@ From Polkadot-SDK:
 
 From Frontier:
 
-- _EVM Chain Id_: A place to store the chain id for each Moonbeam network
+- _EVM Chain Id_: A place to store the chain id for each QuStream network
 - _EVM_: Encapsulates execution logic for an Ethereum Virtual Machine
 - _Ethereum_: Ethereum-style data encoding and access for the EVM.
 
-The following pallets are stored in `pallets/`. They are designed for Moonbeam's specific requirements:
+The following pallets are stored in `pallets/`. They are designed for QuStream's specific requirements:
 
 - _Author Inherent_: Allows block authors to include their identity in a block via an inherent.
 - _Parachain Staking_: Minimal staking pallet that selects collators by total amount at stake
 
 When modifying the git repository for these dependencies, a tool called [diener](https://github.com/bkchr/diener) can be used to replace the git URL and branch for each reference in all `Cargo.toml` files with a single command. This alleviates a lot of the repetitive modifications necessary when changing dependency versions.
 
-## Rustdocs
-
-Rustdocs for the Moonbeam codebase are automatically generated and published
-[here](https://moonbeam-foundation.github.io/moonbeam/moonbeam_runtime/index.html).
-
 ## Contribute
 
-Moonbeam is open-source under the terms of the GPL3, and we welcome contributions.. Please review our
+QuStreamNetwork is open-source under the terms of the GPL3, and we welcome contributions.. Please review our
 [CONTRIBUTIONS.md](CONTRIBUTIONS.md) document for more information.
-
-Example of version bumping PR (runtime and node): https://github.com/moonbeam-foundation/moonbeam/pull/601/files

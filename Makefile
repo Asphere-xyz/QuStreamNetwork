@@ -79,7 +79,7 @@ release-build:
 	@cargo build --release --locked
 
 export PATH = $(ZOMBINET_PATHS)
-start-zombienet-moonbeam: all
+start-zombienet-qustream: all
 	@zombienet/bin/${ZOMBIENET_BIN} spawn zombienet/configs/moonbeam-polkadot.toml
 
 export PATH = $(ZOMBINET_PATHS)
