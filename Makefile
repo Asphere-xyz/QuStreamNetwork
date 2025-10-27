@@ -15,7 +15,7 @@ ZOMBIENET_BIN := zombienet
 POLKADOT_BIN := polkadot
 POLKADOT_EXECUTE_WORKER_BIN := polkadot-execute-worker
 POLKADOT_PREPARE_WORKER_BIN := polkadot-prepare-worker
-MOONBEAM_RELEASE_BIN := target/release/moonbeam
+MOONBEAM_RELEASE_BIN := target/release/qustream
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -41,7 +41,7 @@ BINARIES := $(ZOMBIENET_BIN) $(BRIDGE_RELAY_BIN) $(POLKADOT_BIN) $(POLKADOT_EXEC
 
 all: setup-moonbeam download-binaries
 
-setup-moonbeam: zombienet/bin/moonbeam
+setup-moonbeam: zombienet/bin/qustream
 
 download-binaries: $(BINARIES:%=zombienet/bin/%)
 
@@ -65,7 +65,7 @@ zombienet/bin/${POLKADOT_BIN}%:
 	@curl -L -o "zombienet/bin/${POLKADOT_BIN}$*" "${POLKADOT_DOWNLOAD_URL}/${POLKADOT_BIN}$*${POLKADOT_BIN_POSTFIX}"
 	@chmod +x "zombienet/bin/${POLKADOT_BIN}$*"
 
-zombienet/bin/moonbeam:
+zombienet/bin/qustream:
 	@if [ ! -L "$@" ]; then \
   		echo "Creating symlink: $@ -> ${MOONBEAM_RELEASE_BIN}"; \
   		ln -s "../../${MOONBEAM_RELEASE_BIN}" "$@"; \

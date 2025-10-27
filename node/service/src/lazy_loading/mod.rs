@@ -876,7 +876,7 @@ pub fn spec_builder() -> sc_chain_spec::ChainSpecBuilder<Extensions, HostFunctio
 	.with_chain_type(ChainType::Development)
 	.with_properties(
 		serde_json::from_str(
-			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"GLMR\", \"SS58Prefix\": 1284}",
+			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"QST\", \"SS58Prefix\": 5041}",
 		)
 		.expect("Provided valid json map"),
 	)

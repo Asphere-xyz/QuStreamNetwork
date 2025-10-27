@@ -57,12 +57,12 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 			para_id: Default::default(),
 		},
 	)
-	.with_name("Moonbeam Development Testnet")
+	.with_name("QuStream Development Testnet")
 	.with_id("moonbeam_dev")
 	.with_chain_type(ChainType::Development)
 	.with_properties(
 		serde_json::from_str(
-			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"GLMR\", \"SS58Prefix\": 1284}",
+			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"QST\", \"SS58Prefix\": 5041}",
 		)
 		.expect("Provided valid json map"),
 	)
@@ -82,7 +82,7 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 		accounts.clone(),
 		1_500_000 * GLMR * SUPPLY_FACTOR,
 		Default::default(), // para_id
-		1281,               //ChainId
+		5041,               //ChainId
 	))
 	.build()
 }
@@ -100,12 +100,12 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	// TODO Apps depends on this string to determine whether the chain is an ethereum compat
 	// or not. We should decide the proper strings, and update Apps accordingly.
 	// Or maybe Apps can be smart enough to say if the string contains "moonbeam" at all...
-	.with_name("Moonbeam Local Testnet")
+	.with_name("QuStream Local Testnet")
 	.with_id("moonbeam_local")
 	.with_chain_type(ChainType::Local)
 	.with_properties(
 		serde_json::from_str(
-			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"GLMR\", \"SS58Prefix\": 1284}",
+			"{\"tokenDecimals\": 18, \"tokenSymbol\": \"QST\", \"SS58Prefix\": 5041}",
 		)
 		.expect("Provided valid json map"),
 	)
@@ -147,7 +147,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 		],
 		1_500_000 * GLMR * SUPPLY_FACTOR,
 		para_id,
-		1280, //ChainId
+		5041, //ChainId
 	))
 	.build()
 }
