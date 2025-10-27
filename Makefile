@@ -76,7 +76,7 @@ zombienet/bin/moonbeam:
 	fi
 
 release-build:
-	@cargo build --release
+	@cargo build --release --locked
 
 export PATH = $(ZOMBINET_PATHS)
 start-zombienet-moonbeam: all
