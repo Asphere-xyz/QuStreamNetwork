@@ -36,7 +36,7 @@ impl Network {
 	/// Returns the coin type for the derivation path
 	pub fn coin_type(&self) -> u32 {
 		match self {
-			Network::Moonbeam => 1284,
+			Network::Moonbeam => 5041,
 			Network::Moonriver => 1285,
 			Network::Moonbase => 1287,
 			Network::Ethereum => 60,

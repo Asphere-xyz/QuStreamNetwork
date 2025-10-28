@@ -226,7 +226,7 @@ impl RuntimeVariant {
 	pub fn from_chain_spec(chain_spec: &Box<dyn ChainSpec>) -> Self {
 		match chain_spec {
 			#[cfg(feature = "moonbeam-native")]
-			spec if spec.is_moonbeam() => Self::Moonbeam,
+			spec if spec.is_qustream() => Self::Moonbeam,
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => Self::Moonriver,
 			#[cfg(feature = "moonbase-native")]
@@ -243,7 +243,7 @@ pub trait IdentifyVariant {
 	fn is_moonbase(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonbeam` network.
-	fn is_moonbeam(&self) -> bool;
+	fn is_qustream(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonriver` network.
 	fn is_moonriver(&self) -> bool;
@@ -257,8 +257,8 @@ impl IdentifyVariant for Box<dyn ChainSpec> {
 		self.id().starts_with("moonbase")
 	}
 
-	fn is_moonbeam(&self) -> bool {
-		self.id().starts_with("moonbeam")
+	fn is_qustream(&self) -> bool {
+		self.id().starts_with("qustream")
 	}
 
 	fn is_moonriver(&self) -> bool {
@@ -378,7 +378,7 @@ pub fn new_chain_ops(
 			MoonriverCustomizations,
 		>(config, rpc_config, legacy_block_import_strategy),
 		#[cfg(feature = "moonbeam-native")]
-		spec if spec.is_moonbeam() => new_chain_ops_inner::<
+		spec if spec.is_qustream() => new_chain_ops_inner::<
 			moonbeam_runtime::RuntimeApi,
 			MoonbeamCustomizations,
 		>(config, rpc_config, legacy_block_import_strategy),

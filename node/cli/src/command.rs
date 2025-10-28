@@ -114,7 +114,7 @@ fn load_spec(
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Moonbeam Parachain Collator".into()
+		"QuStream Parachain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -123,7 +123,7 @@ impl SubstrateCli for Cli {
 
 	fn description() -> String {
 		format!(
-			"Moonbase Parachain Collator\n\nThe command-line arguments provided first will be \
+			"QuStream Parachain Collator\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		{} [parachain-args] -- [relaychain-args]",
@@ -154,7 +154,7 @@ impl Cli {
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => return &moonbeam_service::moonriver_runtime::VERSION,
 			#[cfg(feature = "moonbeam-native")]
-			spec if spec.is_moonbeam() => return &moonbeam_service::moonbeam_runtime::VERSION,
+			spec if spec.is_qustream() => return &moonbeam_service::moonbeam_runtime::VERSION,
 			#[cfg(feature = "moonbase-native")]
 			_ => return &moonbeam_service::moonbase_runtime::VERSION,
 			#[cfg(not(feature = "moonbase-native"))]
@@ -165,7 +165,7 @@ impl Cli {
 
 impl SubstrateCli for RelayChainCli {
 	fn impl_name() -> String {
-		"Moonbeam Parachain Collator".into()
+		"QuStream Parachain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -173,7 +173,7 @@ impl SubstrateCli for RelayChainCli {
 	}
 
 	fn description() -> String {
-		"Moonbeam Parachain Collator\n\nThe command-line arguments provided first will be \
+		"QuStream Parachain Collator\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		parachain-collator [parachain-args] -- [relaychain-args]"
@@ -235,7 +235,7 @@ pub fn run() -> Result<()> {
 			let runner = cli.create_runner(&params.base)?;
 			runner.sync_run(|config| {
 				if params.mnemonic.is_some() || params.accounts.is_some() {
-					if config.chain_spec.is_moonbeam() {
+					if config.chain_spec.is_qustream() {
 						params.base.run(
 							Box::new(chain_spec::moonbeam::development_chain_spec(
 								params.mnemonic.clone(),
@@ -382,7 +382,7 @@ pub fn run() -> Result<()> {
 					))
 				}),
 				#[cfg(feature = "moonbeam-native")]
-				spec if spec.is_moonbeam() => runner.async_run(|mut config| {
+				spec if spec.is_qustream() => runner.async_run(|mut config| {
 					let params = moonbeam_service::new_partial::<
 						moonbeam_service::moonbeam_runtime::RuntimeApi,
 						moonbeam_service::MoonbeamCustomizations,
@@ -446,7 +446,7 @@ pub fn run() -> Result<()> {
 					output_buf
 				}
 				#[cfg(feature = "moonbeam-native")]
-				chain_spec if chain_spec.is_moonbeam() => {
+				chain_spec if chain_spec.is_qustream() => {
 					let block: moonbeam_service::moonbeam_runtime::Block =
 						generate_genesis_block(&*chain_spec, state_version)?;
 					let raw_header = block.header().encode();
@@ -521,7 +521,7 @@ pub fn run() -> Result<()> {
 								})
 							}
 							#[cfg(feature = "moonbeam-native")]
-							spec if spec.is_moonbeam() => {
+							spec if spec.is_qustream() => {
 								return runner.sync_run(|config| {
 									cmd.run_with_spec::<HashingFor<moonbeam_runtime::Block>, HostFunctions>(
 										Some(config.chain_spec),
@@ -566,7 +566,7 @@ pub fn run() -> Result<()> {
 							})
 						}
 						#[cfg(feature = "moonbeam-native")]
-						spec if spec.is_moonbeam() => {
+						spec if spec.is_qustream() => {
 							return runner.sync_run(|mut config| {
 								let params = moonbeam_service::new_partial::<
 									moonbeam_service::moonbeam_runtime::RuntimeApi,
@@ -631,7 +631,7 @@ pub fn run() -> Result<()> {
 							})
 						}
 						#[cfg(feature = "moonbeam-native")]
-						spec if spec.is_moonbeam() => {
+						spec if spec.is_qustream() => {
 							return runner.sync_run(|mut config| {
 								let params = moonbeam_service::new_partial::<
 									moonbeam_service::moonbeam_runtime::RuntimeApi,
@@ -713,7 +713,7 @@ pub fn run() -> Result<()> {
 					Ok((cmd.run(backend, config.chain_spec), task_manager))
 				}
 				#[cfg(feature = "moonbeam-native")]
-				spec if spec.is_moonbeam() => {
+				spec if spec.is_qustream() => {
 					let PartialComponents {
 						task_manager,
 						backend,
@@ -810,7 +810,7 @@ pub fn run() -> Result<()> {
 						.await
 						.map_err(Into::into),
 						#[cfg(feature = "moonbeam-native")]
-						spec if spec.is_moonbeam() => moonbeam_service::new_dev::<
+						spec if spec.is_qustream() => moonbeam_service::new_dev::<
 							moonbeam_service::moonbeam_runtime::RuntimeApi,
 							moonbeam_service::MoonbeamCustomizations,
 							sc_network::NetworkWorker<_, _>,
@@ -937,7 +937,7 @@ pub fn run() -> Result<()> {
 					.map(|r| r.0)
 					.map_err(Into::into),
 					#[cfg(feature = "moonbeam-native")]
-					spec if spec.is_moonbeam() => moonbeam_service::start_node::<
+					spec if spec.is_qustream() => moonbeam_service::start_node::<
 						moonbeam_service::moonbeam_runtime::RuntimeApi,
 						moonbeam_service::MoonbeamCustomizations,
 					>(

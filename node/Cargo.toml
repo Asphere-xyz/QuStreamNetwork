@@ -8,7 +8,7 @@ license = "GPL-3.0-only"
 version = "0.47.2"
 
 [[bin]]
-name = 'moonbeam'
+name = 'qustream'
 path = 'src/main.rs'
 
 [dependencies]
@@ -16,16 +16,19 @@ path = 'src/main.rs'
 moonbeam-cli = { workspace = true }
 
 [features]
-default = [ "moonbase-native", "moonbeam-native", "moonriver-native", "lazy-loading" ]
+default = [
+	"moonbase-native",
+	"moonbeam-native",
+	"moonriver-native",
+	"lazy-loading",
+]
 
-moonbase-native = [ "moonbeam-cli/moonbase-native" ]
-moonbeam-native = [ "moonbeam-cli/moonbeam-native" ]
-moonriver-native = [ "moonbeam-cli/moonriver-native" ]
+moonbase-native = ["moonbeam-cli/moonbase-native"]
+moonbeam-native = ["moonbeam-cli/moonbeam-native"]
+moonriver-native = ["moonbeam-cli/moonriver-native"]
 
 lazy-loading = ["moonbeam-cli/lazy-loading"]
 
 metadata-hash = ["moonbeam-cli/metadata-hash"]
 
-runtime-benchmarks = [
-	"moonbeam-cli/runtime-benchmarks"
-]
+runtime-benchmarks = ["moonbeam-cli/runtime-benchmarks"]
