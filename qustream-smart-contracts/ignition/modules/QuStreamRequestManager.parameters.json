@@ -1,0 +1,10 @@
+{
+    "QuStreamRequestManagerModule": {
+        "CONTRACT_OWNER": "0xYourContractOwnerAddress",
+        "QUSTREAM_FEE_OWNER": "0xYourQuStreamFeeOwnerAddress",
+        "ENCRYPTION_NODE_FEE_OWNER": "0xYourEncryptionNodeFeeOwnerAddress",
+        "MASTER_NODE": "0xYourMasterNodeAddress",
+        "USER_FEE": "1000000000000000000",
+        "QUSTREAM_FEE_PERCENTAGE": "40"
+    }
+}
