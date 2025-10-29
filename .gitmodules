@@ -1,6 +1,0 @@
-[submodule "qustream-smart-contracts/lib/forge-std"]
-	path = qustream-smart-contracts/lib/forge-std
-	url = https://github.com/foundry-rs/forge-std
-[submodule "qustream-smart-contracts/lib/openzeppelin-contracts"]
-	path = qustream-smart-contracts/lib/openzeppelin-contracts
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts
