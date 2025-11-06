@@ -1,0 +1,31 @@
+type Staker @entity {
+  id: ID!
+  stakedAmount: BigInt!
+  scheduledUnbonds: BigInt!
+  totalDelegated: BigInt!
+  totalUndelegated: BigInt!
+  lastUpdatedBlock: Int! @index
+}
+
+type Collator @entity {
+  id: ID!
+  selfBond: BigInt!
+  scheduledUnbonds: BigInt!
+  totalBonded: BigInt!
+  totalUnbonded: BigInt!
+  lastUpdatedBlock: Int! @index
+}
+
+type TotalStake @entity {
+  id: ID!
+  totalStaked: BigInt!
+  totalBonded: BigInt!
+  totalDelegatorStake: BigInt!
+  totalCollatorBond: BigInt!
+  totalSupply: BigInt!
+  stakedPercentage: Float!
+  bondedPercentage: Float!
+  activeStakerCount: Int!
+  activeCollatorCount: Int!
+  lastUpdatedBlock: Int! @index
+}
