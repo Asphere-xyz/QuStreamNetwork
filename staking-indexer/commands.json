@@ -1,0 +1,116 @@
+{
+  "$schema": "https://cdn.subsquid.io/schemas/commands.json",
+  "commands": {
+    "clean": {
+      "description": "delete all build artifacts",
+      "cmd": ["npx", "--yes", "rimraf", "lib"]
+    },
+    "build": {
+      "description": "Build the squid project",
+      "deps": ["clean"],
+      "cmd": ["tsc"]
+    },
+    "up": {
+      "description": "Start a PG database",
+      "cmd": ["docker-compose", "up", "-d"]
+    },
+    "down": {
+      "description": "Drop a PG database",
+      "cmd": ["docker-compose", "down"]
+    },
+    "migration:apply": {
+      "description": "Apply the DB migrations",
+      "cmd": ["squid-typeorm-migration", "apply"]
+    },
+    "migration:generate": {
+      "description": "Generate a DB migration matching the TypeORM entities",
+      "deps": ["build", "migration:clean"],
+      "cmd": ["squid-typeorm-migration", "generate"]
+    },
+    "migration:clean": {
+      "description": "Clean the migrations folder",
+      "cmd": ["npx", "--yes", "rimraf", "./db/migrations/*.js"]
+    },
+    "migration": {
+      "deps": ["build"],
+      "cmd": ["squid-typeorm-migration", "generate"],
+      "hidden": true
+    },
+    "codegen": {
+      "description": "Generate TypeORM entities from the schema file",
+      "cmd": ["squid-typeorm-codegen"]
+    },
+    "typegen": {
+      "description": "Generate data access classes for substrate metadata",
+      "cmd": ["squid-substrate-typegen", "typegen.json"]
+    },
+    "process": {
+      "description": "Load .env and start the squid processor",
+      "deps": ["migration:apply"],
+      "cmd": ["node", "--require=dotenv/config", "lib/main.js"]
+    },
+    "process:prod": {
+      "description": "Start the squid processor",
+      "cmd": ["node", "lib/main.js"],
+      "hidden": true
+    },
+    "api": {
+      "description": "Start the PostGraphile GraphQL server",
+      "deps": ["build"],
+      "cmd": ["node", "--require=dotenv/config", "lib/api.js"]
+    },
+    "api:prod": {
+      "description": "Start the PostGraphile GraphQL server in production",
+      "cmd": ["node", "lib/api.js"],
+      "hidden": true
+    },
+    "serve": {
+      "description": "Start both processor and API server together",
+      "deps": ["build"],
+      "cmd": [
+        "sh",
+        "-c",
+        "concurrently -n processor,api -c cyan,magenta 'node --require=dotenv/config lib/main.js' 'node --require=dotenv/config lib/api.js'"
+      ]
+    },
+    "check-updates": {
+      "cmd": ["npx", "--yes", "npm-check-updates", "--filter=/subsquid/", "--upgrade"],
+      "hidden": true
+    },
+    "bump": {
+      "description": "Bump @subsquid packages to the latest versions",
+      "deps": ["check-updates"],
+      "cmd": ["npm", "i", "-f"]
+    },
+    "compare": {
+      "description": "Compare current chain state with indexer database",
+      "deps": ["build"],
+      "cmd": ["node", "--require=dotenv/config", "lib/sync-state.js"]
+    },
+    "load-state": {
+      "description": "Load current chain state into database (fixes missing initial stakes)",
+      "deps": ["build"],
+      "cmd": [
+        "sh",
+        "-c",
+        "CHAIN_RPC_ENDPOINT=\"wss://wss.api.moonbeam.network\" node --require=dotenv/config lib/load-state.js"
+      ]
+    },
+    "reset": {
+      "description": "Complete reset: stop DB, clean volumes, rebuild, and restart from block 0",
+      "cmd": [
+        "sh",
+        "-c",
+        "lsof -ti:4350 | xargs kill -9 2>/dev/null || true && docker-compose down -v && rm -rf db/migrations/*.js && docker-compose up -d && sleep 3 && sqd migration:generate && sqd migration:apply && sqd serve"
+      ]
+    },
+    "open": {
+      "description": "Open a local browser window",
+      "cmd": ["npx", "--yes", "opener", "http://localhost:4350/graphiql"]
+    },
+    "start": {
+      "description": "Complete setup and start indexer (first-time or fresh start)",
+      "cmd": ["bash", "scripts/init.sh"]
+    }
+  }
+}
