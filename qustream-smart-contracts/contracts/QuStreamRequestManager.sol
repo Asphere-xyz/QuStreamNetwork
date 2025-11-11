@@ -56,9 +56,9 @@ contract QuStreamRequestManager is Ownable {
         _masterNode = masterNode;
     }
 
-    /// @notice Prevent accidental direct sends; require registerRequest for payments
+    /// @notice Prevent accidental direct sends
     receive() external payable {
-        revert("direct sends not accepted; use registerRequest()");
+        revert("sends not accepted");
     }
 
     /// @notice Sets the master node address
