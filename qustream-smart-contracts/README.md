@@ -2,7 +2,7 @@
 
 This repository contains the core smart contracts for the QuStream protocol, including:
 
-- **QuStreamRequestManager**: Manages encryption requests, withdrawal addresses and fee logic.
+- **QuStreamRequestManager**: Manages encryption requests.
 
 We use [Hardhat](https://hardhat.org/) for development, testing, and deployment.
 
@@ -36,12 +36,8 @@ npx hardhat keystore set PRIVATE_KEY
 
 | Name                       | Type    | Description |
 |----------------------------|---------|-------------|
-| `CONTRACT_OWNER`           | address | The owner of the contract. Has permission to update fee owners, master node, and fee settings. |
-| `QUSTREAM_FEE_OWNER`       | address | Address that receives the QuStream protocol's portion of the fees. Must not be zero address. |
-| `ENCRYPTION_NODE_FEE_OWNER`| address | Address that receives the encryption node's portion of the fees. Must not be zero address. |
+| `CONTRACT_OWNER`           | address | The owner of the contract. Has permission to update master node. |
 | `MASTER_NODE`              | address | Address allowed to process and update requests. Must not be zero address. |
-| `USER_FEE`                 | uint256 | The fee (in wei) required from users to register a request. |
-| `QUSTREAM_FEE_PERCENTAGE`  | uint256 | Percentage (0-100) of the user fee sent to QuStream. The remainder goes to the encryption node. |
 
 #### 3. Execute the deployment script.
 
