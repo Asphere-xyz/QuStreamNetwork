@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
 /// @title QuStreamRequestManager
-/// @notice Manages encryption requests, withdrawal addresses and fee logic for the QuStream protocol.
-/// @dev Owner can manage withdrawal addresses and fee settings. Master node processes requests and updates their status.
+/// @notice Manages encryption requests for the QuStream protocol.
+/// @dev Master node processes requests and updates their status.
 contract QuStreamRequestManager is Ownable, ReentrancyGuard {
     using Address for address payable;
 
@@ -28,6 +28,8 @@ contract QuStreamRequestManager is Ownable, ReentrancyGuard {
         address sender;
         Status status;
         uint256 paidFee;
+        string userID;
+        string qBlock;
     }
 
     /// @notice Address that receives QuStream fees
@@ -49,7 +51,9 @@ contract QuStreamRequestManager is Ownable, ReentrancyGuard {
     /// @param id The request ID
     /// @param sender The address that registered the request
     /// @param paidFee The fee paid for the request
-    event RequestRegistered(uint256 indexed id, address indexed sender, uint256 paidFee);
+    /// @param userID The user ID
+    /// @param qBlock The qBlock
+    event RequestRegistered(uint256 indexed id, address indexed sender, uint256 paidFee, string userID, string qBlock);
     /// @notice Emitted when a request's status is updated
     /// @param id The request ID
     /// @param status The new status
@@ -157,12 +161,16 @@ contract QuStreamRequestManager is Ownable, ReentrancyGuard {
 
     /// @notice Registers a new encryption request
     /// @dev Requires payment of the current fee. Emits RequestRegistered.
+    /// @param userID Optional user ID string
+    /// @param qBlock Optional qBlock string
     /// @return id The ID of the newly created request
-    function registerRequest() external payable returns (uint256 id) {
+    function registerRequest(string calldata userID, string calldata qBlock) external payable returns (uint256 id) {
         require(msg.value == _userFee, "incorrect fee");
         id = _nextRequestId++;
-        _requests[id] = Request({id: id, sender: msg.sender, status: Status.Pending, paidFee: msg.value});
-        emit RequestRegistered(id, msg.sender, msg.value);
+        _requests[id] = Request({
+            id: id, sender: msg.sender, status: Status.Pending, paidFee: msg.value, userID: userID, qBlock: qBlock
+        });
+        emit RequestRegistered(id, msg.sender, msg.value, userID, qBlock);
     }
 
     /// @notice Processes an encryption request and updates its status
