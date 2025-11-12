@@ -1,3 +1,4 @@
+// Temporarily disabling parachain staking because it won't be used for now.
 // import { Event, Block } from '../processor/types';
 // import {
 //   handleDelegation,

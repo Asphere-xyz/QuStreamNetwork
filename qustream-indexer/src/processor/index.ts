@@ -3,7 +3,8 @@ import { TypeormDatabase } from '@subsquid/typeorm-store';
 import { config } from '../utils';
 import { fieldSelection, ProcessorContext } from './types';
 import { EntityCache } from '../actions';
-// ParachainStaking imports commented out
+
+// Temporarily disabling parachain staking because it won't be used for now.
 // import { handleEvent } from '../handlers';
 // import { loadCurrentChainState } from '../state-loader';
 // import { fetchAndUpdateTotalSupply } from '../utils';

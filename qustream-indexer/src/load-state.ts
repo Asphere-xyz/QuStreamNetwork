@@ -1,3 +1,4 @@
+// Temporarily disabling parachain staking because it won't be used for now.
 // import { loadCurrentChainState } from './state-loader';
 // import * as dotenv from 'dotenv';
 

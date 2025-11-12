@@ -1,3 +1,4 @@
+// Temporarily disabling parachain staking because it won't be used for now.
 // import { ApiPromise, WsProvider } from '@polkadot/api';
 // import { DataSource } from 'typeorm';
 // import { Staker, Collator } from './model';

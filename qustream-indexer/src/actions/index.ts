@@ -1,4 +1,6 @@
 import { ProcessorContext } from '../processor/types';
+
+// Temporarily disabling parachain staking because it won't be used for now.
 // import { Staker, Collator, TotalStake } from '../model';
 // import { encodeAddressToSS58, calculatePercentage, config } from '../utils';
 

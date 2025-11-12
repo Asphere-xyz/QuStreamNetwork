@@ -1,3 +1,4 @@
+// Temporarily disabling parachain staking because it won't be used for now.
 // import { compareChainStateWithIndexer } from './compare-state';
 // import * as dotenv from 'dotenv';
 
