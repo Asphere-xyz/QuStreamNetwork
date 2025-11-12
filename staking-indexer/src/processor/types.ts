@@ -20,6 +20,11 @@ export const fieldSelection = {
     name: true,
     args: true,
   },
+  log: {
+    address: true,
+    topics: true,
+    data: true,
+  },
 } as FieldSelection;
 
 type Fields = typeof fieldSelection;

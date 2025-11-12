@@ -1,31 +1,59 @@
-type Staker @entity {
-  id: ID!
-  stakedAmount: BigInt!
-  scheduledUnbonds: BigInt!
-  totalDelegated: BigInt!
-  totalUndelegated: BigInt!
-  lastUpdatedBlock: Int! @index
+# type Staker @entity {
+#   id: ID!
+#   stakedAmount: BigInt!
+#   scheduledUnbonds: BigInt!
+#   totalDelegated: BigInt!
+#   totalUndelegated: BigInt!
+#   lastUpdatedBlock: Int! @index
+# }
+
+# type Collator @entity {
+#   id: ID!
+#   selfBond: BigInt!
+#   scheduledUnbonds: BigInt!
+#   totalBonded: BigInt!
+#   totalUnbonded: BigInt!
+#   lastUpdatedBlock: Int! @index
+# }
+
+# type TotalStake @entity {
+#   id: ID!
+#   totalStaked: BigInt!
+#   totalBonded: BigInt!
+#   totalDelegatorStake: BigInt!
+#   totalCollatorBond: BigInt!
+#   totalSupply: BigInt!
+#   stakedPercentage: Float!
+#   bondedPercentage: Float!
+#   activeStakerCount: Int!
+#   activeCollatorCount: Int!
+#   lastUpdatedBlock: Int! @index
+# }
+
+enum RequestStatus {
+  Pending
+  Success
+  Fail
 }
 
-type Collator @entity {
+type QuStreamRequest @entity {
   id: ID!
-  selfBond: BigInt!
-  scheduledUnbonds: BigInt!
-  totalBonded: BigInt!
-  totalUnbonded: BigInt!
-  lastUpdatedBlock: Int! @index
+  requestId: BigInt! @index
+  sender: String! @index
+  userID: String!
+  qBlock: String!
+  status: RequestStatus!
+  createdAtBlock: Int! @index
+  createdAtTimestamp: DateTime!
+  processedAtBlock: Int
+  processedAtTimestamp: DateTime
 }
 
-type TotalStake @entity {
+type QuStreamStats @entity {
   id: ID!
-  totalStaked: BigInt!
-  totalBonded: BigInt!
-  totalDelegatorStake: BigInt!
-  totalCollatorBond: BigInt!
-  totalSupply: BigInt!
-  stakedPercentage: Float!
-  bondedPercentage: Float!
-  activeStakerCount: Int!
-  activeCollatorCount: Int!
+  totalRequests: Int!
+  totalSuccessful: Int!
+  totalFailed: Int!
+  totalPending: Int!
   lastUpdatedBlock: Int! @index
 }
