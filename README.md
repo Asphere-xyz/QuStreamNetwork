@@ -129,7 +129,7 @@ The QuStreamNetwork Runtime, built using FRAME, comprises pallets from Polkadot-
 From Polkadot-SDK:
 
 - _Utility_: Allows users to use derivative accounts, and batch calls
-- _Balances_: Tracks QST token balances
+- _Balances_: Tracks QSTG token balances
 - _Sudo_: Allows a privileged account to make arbitrary runtime changes. This will be removed before launch.
 - _Timestamp_: On-Chain notion of time
 - _Transaction Payment_: Transaction payment (fee) management
