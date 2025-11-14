@@ -42,11 +42,15 @@ export const config = {
     rpcEndpoint: getEnv('CHAIN_RPC_ENDPOINT')!,
     archiveGateway: getEnv('ARCHIVE_GATEWAY', false),
     ss58Prefix: getEnvNumber('SS58_PREFIX'),
-    totalSupply: getEnv('TOTAL_SUPPLY', false) ? BigInt(getEnv('TOTAL_SUPPLY', false)!.toString()) : undefined,
+    // totalSupply: getEnv('TOTAL_SUPPLY', false) ? BigInt(getEnv('TOTAL_SUPPLY', false)!.toString()) : undefined,
   },
 
   blockRange: {
     from: getEnvNumber('START_BLOCK', 0),
     to: process.env.END_BLOCK ? getEnvNumber('END_BLOCK') : undefined,
+  },
+
+  qustream: {
+    contractAddress: getEnv('QUSTREAM_CONTRACT_ADDRESS', false),
   },
 };

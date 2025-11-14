@@ -2,7 +2,7 @@ import { Event as _Event, Block as _Block, DataHandlerContext, FieldSelection } 
 import { Store } from '@subsquid/typeorm-store';
 
 export const fieldSelection = {
-  // these fields can be used in the future if needed
+  // NOTE: these fields can be used in the future if needed, but are currently not used.
   // block: {
   //   timestamp: true,
   // },
@@ -19,6 +19,11 @@ export const fieldSelection = {
   event: {
     name: true,
     args: true,
+  },
+  log: {
+    address: true,
+    topics: true,
+    data: true,
   },
 } as FieldSelection;
 

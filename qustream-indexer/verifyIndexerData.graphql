@@ -1,0 +1,30 @@
+query VerifyIndexerData {
+  quStreamRequests(first: 100) {
+    edges {
+      node {
+        id
+        createdAtTimestamp
+        createdAtBlock
+        processedAtBlock
+        processedAtTimestamp
+        userId
+        status
+        qBlock
+        requestId
+        sender
+      }
+    }
+  }
+  quStreamStats(first: 100) {
+    edges {
+      node {
+        id
+        lastUpdatedBlock
+        totalFailed
+        totalPending
+        totalRequests
+        totalSuccessful
+      }
+    }
+  }
+}
