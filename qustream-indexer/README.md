@@ -1,12 +1,11 @@
-# Staking Indexer
+# QuStream Indexer
 
-A Subsquid indexer for Substrate chains with ParachainStaking pallet. Tracks delegator stakes, collator self-bonds, and global staking statistics.
+A Subsquid indexer for tracking QuStream contract requests on Substrate-based networks. Monitors request registration and status updates from the QuStream Request Manager contract.
 
 ## What It Tracks
 
-- **Stakers**: Current stake, scheduled unbonds, lifetime totals
-- **Collators**: Self-bond, scheduled unbonds, lifetime totals
-- **Global**: Total staked/bonded, percentages, active counts
+- **QuStream Requests**: Request registration events, status updates (Pending/Success/Fail), sender addresses, user IDs, and qBlock data
+- **QuStream Statistics**: Total requests, successful requests, failed requests, and pending requests
 
 ## Setup
 
@@ -21,6 +20,7 @@ A Subsquid indexer for Substrate chains with ParachainStaking pallet. Tracks del
 ```bash
 npm install      # Install dependencies
 npm run start    # Build, setup, and start indexer (default: Qustream)
+npm test         # Test contract events and query indexer data
 ```
 
 GraphQL API: <http://localhost:4350/graphiql>
@@ -35,6 +35,35 @@ sqd reset        # Reset DB and restart from block 0
 sqd serve        # Start processor + API (if already setup)
 sqd open         # Open GraphiQL
 sqd compare      # Compare DB with chain state
+```
+
+## Querying Indexer Data
+
+The indexer exposes a GraphQL API at `http://localhost:4350/graphql`. You can query it using GraphiQL (browser interface) or programmatically.
+
+### Using GraphiQL
+
+Open the GraphiQL interface:
+
+```bash
+sqd open
+# or visit http://localhost:4350/graphiql
+```
+
+### Example Queries
+
+See [`verifyIndexerData.graphql`](./verifyIndexerData.graphql)
+
+### Programmatic Access
+
+#### Using cURL
+
+```bash
+curl -X POST http://localhost:4350/graphql \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "query { quStreamStats(first: 1) { edges { node { totalRequests } } } }"
+  }'
 ```
 
 ## Configuration

@@ -1,43 +1,30 @@
 query VerifyIndexerData {
-  totalStakes {
-    nodes {
-      id
-      totalStaked
-      totalBonded
-      totalDelegatorStake
-      totalCollatorBond
-      totalSupply
-      stakedPercentage
-      bondedPercentage
-      activeStakerCount
-      activeCollatorCount
-      lastUpdatedBlock
+  quStreamRequests(first: 100) {
+    edges {
+      node {
+        id
+        createdAtTimestamp
+        createdAtBlock
+        processedAtBlock
+        processedAtTimestamp
+        userId
+        status
+        qBlock
+        requestId
+        sender
+      }
     }
   }
-  topStakers: stakers(first: 5, orderBy: STAKED_AMOUNT_DESC) {
-    nodes {
-      id
-      scheduledUnbonds
-      stakedAmount
-      totalDelegated
-      totalUndelegated
-      lastUpdatedBlock
+  quStreamStats(first: 100) {
+    edges {
+      node {
+        id
+        lastUpdatedBlock
+        totalFailed
+        totalPending
+        totalRequests
+        totalSuccessful
+      }
     }
-  }
-  topCollators: collators(first: 5, orderBy: SELF_BOND_DESC) {
-    nodes {
-      id
-      scheduledUnbonds
-      selfBond
-      totalBonded
-      totalUnbonded
-      lastUpdatedBlock
-    }
-  }
-  stakers {
-    totalCount
-  }
-  collators {
-    totalCount
   }
 }
