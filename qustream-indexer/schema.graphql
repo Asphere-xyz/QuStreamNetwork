@@ -43,6 +43,7 @@ type QuStreamRequest @entity {
   userID: String!
   qBlock: String!
   status: RequestStatus!
+  transactionHash: String
   createdAtBlock: Int! @index
   createdAtTimestamp: DateTime!
   processedAtBlock: Int

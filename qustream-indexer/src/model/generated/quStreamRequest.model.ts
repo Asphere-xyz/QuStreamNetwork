@@ -36,6 +36,9 @@ export class QuStreamRequest {
   @Column_('varchar', { length: 7, nullable: false })
   status!: RequestStatus;
 
+  @StringColumn_({ nullable: true })
+  transactionHash!: string | undefined | null;
+
   @Index_()
   @IntColumn_({ nullable: false })
   createdAtBlock!: number;

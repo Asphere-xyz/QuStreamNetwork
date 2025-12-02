@@ -33,7 +33,7 @@ export class QuStreamEventsHandler {
 
     try {
       if (topic === quStreamAbi.topics.RequestRegistered) {
-        await this.handleRequestRegistered(log, block);
+        await this.handleRequestRegistered(log, block, event);
       } else if (topic === quStreamAbi.topics.RequestStatusUpdated) {
         await this.handleRequestStatusUpdated(log, block);
       }
@@ -42,7 +42,7 @@ export class QuStreamEventsHandler {
     }
   }
 
-  private async handleRequestRegistered(log: any, block: any) {
+  private async handleRequestRegistered(log: any, block: any, event: any) {
     const decoded = quStreamAbi.abi.decodeEventLog(quStreamAbi.events.RequestRegistered!, log.data, log.topics);
 
     const requestId = BigInt(decoded.id.toString());
@@ -50,8 +50,8 @@ export class QuStreamEventsHandler {
     const userID = decoded.userID.toString();
     const qBlock = decoded.qBlock.toString();
 
-    // Substrate block headers don't include timestamps, so we use the current time
     const timestamp = Date.now();
+    const transactionHash = event.extrinsic?.hash;
 
     const request = new QuStreamRequest({
       id: `${this.contractAddress}-${requestId}`,
@@ -60,6 +60,7 @@ export class QuStreamEventsHandler {
       userID,
       qBlock,
       status: RequestStatus.Pending,
+      transactionHash,
       createdAtBlock: block.header.height,
       createdAtTimestamp: new Date(timestamp),
       processedAtBlock: null,
