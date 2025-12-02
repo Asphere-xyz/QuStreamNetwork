@@ -12,10 +12,10 @@ export const fieldSelection = {
   //   origin: true,
   //   success: true,
   //},
-  // extrinsic: {
-  //   hash: true,
-  //   success: true,
-  // },
+  extrinsic: {
+    hash: true,
+    success: true,
+  },
   event: {
     name: true,
     args: true,
