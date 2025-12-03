@@ -30,14 +30,18 @@ function createProcessor(withArchive: boolean): SubstrateBatchProcessor {
     .setFields(fieldSelection)
     .setRpcEndpoint({
       url: config.chain.rpcEndpoint,
-      rateLimit: 20,
-      requestTimeout: 60000,
-      maxBatchCallSize: 100,
+      rateLimit: config.processor.rpcRateLimit,
+      requestTimeout: 120000,
+      maxBatchCallSize: config.processor.maxBatchCallSize,
     })
     .setBlockRange({
       from: config.blockRange.from,
       to: config.blockRange.to,
     });
+
+  console.log(
+    `Processor config: rateLimit=${config.processor.rpcRateLimit}, maxBatchCall=${config.processor.maxBatchCallSize}, timeout=120s`
+  );
 
   if (withArchive) {
     const chainName = config.chain.name;
@@ -93,6 +97,7 @@ async function runWithArchiveFallback() {
   const database = new TypeormDatabase({
     supportHotBlocks: true,
     stateSchema: 'staking_processor',
+    isolationLevel: 'READ COMMITTED',
   });
 
   try {

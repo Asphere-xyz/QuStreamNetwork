@@ -77,6 +77,10 @@ TOKEN_SYMBOL=QSTG
 TOKEN_DECIMALS=18
 SS58_PREFIX=5041
 QUSTREAM_CONTRACT_ADDRESS=
+
+# Performance tuning (optional, defaults shown)
+# RPC_RATE_LIMIT=1000
+# MAX_BATCH_CALL_SIZE=10000
 ```
 
 For custom chains, manually edit `.env` with your config.
