@@ -50,6 +50,11 @@ export const config = {
     to: process.env.END_BLOCK ? getEnvNumber('END_BLOCK') : undefined,
   },
 
+  processor: {
+    rpcRateLimit: getEnvNumber('RPC_RATE_LIMIT', 1000),
+    maxBatchCallSize: getEnvNumber('MAX_BATCH_CALL_SIZE', 10000),
+  },
+
   qustream: {
     contractAddress: getEnv('QUSTREAM_CONTRACT_ADDRESS', false),
   },
