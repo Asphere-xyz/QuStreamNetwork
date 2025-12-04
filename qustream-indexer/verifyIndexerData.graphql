@@ -12,7 +12,8 @@ query VerifyIndexerData {
         qBlock
         requestId
         sender
-        transactionHash
+        registerTransactionHash
+        processTransactionHash
       }
     }
   }

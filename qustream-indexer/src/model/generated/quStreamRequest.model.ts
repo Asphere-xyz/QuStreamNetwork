@@ -37,7 +37,10 @@ export class QuStreamRequest {
   status!: RequestStatus;
 
   @StringColumn_({ nullable: true })
-  transactionHash!: string | undefined | null;
+  registerTransactionHash!: string | undefined | null;
+
+  @StringColumn_({ nullable: true })
+  processTransactionHash!: string | undefined | null;
 
   @Index_()
   @IntColumn_({ nullable: false })
