@@ -83,6 +83,7 @@ function createProcessor(withArchive: boolean): SubstrateBatchProcessor {
   proc.addEvmLog({
     address: [config.qustream?.contractAddress].filter(Boolean) as string[],
     extrinsic: true,
+    call: true,
   });
 
   return proc;

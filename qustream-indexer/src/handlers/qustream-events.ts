@@ -1,6 +1,7 @@
 import { EntityCache } from '../actions';
 import { QuStreamRequest, QuStreamStats, RequestStatus } from '../model';
 import * as quStreamAbi from '../abi/qustream-request-manager';
+import { ethers } from 'ethers';
 
 export class QuStreamEventsHandler {
   private cache: EntityCache;
@@ -9,6 +10,48 @@ export class QuStreamEventsHandler {
   constructor(cache: EntityCache, contractAddress: string) {
     this.cache = cache;
     this.contractAddress = contractAddress.toLowerCase();
+  }
+
+  private extractEthereumTransactionHash(event: any): string | null {
+    const call = event.call;
+
+    if (!call?.args?.transaction) {
+      return event.extrinsic?.hash || null;
+    }
+
+    try {
+      const txData = call.args.transaction;
+
+      if (txData.__kind !== 'EIP1559') {
+        console.warn(`Unsupported transaction type: ${txData.__kind}`);
+        return event.extrinsic?.hash || null;
+      }
+
+      const sig = txData.value.signature;
+      const tx = ethers.Transaction.from({
+        type: 2,
+        chainId: txData.value.chainId,
+        nonce: txData.value.nonce,
+        maxPriorityFeePerGas: txData.value.maxPriorityFeePerGas,
+        maxFeePerGas: txData.value.maxFeePerGas,
+        gasLimit: txData.value.gasLimit,
+        to: txData.value.action.__kind === 'Call' ? txData.value.action.value : null,
+        value: txData.value.value,
+        data: txData.value.input,
+        accessList: txData.value.accessList || [],
+        signature: {
+          r: sig.r,
+          s: sig.s,
+          yParity: sig.oddYParity ? 1 : 0,
+          networkV: null,
+        },
+      });
+
+      return tx.hash;
+    } catch (error) {
+      console.warn(`Failed to compute Ethereum transaction hash:`, error);
+      return event.extrinsic?.hash || null;
+    }
   }
 
   async handleEthereumLog(event: any, block: any) {
@@ -35,7 +78,7 @@ export class QuStreamEventsHandler {
       if (topic === quStreamAbi.topics.RequestRegistered) {
         await this.handleRequestRegistered(log, block, event);
       } else if (topic === quStreamAbi.topics.RequestStatusUpdated) {
-        await this.handleRequestStatusUpdated(log, block);
+        await this.handleRequestStatusUpdated(log, block, event);
       }
     } catch (error) {
       console.error(`Error handling EVM log at block ${block.header.height}:`, error);
@@ -51,7 +94,7 @@ export class QuStreamEventsHandler {
     const qBlock = decoded.qBlock.toString();
 
     const timestamp = Date.now();
-    const transactionHash = event.extrinsic?.hash;
+    const transactionHash = this.extractEthereumTransactionHash(event);
 
     const request = new QuStreamRequest({
       id: `${this.contractAddress}-${requestId}`,
@@ -60,7 +103,8 @@ export class QuStreamEventsHandler {
       userID,
       qBlock,
       status: RequestStatus.Pending,
-      transactionHash,
+      registerTransactionHash: transactionHash,
+      processTransactionHash: null,
       createdAtBlock: block.header.height,
       createdAtTimestamp: new Date(timestamp),
       processedAtBlock: null,
@@ -78,7 +122,7 @@ export class QuStreamEventsHandler {
     console.log(`Request ${requestId} registered by ${sender} (userID: ${userID}, qBlock: ${qBlock})`);
   }
 
-  private async handleRequestStatusUpdated(log: any, block: any) {
+  private async handleRequestStatusUpdated(log: any, block: any, event: any) {
     const decoded = quStreamAbi.abi.decodeEventLog(quStreamAbi.events.RequestStatusUpdated!, log.data, log.topics);
 
     const requestId = BigInt(decoded.id.toString());
@@ -93,11 +137,16 @@ export class QuStreamEventsHandler {
     }
 
     const timestamp = Date.now();
+    const transactionHash = this.extractEthereumTransactionHash(event);
 
     const oldStatus = request.status;
     request.status = status === 1 ? RequestStatus.Success : RequestStatus.Fail;
     request.processedAtBlock = block.header.height;
     request.processedAtTimestamp = new Date(timestamp);
+
+    if (transactionHash) {
+      request.processTransactionHash = transactionHash;
+    }
 
     await this.cache.getStore().save(request);
 

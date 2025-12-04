@@ -19,6 +19,10 @@ export const fieldSelection = {
   event: {
     name: true,
     args: true,
+    call: {
+      name: true,
+      args: true,
+    },
   },
   log: {
     address: true,
