@@ -629,68 +629,67 @@ jobs:
   #           true
   #         fi
 
-  # TODO: temporarily disabling as it also fails on original moonbeam repository - https://github.com/moonbeam-foundation/moonbeam/actions/runs/18092422624/job/51476242856
-  # dev-test:
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #   needs: ["set-tags", "build"]
-  #   timeout-minutes: 20
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       chain: ["moonbase", "moonriver", "moonbeam"]
-  #       shard: [1, 2, 3, 4]
-  #   env:
-  #     GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
-  #     DEBUG_COLORS: 1
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v5
-  #       with:
-  #         ref: ${{ needs.set-tags.outputs.git_ref }}
-  #     - name: Create local folders
-  #       run: |
-  #         mkdir -p target/release/wbuild/${{ matrix.chain }}-runtime/
-  #     - name: "Download branch built runtime"
-  #       uses: actions/download-artifact@v5
-  #       with:
-  #         name: runtimes
-  #         path: target/release/wbuild/${{ matrix.chain }}-runtime/
-  #     - name: "Download branch built node"
-  #       uses: actions/download-artifact@v5
-  #       with:
-  #         name: qustream
-  #         path: target/release
-  #     - name: "Run Moonwall Dev Tests"
-  #       uses: ./.github/workflow-templates/dev-tests
-  #       with:
-  #         moonwall_environment: dev_${{ matrix.chain }}
-  #         shard: ${{ matrix.shard }}
-  #         shard-count: 4
-  #     - name: Upload HTML report to s3
-  #       if: ${{ !github.event.pull_request.head.repo.fork}}
-  #       uses: opslayertech/upload-s3-action@v1.1.0
-  #       id: S3
-  #       with:
-  #         aws_key_id: ${{ secrets.S3_COVERAGE_ID }}
-  #         aws_secret_access_key: ${{ secrets.S3_COVERAGE_KEY }}
-  #         aws_bucket: ${{ vars.S3_COVERAGE_BUCKET }}
-  #         destination_dir: "${{ needs.set-tags.outputs.test_s3_dir }}"
-  #         source_dir: "test/html"
-  #         acl: "none"
-  #     # - name: Upload to Moonscope
-  #     #   if: github.event.pull_request.head.repo.full_name == github.repository
-  #     #   run: |
-  #     #     curl --location 'https://api.moonscope.kaki.dev/insert' \
-  #     #     -X POST \
-  #     #     --header 'moonwallenv: dev_${{ matrix.chain }}' \
-  #     #     --header 'Authorization: Bearer ${{ secrets.MOONSCOPE_TOKEN }}' \
-  #     #     --header 'table: dev_reports' \
-  #     #     --header 'branch: ${{ needs.set-tags.outputs.git_branch }}' \
-  #     #     --header 'Content-Type: application/json' \
-  #     #     --max-time 30 \
-  #     #     -d@test/tmp/testResults.json || echo "Curl command failed but continuing"
+  dev-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    needs: ["set-tags", "build"]
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        chain: ["moonbase", "moonriver", "moonbeam"]
+        shard: [1, 2, 3, 4]
+    env:
+      GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
+      DEBUG_COLORS: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.set-tags.outputs.git_ref }}
+      - name: Create local folders
+        run: |
+          mkdir -p target/release/wbuild/${{ matrix.chain }}-runtime/
+      - name: "Download branch built runtime"
+        uses: actions/download-artifact@v5
+        with:
+          name: runtimes
+          path: target/release/wbuild/${{ matrix.chain }}-runtime/
+      - name: "Download branch built node"
+        uses: actions/download-artifact@v5
+        with:
+          name: qustream
+          path: target/release
+      - name: "Run Moonwall Dev Tests"
+        uses: ./.github/workflow-templates/dev-tests
+        with:
+          moonwall_environment: dev_${{ matrix.chain }}
+          shard: ${{ matrix.shard }}
+          shard-count: 4
+      - name: Upload HTML report to s3
+        if: ${{ !github.event.pull_request.head.repo.fork}}
+        uses: opslayertech/upload-s3-action@v1.1.0
+        id: S3
+        with:
+          aws_key_id: ${{ secrets.S3_COVERAGE_ID }}
+          aws_secret_access_key: ${{ secrets.S3_COVERAGE_KEY }}
+          aws_bucket: ${{ vars.S3_COVERAGE_BUCKET }}
+          destination_dir: "${{ needs.set-tags.outputs.test_s3_dir }}"
+          source_dir: "test/html"
+          acl: "none"
+      # - name: Upload to Moonscope
+      #   if: github.event.pull_request.head.repo.full_name == github.repository
+      #   run: |
+      #     curl --location 'https://api.moonscope.kaki.dev/insert' \
+      #     -X POST \
+      #     --header 'moonwallenv: dev_${{ matrix.chain }}' \
+      #     --header 'Authorization: Bearer ${{ secrets.MOONSCOPE_TOKEN }}' \
+      #     --header 'table: dev_reports' \
+      #     --header 'branch: ${{ needs.set-tags.outputs.git_branch }}' \
+      #     --header 'Content-Type: application/json' \
+      #     --max-time 30 \
+      #     -d@test/tmp/testResults.json || echo "Curl command failed but continuing"
 
   typescript-tracing-tests:
     if: >
@@ -803,7 +802,7 @@ jobs:
           name: failed-node-logs
           path: ${{ env.NODE_LOGS_ZIP }}
 
-  # TODO: temporarily disabling as it also fails on original moonbeam repository - https://github.com/moonbeam-foundation/moonbeam/actions/runs/18092422624/job/51476242798
+  # TODO: temporarily disabling as it also fails on original moonbeam repository - https://github.com/moonbeam-foundation/moonbeam/tree/v0.47.1
   # chopsticks-upgrade-test:
   #   runs-on: ubuntu-latest
   #   needs: ["set-tags", "build"]
@@ -850,78 +849,77 @@ jobs:
   #           cd test
   #           pnpm moonwall test upgrade_${{matrix.chain}}
 
-  # TODO: temporarily disabling as it also fails on original moonbeam repository - https://github.com/moonbeam-foundation/moonbeam/actions/runs/18092422624/job/51476242854
-  # zombie_upgrade_test:
-  #   runs-on: ubuntu-latest
-  #   needs: ["set-tags", "build"]
-  #   strategy:
-  #     fail-fast: false
-  #     max-parallel: 1
-  #     matrix:
-  #       chain: ["moonbase", "moonriver", "moonbeam"]
-  #   env:
-  #     GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
-  #     DEBUG_COLORS: 1
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v5
-  #       with:
-  #         ref: ${{ needs.set-tags.outputs.git_ref }}
-  #     - uses: pnpm/action-setup@v4
-  #       with:
-  #         version: 9
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version-file: "test/.nvmrc"
-  #     - name: Create local folders
-  #       run: |
-  #         mkdir -p target/release/wbuild/${{ matrix.chain }}-runtime/
-  #         mkdir -p test/tmp
-  #     - name: "Download branch built runtime"
-  #       uses: actions/download-artifact@v5
-  #       with:
-  #         name: runtimes
-  #         path: target/release/wbuild/${{ matrix.chain }}-runtime/
-  #     - name: "Download branch built node"
-  #       uses: actions/download-artifact@v5
-  #       with:
-  #         name: qustream
-  #         path: target/release
-  #     - name: Retrieve moonbeam binary from docker (for plainSpec generation)
-  #       run: |
-  #         LATEST_CLIENT=$(curl -s https://api.github.com/repos/moonbeam-foundation/moonbeam/releases | jq -r '.[] | select(.name | test("v";"i")) | .tag_name' | sort -rs | head -n 1 | tr -d '[:blank:]')
-  #         echo "Latest client: $LATEST_CLIENT"
-  #         wget https://github.com/moonbeam-foundation/moonbeam/releases/download/$LATEST_CLIENT/moonbeam -O test/tmp/moonbeam_rt
-  #     - name: Prepare Chainspecs
-  #       run: |
-  #         cd test
-  #         pnpm install
+  zombie_upgrade_test:
+    runs-on: ubuntu-latest
+    needs: ["set-tags", "build"]
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        chain: ["moonbase", "moonriver", "moonbeam"]
+    env:
+      GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
+      DEBUG_COLORS: 1
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.set-tags.outputs.git_ref }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: "test/.nvmrc"
+      - name: Create local folders
+        run: |
+          mkdir -p target/release/wbuild/${{ matrix.chain }}-runtime/
+          mkdir -p test/tmp
+      - name: "Download branch built runtime"
+        uses: actions/download-artifact@v5
+        with:
+          name: runtimes
+          path: target/release/wbuild/${{ matrix.chain }}-runtime/
+      - name: "Download branch built node"
+        uses: actions/download-artifact@v5
+        with:
+          name: qustream
+          path: target/release
+      - name: Retrieve moonbeam binary from docker (for plainSpec generation)
+        run: |
+          LATEST_CLIENT=$(curl -s https://api.github.com/repos/moonbeam-foundation/moonbeam/releases | jq -r '.[] | select(.name | test("v";"i")) | .tag_name' | sort -rs | head -n 1 | tr -d '[:blank:]')
+          echo "Latest client: $LATEST_CLIENT"
+          wget https://github.com/moonbeam-foundation/moonbeam/releases/download/$LATEST_CLIENT/moonbeam -O test/tmp/moonbeam_rt
+      - name: Prepare Chainspecs
+        run: |
+          cd test
+          pnpm install
 
-  #         ## Generate old spec using latest published node, modify it, and generate raw spec
-  #         chmod uog+x tmp/moonbeam_rt
-  #         chmod uog+x ../target/release/qustream
-  #         tmp/moonbeam_rt build-spec --chain ${{ matrix.chain }}-local > tmp/${{ matrix.chain }}-plain-spec.json
-  #         pnpm tsx scripts/modify-plain-specs.ts process tmp/${{ matrix.chain }}-plain-spec.json tmp/${{ matrix.chain }}-modified-spec.json
-  #         tmp/moonbeam_rt build-spec --chain tmp/${{ matrix.chain }}-modified-spec.json --raw > tmp/${{ matrix.chain }}-raw-spec.json
-  #         pnpm tsx scripts/preapprove-rt-rawspec.ts process tmp/${{ matrix.chain }}-raw-spec.json tmp/${{ matrix.chain }}-modified-raw-spec.json ../target/release/wbuild/${{ matrix.chain }}-runtime/${{ matrix.chain }}_runtime.compact.compressed.wasm
-  #     - name: "Run zombie upgrade test"
-  #       run: |
-  #         cd test
-  #         pnpm moonwall test zombie_${{ matrix.chain }}
-  #     - name: Zip and Upload Node Logs on Failure
-  #       if: failure()
-  #       run: |
-  #         TIMESTAMP=$(date +%Y%m%d%H%M%S)
-  #         export NODE_LOGS_ZIP="node_logs_$TIMESTAMP.zip"
-  #         MOST_RECENT_ZOMBIE_DIR=$(ls -td /tmp/zombie-* | head -n 1)
-  #         find $MOST_RECENT_ZOMBIE_DIR -maxdepth 1 -type f -name '*.log' -exec zip -r $NODE_LOGS_ZIP {} \;
-  #         echo "NODE_LOGS_ZIP=${NODE_LOGS_ZIP}" >> $GITHUB_ENV
-  #     - uses: actions/upload-artifact@v4
-  #       if: failure()
-  #       with:
-  #         name: failed-node-logs
-  #         path: ${{ env.NODE_LOGS_ZIP }}
+          ## Generate old spec using latest published node, modify it, and generate raw spec
+          chmod uog+x tmp/moonbeam_rt
+          chmod uog+x ../target/release/qustream
+          tmp/moonbeam_rt build-spec --chain ${{ matrix.chain }}-local > tmp/${{ matrix.chain }}-plain-spec.json
+          pnpm tsx scripts/modify-plain-specs.ts process tmp/${{ matrix.chain }}-plain-spec.json tmp/${{ matrix.chain }}-modified-spec.json
+          tmp/moonbeam_rt build-spec --chain tmp/${{ matrix.chain }}-modified-spec.json --raw > tmp/${{ matrix.chain }}-raw-spec.json
+          pnpm tsx scripts/preapprove-rt-rawspec.ts process tmp/${{ matrix.chain }}-raw-spec.json tmp/${{ matrix.chain }}-modified-raw-spec.json ../target/release/wbuild/${{ matrix.chain }}-runtime/${{ matrix.chain }}_runtime.compact.compressed.wasm
+      - name: "Run zombie upgrade test"
+        run: |
+          cd test
+          pnpm moonwall test zombie_${{ matrix.chain }}
+      - name: Zip and Upload Node Logs on Failure
+        if: failure()
+        run: |
+          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+          export NODE_LOGS_ZIP="node_logs_$TIMESTAMP.zip"
+          MOST_RECENT_ZOMBIE_DIR=$(ls -td /tmp/zombie-* | head -n 1)
+          find $MOST_RECENT_ZOMBIE_DIR -maxdepth 1 -type f -name '*.log' -exec zip -r $NODE_LOGS_ZIP {} \;
+          echo "NODE_LOGS_ZIP=${NODE_LOGS_ZIP}" >> $GITHUB_ENV
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: failed-node-logs
+          path: ${{ env.NODE_LOGS_ZIP }}
 
   bridge-integration-tests:
     needs: ["set-tags", "build"]
