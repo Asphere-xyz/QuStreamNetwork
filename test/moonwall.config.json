@@ -614,7 +614,7 @@
         "launchSpec": [
           {
             "name": "moonbeam",
-            "binPath": "../target/release/moonbeam",
+            "binPath": "../target/release/qustream",
             "newRpcBehaviour": true,
             "options": [
               "--ethapi=txpool",
@@ -668,7 +668,7 @@
         "launchSpec": [
           {
             "name": "moonbeam",
-            "binPath": "../target/release/moonbeam",
+            "binPath": "../target/release/qustream",
             "newRpcBehaviour": true,
             "options": [
               "--ethapi=txpool",
@@ -723,7 +723,7 @@
         "launchSpec": [
           {
             "name": "moonbeam",
-            "binPath": "../target/release/moonbeam",
+            "binPath": "../target/release/qustream",
             "newRpcBehaviour": true,
             "options": [
               "--ethapi=txpool",
