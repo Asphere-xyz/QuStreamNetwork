@@ -466,7 +466,7 @@
       "contracts": "contracts/",
       "runScripts": [
         "compile-contracts.ts compile",
-        "compile-wasm.ts compile -b ../target/release/moonbeam -o wasm -c moonbeam-dev",
+        "compile-wasm.ts compile -b ../target/release/qustream -o wasm -c moonbeam-dev",
         "prepare-lazy-loading-overrides.ts process configs/lazyLoadingStateOverrides.json tmp/lazyLoadingStateOverrides.json ../target/release/wbuild/moonbeam-runtime/moonbeam_runtime.compact.compressed.wasm"
       ],
       "multiThreads": 4,
@@ -486,7 +486,7 @@
         "launchSpec": [
           {
             "name": "moonbeam",
-            "binPath": "../target/release/moonbeam",
+            "binPath": "../target/release/qustream",
             "newRpcBehaviour": true,
             "options": [
               "--lazy-loading-delay-between-requests=10",
@@ -757,7 +757,7 @@
       "contracts": "contracts/",
       "runScripts": [
         "compile-contracts.ts compile",
-        "compile-wasm.ts compile -b ../target/release/moonbeam -o wasm -c moonbase-dev"
+        "compile-wasm.ts compile -b ../target/release/qustream -o wasm -c moonbase-dev"
       ],
       "multiThreads": 4,
       "envVars": [
@@ -772,7 +772,7 @@
         "launchSpec": [
           {
             "name": "moonbeam",
-            "binPath": "../target/release/moonbeam",
+            "binPath": "../target/release/qustream",
             "newRpcBehaviour": true,
             "options": [
               "--ethapi=txpool,debug,trace",
