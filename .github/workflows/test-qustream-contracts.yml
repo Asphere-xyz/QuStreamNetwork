@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  test-qustream-smart-contracts:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,6 +36,9 @@ jobs:
       - name: Run tests with coverage
         working-directory: qustream-smart-contracts
         run: npx hardhat test --coverage
+
+      - name: Setup LCOV
+        uses: hrishikesh-kadam/setup-lcov@v1
 
       - name: Report code coverage
         uses: zgosalvez/github-actions-report-lcov@v5
