@@ -595,7 +595,7 @@
       "contracts": "contracts/",
       "runScripts": [
         "compile-contracts.ts compile",
-        "compile-wasm.ts compile -b ../target/release/moonbeam -o wasm -c moonbeam-dev"
+        "compile-wasm.ts compile -b ../target/release/qustream -o wasm -c moonbeam-dev"
       ],
       "multiThreads": 4,
       "envVars": [
@@ -649,7 +649,7 @@
       "contracts": "contracts/",
       "runScripts": [
         "compile-contracts.ts compile",
-        "compile-wasm.ts compile -b ../target/release/moonbeam -o wasm -c moonriver-dev"
+        "compile-wasm.ts compile -b ../target/release/qustream -o wasm -c moonriver-dev"
       ],
       "multiThreads": 8,
       "envVars": [
@@ -704,7 +704,7 @@
       "contracts": "contracts/",
       "runScripts": [
         "compile-contracts.ts compile",
-        "compile-wasm.ts compile -b ../target/release/moonbeam -o wasm -c moonbase-dev"
+        "compile-wasm.ts compile -b ../target/release/qustream -o wasm -c moonbase-dev"
       ],
       "multiThreads": 4,
       "envVars": [

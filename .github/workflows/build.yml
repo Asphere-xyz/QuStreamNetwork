@@ -638,7 +638,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chain: ["moonbase", "moonriver", "qustream"]
+        chain: ["moonbase", "moonriver", "moonbeam"]
         shard: [1, 2, 3, 4]
     env:
       GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
