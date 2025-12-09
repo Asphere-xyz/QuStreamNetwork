@@ -1,4 +1,4 @@
-name: Test QuStream Contracts
+name: Test QuStream Smart Contracts
 
 on:
   pull_request:
@@ -48,4 +48,8 @@ jobs:
           artifact-name: qustream-contracts-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: qustream-smart-contracts
+          title-prefix: "QuStream Smart Contracts - "
+          additional-message: |
+
+            This coverage report is for the **QuStream Smart Contracts** (`qustream-smart-contracts/`).
           update-comment: true

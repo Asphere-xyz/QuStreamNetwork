@@ -638,7 +638,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        chain: ["moonbase", "moonriver", "moonbeam"]
+        chain: ["moonbase", "moonriver", "qustream"]
         shard: [1, 2, 3, 4]
     env:
       GH_WORKFLOW_MATRIX_CHAIN: ${{ matrix.chain }}
@@ -659,7 +659,7 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: "Run Moonwall Dev Tests"
         uses: ./.github/workflow-templates/dev-tests
@@ -706,7 +706,7 @@ jobs:
           ref: ${{ needs.set-tags.outputs.git_ref }}
       - uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: build
       - name: Use pnpm
         uses: pnpm/action-setup@v4
@@ -723,7 +723,7 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: Get tracing runtimes
         run: |
@@ -781,11 +781,11 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: "Run lazy loading tests"
         run: |
-          chmod uog+x target/release/moonbeam
+          chmod uog+x target/release/qustream
           cd test
           pnpm install
           pnpm moonwall test lazy_loading_${{ matrix.chain }}
@@ -883,7 +883,7 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: Retrieve moonbeam binary from docker (for plainSpec generation)
         run: |
@@ -936,7 +936,7 @@ jobs:
       - name: "Download branch built node"
         uses: actions/download-artifact@v5
         with:
-          name: moonbeam
+          name: qustream
           path: target/release
       - name: Setup
         run: |
