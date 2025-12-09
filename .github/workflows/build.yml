@@ -482,7 +482,7 @@ jobs:
           edit-mode: replace
 
   check-unused-dependencies:
-    runs-on: moonbeam-release-medium
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
