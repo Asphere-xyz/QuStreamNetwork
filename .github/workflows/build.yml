@@ -157,7 +157,7 @@ jobs:
           reporter: github-pr-review
           fail_level: any
           filter_mode: nofilter
-          config_file: .linkspector.yml
+          config_file: .github/.linkspector.yml
   check-biome:
     name: "Check with Biome"
     runs-on: ubuntu-latest
