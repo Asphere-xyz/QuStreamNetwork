@@ -506,7 +506,7 @@ jobs:
           target: wasm32-unknown-unknown
       - name: Install required dependencies
         run: |
-          sudo apt-get install -y libprotobuf-dev protobuf-compiler
+          sudo apt-get install -y libprotobuf-dev protobuf-compiler build-essential clang libc6-dev
           cargo +nightly install cargo-udeps
       - name: Check for unused dependencies
         run: |
@@ -534,9 +534,13 @@ jobs:
         with:
           tool-cache: false
           android: true
-          dotnet: false
+          dotnet: true
           haskell: true
           large-packages: true
+      - name: Install required dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang
       - name: Install Protoc
         uses: arduino/setup-protoc@v3
       - name: Run sccache-cache
