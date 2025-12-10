@@ -174,17 +174,41 @@ jobs:
         env:
           PRIVATE_KEY: "0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b"
         run: |
-          yes | npx hardhat ignition deploy ./ignition/modules/QuStreamRequestManager.ts \
+          echo "Deploying QuStream contract to qustreamLocalnet..."
+          echo "y" | npx hardhat ignition deploy ./ignition/modules/QuStreamRequestManager.ts \
             --network qustreamLocalnet \
             --parameters ./ignition/modules/QuStreamRequestManager.parameters.json \
-            --reset
+            --reset || {
+            echo "Deployment failed. Checking for existing deployment..."
+            ls -la ignition/deployments/chain-*/deployed_addresses.json 2>/dev/null || true
+            exit 1
+          }
+          echo "Deployment completed successfully"
 
       - name: Extract deployed contract address
         working-directory: qustream-smart-contracts
         run: |
-          DEPLOYED_ADDRESS=$(cat ignition/deployments/chain-*/deployed_addresses.json 2>/dev/null | grep -o '"QuStreamRequestManager#QuStreamRequestManager":"0x[^"]*"' | cut -d'"' -f4 || echo "")
+          echo "Looking for deployed contract address..."
+          DEPLOYMENT_DIR=$(find ignition/deployments -name "deployed_addresses.json" -type f | head -1 | xargs dirname 2>/dev/null || echo "")
+          if [ -z "$DEPLOYMENT_DIR" ]; then
+            echo "ERROR: No deployment directory found"
+            echo "Contents of ignition/deployments:"
+            ls -la ignition/deployments/ 2>/dev/null || echo "Directory does not exist"
+            exit 1
+          fi
+          echo "Found deployment directory: $DEPLOYMENT_DIR"
+          DEPLOYMENT_FILE="$DEPLOYMENT_DIR/deployed_addresses.json"
+          if [ ! -f "$DEPLOYMENT_FILE" ]; then
+            echo "ERROR: deployed_addresses.json not found at $DEPLOYMENT_FILE"
+            exit 1
+          fi
+          echo "Deployment file contents:"
+          cat "$DEPLOYMENT_FILE"
+          DEPLOYED_ADDRESS=$(cat "$DEPLOYMENT_FILE" | grep -o '"QuStreamRequestManagerModule#QuStreamRequestManager":"0x[^"]*"' | cut -d'"' -f4 || echo "")
           if [ -z "$DEPLOYED_ADDRESS" ]; then
-            echo "Failed to get deployed contract address"
+            echo "ERROR: Failed to extract contract address from $DEPLOYMENT_FILE"
+            echo "Available keys in file:"
+            cat "$DEPLOYMENT_FILE" | grep -o '"[^"]*"' || true
             exit 1
           fi
           echo "Contract deployed at: $DEPLOYED_ADDRESS"
