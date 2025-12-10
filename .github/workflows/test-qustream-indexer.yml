@@ -66,16 +66,13 @@ jobs:
         working-directory: qustream-smart-contracts
         run: npm install
 
-      - name: Wait for database
-        timeout-minutes: 2
-        run: timeout 60 bash -c 'until docker exec $(docker ps -qf "name=db") pg_isready -U postgres; do sleep 5; done'
-
-      - name: Install and build indexer
+      - name: Install indexer dependencies
         working-directory: qustream-indexer
         run: npm install && npm run build
 
-      - name: Download zombienet binaries
-        run: make download-binaries
+      - name: Wait for database
+        timeout-minutes: 2
+        run: timeout 60 bash -c 'until docker exec $(docker ps -qf "name=db") pg_isready -U postgres; do sleep 5; done'
 
       - name: Build QuStream node
         timeout-minutes: 120
@@ -101,21 +98,28 @@ jobs:
           }
           EOF
 
-      - name: Setup QuStream symlink for zombienet
-        run: make setup-moonbeam
-
-      - name: Start zombienet
-        timeout-minutes: 5
+      - name: Start zombienet (downloads binaries, sets up symlinks, starts network)
+        timeout-minutes: 10
         run: |
-          export PATH="${PWD}/zombienet/bin:${PATH}"
           mkdir -p /tmp/zombienet-logs
-          zombienet spawn zombienet/configs/moonbeam-polkadot.toml > /tmp/zombienet-logs/zombienet.log 2>&1 &
+          make start-zombienet-qustream > /tmp/zombienet-logs/zombienet.log 2>&1 &
           ZOMBIENET_PID=$!
           echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
+          echo "Zombienet started with PID: $ZOMBIENET_PID"
 
       - name: Wait for node to be ready
         timeout-minutes: 10
         run: |
+          echo "Waiting for zombienet to initialize..."
+          sleep 10
+
+          echo "Checking if zombienet is still running..."
+          if ! ps -p $ZOMBIENET_PID > /dev/null 2>&1; then
+            echo "ERROR: Zombienet process died during startup"
+            cat /tmp/zombienet-logs/zombienet.log || true
+            exit 1
+          fi
+
           echo "Waiting for RPC to respond..."
           timeout 300 bash -c 'until curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 > /dev/null 2>&1; do sleep 5; done' || {
             cat /tmp/zombienet-logs/zombienet.log || true
@@ -124,7 +128,7 @@ jobs:
           }
 
           echo "RPC is responding. Waiting for block production..."
-          timeout 300 bash -c '
+          timeout 600 bash -c '
           PREV_BLOCK=0
           RETRIES=0
           MAX_RETRIES=60
@@ -150,10 +154,14 @@ jobs:
             exit 1
           }
 
+          echo "Verifying zombienet is still running..."
           if ! ps -p $ZOMBIENET_PID > /dev/null 2>&1; then
-            cat /tmp/zombienet-logs/zombienet.log
+            echo "ERROR: Zombienet process died after initial startup"
+            cat /tmp/zombienet-logs/zombienet.log || true
             exit 1
           fi
+
+          echo "✓ Zombienet network is ready for contract deployment"
 
       - name: Deploy QuStream contract
         working-directory: qustream-smart-contracts
