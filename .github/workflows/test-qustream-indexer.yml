@@ -85,12 +85,9 @@ jobs:
         if: always()
         run: ${SCCACHE_PATH} --show-stats || true
 
-      - name: Setup contract deployment keys and Hardhat keystore
-        working-directory: qustream-smart-contracts
+      - name: Setup contract deployment keys
         run: |
-          DEPLOYER_PRIVATE_KEY="0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b"
-          echo "$DEPLOYER_PRIVATE_KEY" > deployer_key.txt
-          npx hardhat keystore set PRIVATE_KEY --keystore-password test123 < deployer_key.txt || true
+          echo "PRIVATE_KEY=0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b" >> $GITHUB_ENV
 
       - name: Create contract parameters file
         working-directory: qustream-smart-contracts
@@ -119,11 +116,40 @@ jobs:
       - name: Wait for node to be ready
         timeout-minutes: 10
         run: |
+          echo "Waiting for RPC to respond..."
           timeout 300 bash -c 'until curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 > /dev/null 2>&1; do sleep 5; done' || {
             cat /tmp/zombienet-logs/zombienet.log || true
             ps aux | grep -E 'zombienet|polkadot|qustream' || true
             exit 1
           }
+
+          echo "RPC is responding. Waiting for block production..."
+          timeout 300 bash -c '
+          PREV_BLOCK=0
+          RETRIES=0
+          MAX_RETRIES=60
+          while [ $RETRIES -lt $MAX_RETRIES ]; do
+            BLOCK_HEX=$(curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 2>/dev/null | grep -o "\"result\":\"0x[0-9a-f]*\"" | cut -d"\"" -f4)
+            if [ -n "$BLOCK_HEX" ]; then
+              BLOCK_NUM=$((16#${BLOCK_HEX#0x}))
+              echo "Current block: $BLOCK_NUM"
+              if [ $BLOCK_NUM -gt $PREV_BLOCK ] && [ $BLOCK_NUM -gt 0 ]; then
+                echo "Block production confirmed at block $BLOCK_NUM"
+                exit 0
+              fi
+              PREV_BLOCK=$BLOCK_NUM
+            fi
+            RETRIES=$((RETRIES + 1))
+            sleep 5
+          done
+          echo "Block production not detected after ${MAX_RETRIES} attempts"
+          exit 1
+          ' || {
+            echo "Failed to detect block production"
+            cat /tmp/zombienet-logs/zombienet.log || true
+            exit 1
+          }
+
           if ! ps -p $ZOMBIENET_PID > /dev/null 2>&1; then
             cat /tmp/zombienet-logs/zombienet.log
             exit 1
