@@ -64,7 +64,7 @@ jobs:
 
       - name: Install contract dependencies
         working-directory: qustream-smart-contracts
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Wait for database
         timeout-minutes: 2
@@ -72,7 +72,7 @@ jobs:
 
       - name: Install and build indexer
         working-directory: qustream-indexer
-        run: pnpm install --frozen-lockfile && pnpm build
+        run: pnpm install && pnpm build
 
       - name: Download zombienet binaries
         run: make download-binaries
