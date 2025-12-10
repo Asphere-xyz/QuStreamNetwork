@@ -13,8 +13,8 @@ env:
   CARGO_TERM_COLOR: always
   RUSTC_WRAPPER: "sccache"
   CARGO_INCREMENTAL: "0"
-  CARGO_BUILD_JOBS: "2"
-  SCCACHE_CACHE_SIZE: "20GB"
+  CARGO_BUILD_JOBS: "4"
+  SCCACHE_CACHE_SIZE: "10GB"
   SCCACHE_GHA_ENABLED: true
 
 jobs:
@@ -78,7 +78,7 @@ jobs:
         run: make download-binaries
 
       - name: Build QuStream node
-        timeout-minutes: 45
+        timeout-minutes: 90
         run: cargo build --release --locked --no-default-features --features moonbase-native
 
       - name: Display sccache stats
@@ -89,9 +89,7 @@ jobs:
         working-directory: qustream-smart-contracts
         run: |
           DEPLOYER_PRIVATE_KEY="0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b"
-          MASTER_NODE_PRIVATE_KEY="0x39539ab1876910bbf3a223d84a29e28f1cb4e2e456503e7e91ed39b2e7223d68"
           echo "$DEPLOYER_PRIVATE_KEY" > deployer_key.txt
-          echo "$MASTER_NODE_PRIVATE_KEY" > master_key.txt
           npx hardhat keystore set PRIVATE_KEY --keystore-password test123 < deployer_key.txt || true
 
       - name: Create contract parameters file
@@ -101,7 +99,7 @@ jobs:
           {
             "QuStreamRequestManagerModule": {
               "CONTRACT_OWNER": "0xf24FF3a9CF04c71Dbc94D0b566f7A27B94566cac",
-              "MASTER_NODE": "0x5c4242beB94dE30b922f57241f1D02f36e906915"
+              "MASTER_NODE": "0x773539d4Ac0e786233D90A233654ccEE26a613D9"
             }
           }
           EOF
