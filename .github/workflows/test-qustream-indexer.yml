@@ -13,7 +13,7 @@ env:
   CARGO_TERM_COLOR: always
   RUSTC_WRAPPER: "sccache"
   CARGO_INCREMENTAL: "0"
-  CARGO_BUILD_JOBS: "4"
+  CARGO_BUILD_JOBS: "2"
   SCCACHE_CACHE_SIZE: "10GB"
   SCCACHE_GHA_ENABLED: true
 
@@ -78,8 +78,8 @@ jobs:
         run: make download-binaries
 
       - name: Build QuStream node
-        timeout-minutes: 90
-        run: cargo build --release --locked --no-default-features --features moonbase-native
+        timeout-minutes: 120
+        run: cargo build --release --locked -p moonbeam
 
       - name: Display sccache stats
         if: always()
