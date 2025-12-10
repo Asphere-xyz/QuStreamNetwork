@@ -45,11 +45,4 @@ jobs:
         with:
           coverage-files: qustream-smart-contracts/coverage/lcov.info
           minimum-coverage: 100
-          artifact-name: qustream-contracts-coverage
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           working-directory: qustream-smart-contracts
-          title-prefix: "QuStream Smart Contracts - "
-          additional-message: |
-
-            This coverage report is for the **QuStream Smart Contracts** (`qustream-smart-contracts/`).
-          update-comment: true
