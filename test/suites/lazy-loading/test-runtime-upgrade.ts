@@ -25,18 +25,11 @@ describeSuite({
       api = context.polkadotJs();
 
       const runtimeChain = api.runtimeChain.toUpperCase();
-      log("runtimeChain", runtimeChain);
       let runtime = runtimeChain
         .split(" ")
         .filter((v) => Object.keys(RUNTIME_CONSTANTS).includes(v))
         .join()
         .toLowerCase();
-      log("runtime", runtime);
-
-      // Handle QuStream which uses moonbeam runtime but has different chain name
-      if (!runtime || runtimeChain.includes("QUSTREAM")) {
-        runtime = "moonbeam";
-      }
 
       const wasmPath = `../target/release/wbuild/${runtime}-runtime/${runtime}_runtime.compact.compressed.wasm`;
       const runtimeWasmHex = u8aToHex(await fs.readFile(wasmPath));
