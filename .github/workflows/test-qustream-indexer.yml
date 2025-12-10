@@ -62,22 +62,17 @@ jobs:
         working-directory: qustream-indexer
         run: docker compose up -d db
 
-      - name: Install dependencies in parallel
-        run: |
-          cd qustream-indexer && pnpm install --frozen-lockfile &
-          INDEXER_PID=$!
-          cd qustream-smart-contracts && pnpm install --frozen-lockfile &
-          CONTRACTS_PID=$!
-          wait $INDEXER_PID
-          wait $CONTRACTS_PID
+      - name: Install contract dependencies
+        working-directory: qustream-smart-contracts
+        run: pnpm install --frozen-lockfile
 
       - name: Wait for database
         timeout-minutes: 2
         run: timeout 60 bash -c 'until docker exec $(docker ps -qf "name=db") pg_isready -U postgres; do sleep 5; done'
 
-      - name: Build indexer
+      - name: Install and build indexer
         working-directory: qustream-indexer
-        run: pnpm build
+        run: pnpm install --frozen-lockfile && pnpm build
 
       - name: Download zombienet binaries
         run: make download-binaries
@@ -90,17 +85,14 @@ jobs:
         if: always()
         run: ${SCCACHE_PATH} --show-stats || true
 
-      - name: Create contract deployment keys
+      - name: Setup contract deployment keys and Hardhat keystore
         working-directory: qustream-smart-contracts
         run: |
           DEPLOYER_PRIVATE_KEY="0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b"
           MASTER_NODE_PRIVATE_KEY="0x39539ab1876910bbf3a223d84a29e28f1cb4e2e456503e7e91ed39b2e7223d68"
           echo "$DEPLOYER_PRIVATE_KEY" > deployer_key.txt
           echo "$MASTER_NODE_PRIVATE_KEY" > master_key.txt
-
-      - name: Setup Hardhat keystore
-        working-directory: qustream-smart-contracts
-        run: pnpm hardhat keystore set PRIVATE_KEY --keystore-password test123 < deployer_key.txt || true
+          pnpm hardhat keystore set PRIVATE_KEY --keystore-password test123 < deployer_key.txt || true
 
       - name: Create contract parameters file
         working-directory: qustream-smart-contracts
