@@ -1,0 +1,234 @@
+name: Test QuStream Indexer
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_OPTIONS: "--max-old-space-size=8192 --no-deprecation"
+  CARGO_TERM_COLOR: always
+  RUSTC_WRAPPER: "sccache"
+  CARGO_INCREMENTAL: "0"
+  CARGO_BUILD_JOBS: "2"
+  SCCACHE_CACHE_SIZE: "30GB"
+  SCCACHE_GHA_ENABLED: true
+
+jobs:
+  test-indexer:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "qustream-indexer/.nvmrc"
+          cache: "pnpm"
+          cache-dependency-path: |
+            qustream-indexer/pnpm-lock.yaml
+            qustream-smart-contracts/pnpm-lock.yaml
+
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
+
+      - name: Cache zombienet binaries
+        uses: actions/cache@v4
+        with:
+          path: zombienet/bin
+          key: ${{ runner.os }}-zombienet-v1.3.133-polkadot-stable2506-1
+          restore-keys: |
+            ${{ runner.os }}-zombienet-
+
+      - name: Run sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.9
+
+      - name: Setup Rust toolchain
+        run: |
+          if ! which "rustup" > /dev/null; then
+            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          fi
+          rustup override unset
+          rustup show
+          rustup target add wasm32-unknown-unknown
+
+      - name: Setup Docker database (background)
+        working-directory: qustream-indexer
+        run: docker compose up -d db
+
+      - name: Install dependencies in parallel
+        run: |
+          cd qustream-indexer && pnpm install --frozen-lockfile &
+          INDEXER_PID=$!
+          cd qustream-smart-contracts && pnpm install --frozen-lockfile &
+          CONTRACTS_PID=$!
+          wait $INDEXER_PID
+          wait $CONTRACTS_PID
+
+      - name: Wait for database
+        timeout-minutes: 2
+        run: timeout 60 bash -c 'until docker exec $(docker ps -qf "name=db") pg_isready -U postgres; do sleep 5; done'
+
+      - name: Build indexer
+        working-directory: qustream-indexer
+        run: pnpm build
+
+      - name: Download zombienet binaries
+        run: make download-binaries
+
+      - name: Build QuStream node
+        timeout-minutes: 45
+        run: cargo build --release --locked --no-default-features --features moonbase-native
+
+      - name: Display sccache stats
+        if: always()
+        run: ${SCCACHE_PATH} --show-stats || true
+
+      - name: Create contract deployment keys
+        working-directory: qustream-smart-contracts
+        run: |
+          DEPLOYER_PRIVATE_KEY="0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b"
+          MASTER_NODE_PRIVATE_KEY="0x39539ab1876910bbf3a223d84a29e28f1cb4e2e456503e7e91ed39b2e7223d68"
+          echo "$DEPLOYER_PRIVATE_KEY" > deployer_key.txt
+          echo "$MASTER_NODE_PRIVATE_KEY" > master_key.txt
+
+      - name: Setup Hardhat keystore
+        working-directory: qustream-smart-contracts
+        run: pnpm hardhat keystore set PRIVATE_KEY --keystore-password test123 < deployer_key.txt || true
+
+      - name: Create contract parameters file
+        working-directory: qustream-smart-contracts
+        run: |
+          cat > ignition/modules/QuStreamRequestManager.parameters.json <<EOF
+          {
+            "QuStreamRequestManagerModule": {
+              "CONTRACT_OWNER": "0xf24FF3a9CF04c71Dbc94D0b566f7A27B94566cac",
+              "MASTER_NODE": "0x5c4242beB94dE30b922f57241f1D02f36e906915"
+            }
+          }
+          EOF
+
+      - name: Setup QuStream symlink for zombienet
+        run: make setup-moonbeam
+
+      - name: Start zombienet
+        timeout-minutes: 5
+        run: |
+          export PATH="${PWD}/zombienet/bin:${PATH}"
+          mkdir -p /tmp/zombienet-logs
+          zombienet spawn zombienet/configs/moonbeam-polkadot.toml > /tmp/zombienet-logs/zombienet.log 2>&1 &
+          ZOMBIENET_PID=$!
+          echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
+
+      - name: Wait for node to be ready
+        timeout-minutes: 10
+        run: |
+          timeout 300 bash -c 'until curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 > /dev/null 2>&1; do sleep 5; done' || {
+            cat /tmp/zombienet-logs/zombienet.log || true
+            ps aux | grep -E 'zombienet|polkadot|qustream' || true
+            exit 1
+          }
+          if ! ps -p $ZOMBIENET_PID > /dev/null 2>&1; then
+            cat /tmp/zombienet-logs/zombienet.log
+            exit 1
+          fi
+
+      - name: Deploy QuStream contract
+        working-directory: qustream-smart-contracts
+        timeout-minutes: 5
+        env:
+          PRIVATE_KEY: "0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b"
+        run: |
+          pnpm hardhat ignition deploy ./ignition/modules/QuStreamRequestManager.ts \
+            --network qustreamLocalnet \
+            --parameters ./ignition/modules/QuStreamRequestManager.parameters.json \
+            --reset
+
+      - name: Extract deployed contract address
+        working-directory: qustream-smart-contracts
+        run: |
+          DEPLOYED_ADDRESS=$(cat ignition/deployments/chain-*/deployed_addresses.json 2>/dev/null | grep -o '"QuStreamRequestManager#QuStreamRequestManager":"0x[^"]*"' | cut -d'"' -f4 || echo "")
+          if [ -z "$DEPLOYED_ADDRESS" ]; then
+            echo "Failed to get deployed contract address"
+            exit 1
+          fi
+          echo "Contract deployed at: $DEPLOYED_ADDRESS"
+          echo "QUSTREAM_CONTRACT_ADDRESS=$DEPLOYED_ADDRESS" >> $GITHUB_ENV
+
+      - name: Setup indexer environment
+        working-directory: qustream-indexer
+        run: |
+          cp .env.example .env
+          sed -i "s|QUSTREAM_CONTRACT_ADDRESS=.*|QUSTREAM_CONTRACT_ADDRESS=$QUSTREAM_CONTRACT_ADDRESS|g" .env
+          sed -i "s|CONTRACT_ADDRESS = \".*\"|CONTRACT_ADDRESS = \"$QUSTREAM_CONTRACT_ADDRESS\"|g" test-events.cjs
+
+      - name: Generate database migrations
+        working-directory: qustream-indexer
+        run: pnpm sqd migration:generate || true
+
+      - name: Apply database migrations
+        working-directory: qustream-indexer
+        run: pnpm sqd migration:apply
+
+      - name: Start indexer processor and API
+        working-directory: qustream-indexer
+        run: |
+          node --require=dotenv/config lib/main.js &
+          PROCESSOR_PID=$!
+          echo "PROCESSOR_PID=$PROCESSOR_PID" >> $GITHUB_ENV
+          node --require=dotenv/config lib/api.js &
+          API_PID=$!
+          echo "API_PID=$API_PID" >> $GITHUB_ENV
+
+      - name: Wait for GraphQL API
+        timeout-minutes: 3
+        run: timeout 120 bash -c 'until curl -s http://localhost:4350/graphql > /dev/null 2>&1; do sleep 5; done'
+
+      - name: Run indexer tests
+        working-directory: qustream-indexer
+        run: pnpm test
+        timeout-minutes: 5
+
+      - name: Show logs on failure
+        if: failure()
+        run: |
+          echo "=== Zombienet processes ==="
+          ps aux | grep -E 'zombienet|polkadot|qustream' || true
+          echo ""
+          echo "=== Zombienet logs ==="
+          cat /tmp/zombienet-logs/zombienet.log || true
+          echo ""
+          echo "=== Database logs ==="
+          cd qustream-indexer
+          docker compose logs db --tail 100 || true
+
+      - name: Cleanup
+        if: always()
+        run: |
+          { [ -n "$ZOMBIENET_PID" ] && kill $ZOMBIENET_PID 2>/dev/null; } || true
+          { [ -n "$PROCESSOR_PID" ] && kill $PROCESSOR_PID 2>/dev/null; } || true
+          { [ -n "$API_PID" ] && kill $API_PID 2>/dev/null; } || true
+          pkill -f zombienet || true
+          pkill -f polkadot || true
+          pkill -f qustream || true
+          cd qustream-indexer && docker compose down || true
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexer-logs
+          path: |
+            /tmp/zombienet-logs/*.log
+            qustream-indexer/*.log
+            qustream-indexer/tmp/*.log
