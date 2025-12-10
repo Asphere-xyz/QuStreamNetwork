@@ -14,7 +14,7 @@ env:
   RUSTC_WRAPPER: "sccache"
   CARGO_INCREMENTAL: "0"
   CARGO_BUILD_JOBS: "2"
-  SCCACHE_CACHE_SIZE: "30GB"
+  SCCACHE_CACHE_SIZE: "10GB"
   SCCACHE_GHA_ENABLED: true
 
 jobs:
@@ -34,10 +34,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: "qustream-indexer/.nvmrc"
-          cache: "pnpm"
-          cache-dependency-path: |
-            qustream-indexer/pnpm-lock.yaml
-            qustream-smart-contracts/pnpm-lock.yaml
 
       - name: Install Protoc
         uses: arduino/setup-protoc@v3
