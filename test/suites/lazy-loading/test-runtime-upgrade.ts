@@ -25,7 +25,7 @@ describeSuite({
       api = context.polkadotJs();
 
       const runtimeChain = api.runtimeChain.toUpperCase();
-      let runtime = runtimeChain
+      const runtime = runtimeChain
         .split(" ")
         .filter((v) => Object.keys(RUNTIME_CONSTANTS).includes(v))
         .join()
