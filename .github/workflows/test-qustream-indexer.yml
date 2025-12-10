@@ -108,10 +108,11 @@ jobs:
           echo "Zombienet started with PID: $ZOMBIENET_PID"
 
       - name: Wait for node to be ready
-        timeout-minutes: 10
+        timeout-minutes: 15
         run: |
-          echo "Waiting for zombienet to initialize..."
-          sleep 10
+          echo "Waiting for zombienet network to initialize (relay chain + parachain)..."
+          echo "This includes: relay chain startup, parachain registration, and initial block production"
+          sleep 90
 
           echo "Checking if zombienet is still running..."
           if ! ps -p $ZOMBIENET_PID > /dev/null 2>&1; then
@@ -120,25 +121,29 @@ jobs:
             exit 1
           fi
 
-          echo "Waiting for RPC to respond..."
-          timeout 300 bash -c 'until curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 > /dev/null 2>&1; do sleep 5; done' || {
+          echo "Waiting for parachain RPC to respond..."
+          timeout 180 bash -c 'until curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 > /dev/null 2>&1; do sleep 5; done' || {
+            echo "ERROR: Parachain RPC did not respond within 180 seconds"
             cat /tmp/zombienet-logs/zombienet.log || true
             ps aux | grep -E 'zombienet|polkadot|qustream' || true
             exit 1
           }
 
-          echo "RPC is responding. Waiting for block production..."
+          echo "RPC is responding. Waiting for block production to start..."
+          echo "Note: Parachain may take 2-5 minutes to start producing blocks after registration"
           timeout 600 bash -c '
           PREV_BLOCK=0
           RETRIES=0
-          MAX_RETRIES=60
+          MAX_RETRIES=120
           while [ $RETRIES -lt $MAX_RETRIES ]; do
             BLOCK_HEX=$(curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 2>/dev/null | grep -o "\"result\":\"0x[0-9a-f]*\"" | cut -d"\"" -f4)
             if [ -n "$BLOCK_HEX" ]; then
               BLOCK_NUM=$((16#${BLOCK_HEX#0x}))
-              echo "Current block: $BLOCK_NUM"
+              if [ $(($RETRIES % 12)) -eq 0 ]; then
+                echo "Current block: $BLOCK_NUM (attempt $RETRIES/$MAX_RETRIES)"
+              fi
               if [ $BLOCK_NUM -gt $PREV_BLOCK ] && [ $BLOCK_NUM -gt 0 ]; then
-                echo "Block production confirmed at block $BLOCK_NUM"
+                echo "✓ Block production confirmed at block $BLOCK_NUM"
                 exit 0
               fi
               PREV_BLOCK=$BLOCK_NUM
@@ -146,7 +151,7 @@ jobs:
             RETRIES=$((RETRIES + 1))
             sleep 5
           done
-          echo "Block production not detected after ${MAX_RETRIES} attempts"
+          echo "Block production not detected after ${MAX_RETRIES} attempts (10 minutes)"
           exit 1
           ' || {
             echo "Failed to detect block production"
