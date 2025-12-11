@@ -98,75 +98,64 @@ jobs:
           }
           EOF
 
-      - name: Start zombienet (downloads binaries, sets up symlinks, starts network)
-        timeout-minutes: 10
-        run: |
-          mkdir -p /tmp/zombienet-logs
-          make start-zombienet-qustream > /tmp/zombienet-logs/zombienet.log 2>&1 &
-          ZOMBIENET_PID=$!
-          echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
-          echo "Zombienet started with PID: $ZOMBIENET_PID"
-
-      - name: Wait for node to be ready
+      - name: Start zombienet and wait for network
         timeout-minutes: 15
         run: |
-          echo "Waiting for zombienet network to initialize (relay chain + parachain)..."
-          echo "This includes: relay chain startup, parachain registration, and initial block production"
-          sleep 90
+          mkdir -p /tmp/zombienet-logs
 
-          echo "Checking if zombienet is still running..."
-          if ! ps -p $ZOMBIENET_PID > /dev/null 2>&1; then
-            echo "ERROR: Zombienet process died during startup"
-            cat /tmp/zombienet-logs/zombienet.log || true
-            exit 1
-          fi
+          echo "Starting zombienet network..."
+          make start-zombienet-qustream-ci > /tmp/zombienet-logs/zombienet.log 2>&1 &
+          ZOMBIENET_PID=$!
+          echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
 
-          echo "Waiting for parachain RPC to respond..."
-          timeout 180 bash -c 'until curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 > /dev/null 2>&1; do sleep 5; done' || {
-            echo "ERROR: Parachain RPC did not respond within 180 seconds"
-            cat /tmp/zombienet-logs/zombienet.log || true
-            ps aux | grep -E 'zombienet|polkadot|qustream' || true
+          timeout 300 bash -c '
+          while true; do
+            if ! ps -p '"$ZOMBIENET_PID"' > /dev/null 2>&1; then
+              echo "ERROR: Zombienet process died"
+              exit 1
+            fi
+
+            if grep -q "At least one of the nodes fails to start" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
+              echo "ERROR: Node startup failed"
+              exit 1
+            fi
+
+            if grep -q "Network launched" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
+              echo "✓ Network launched"
+              exit 0
+            fi
+
+            sleep 5
+          done
+          ' || {
+            tail -200 /tmp/zombienet-logs/zombienet.log
             exit 1
           }
 
-          echo "RPC is responding. Waiting for block production to start..."
-          echo "Note: Parachain may take 2-5 minutes to start producing blocks after registration"
           timeout 600 bash -c '
-          PREV_BLOCK=0
           RETRIES=0
-          MAX_RETRIES=120
-          while [ $RETRIES -lt $MAX_RETRIES ]; do
-            BLOCK_HEX=$(curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 2>/dev/null | grep -o "\"result\":\"0x[0-9a-f]*\"" | cut -d"\"" -f4)
+          while [ $RETRIES -lt 120 ]; do
+            BLOCK_HEX=$(curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 2>/dev/null | grep -o "\"result\":\"0x[0-9a-f]*\"" | cut -d"\"" -f4 || echo "")
+
             if [ -n "$BLOCK_HEX" ]; then
               BLOCK_NUM=$((16#${BLOCK_HEX#0x}))
-              if [ $(($RETRIES % 12)) -eq 0 ]; then
-                echo "Current block: $BLOCK_NUM (attempt $RETRIES/$MAX_RETRIES)"
-              fi
-              if [ $BLOCK_NUM -gt $PREV_BLOCK ] && [ $BLOCK_NUM -gt 0 ]; then
-                echo "✓ Block production confirmed at block $BLOCK_NUM"
+
+              if [ $BLOCK_NUM -gt 0 ]; then
+                echo "✓ Parachain ready (block $BLOCK_NUM)"
                 exit 0
               fi
-              PREV_BLOCK=$BLOCK_NUM
             fi
+
             RETRIES=$((RETRIES + 1))
             sleep 5
           done
-          echo "Block production not detected after ${MAX_RETRIES} attempts (10 minutes)"
+
+          echo "ERROR: Parachain timeout"
           exit 1
           ' || {
-            echo "Failed to detect block production"
-            cat /tmp/zombienet-logs/zombienet.log || true
+            tail -200 /tmp/zombienet-logs/zombienet.log
             exit 1
           }
-
-          echo "Verifying zombienet is still running..."
-          if ! ps -p $ZOMBIENET_PID > /dev/null 2>&1; then
-            echo "ERROR: Zombienet process died after initial startup"
-            cat /tmp/zombienet-logs/zombienet.log || true
-            exit 1
-          fi
-
-          echo "✓ Zombienet network is ready for contract deployment"
 
       - name: Deploy QuStream contract
         working-directory: qustream-smart-contracts
