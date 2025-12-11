@@ -173,7 +173,7 @@ jobs:
           mkdir -p /tmp/zombienet-logs
 
           echo "Starting zombienet..."
-          make start-zombienet-qustream-ci > /tmp/zombienet-logs/zombienet.log 2>&1 &
+          make start-zombienet-qustream > /tmp/zombienet-logs/zombienet.log 2>&1 &
           ZOMBIENET_PID=$!
           echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
 
