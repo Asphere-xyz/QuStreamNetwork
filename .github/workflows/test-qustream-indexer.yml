@@ -95,15 +95,17 @@ jobs:
         run: |
           mkdir -p /tmp/zombienet-logs
 
-          echo "Starting zombienet network..."
+          echo "Starting build and zombienet setup..."
+          echo "This includes: downloading binaries, building node, starting network"
           make start-zombienet-qustream-ci > /tmp/zombienet-logs/zombienet.log 2>&1 &
           ZOMBIENET_PID=$!
           echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
 
-          timeout 300 bash -c '
+          echo "Waiting for node build to complete and zombienet to start..."
+          timeout 3600 bash -c '
           while true; do
             if ! ps -p '"$ZOMBIENET_PID"' > /dev/null 2>&1; then
-              echo "ERROR: Zombienet process died"
+              echo "ERROR: Process died during build/startup"
               exit 1
             fi
 
@@ -112,18 +114,33 @@ jobs:
               exit 1
             fi
 
+            if grep -q "Downloading" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
+              if [ -z "$DOWNLOAD_SHOWN" ]; then
+                echo "Downloading binaries..."
+                DOWNLOAD_SHOWN=1
+              fi
+            fi
+
+            if grep -q "Creating symlink" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
+              if [ -z "$BUILD_SHOWN" ]; then
+                echo "Building node (this takes 30-45 minutes on first run)..."
+                BUILD_SHOWN=1
+              fi
+            fi
+
             if grep -q "Network launched" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
               echo "✓ Network launched"
               exit 0
             fi
 
-            sleep 5
+            sleep 10
           done
           ' || {
             tail -200 /tmp/zombienet-logs/zombienet.log
             exit 1
           }
 
+          echo "Waiting for parachain to produce blocks..."
           timeout 600 bash -c '
           RETRIES=0
           while [ $RETRIES -lt 120 ]; do
