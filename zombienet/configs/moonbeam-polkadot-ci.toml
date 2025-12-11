@@ -10,10 +10,19 @@ chain_spec_path = "zombienet/specs/polkadot-local.json"
 name = "alice"
 validator = true
 rpc_port = 9900
+args = [
+    "--blocks-pruning=archive",
+    "--state-pruning=archive",
+    "--prometheus-external",
+]
 
 [[relaychain.nodes]]
 name = "bob"
 validator = true
+rpc_port = 9901
+args = [
+    "--prometheus-external",
+]
 
 [[parachains]]
 id = 2_004
@@ -32,6 +41,7 @@ args = [
     "--no-telemetry",
     "-lruntime::bridge-grandpa=trace",
     "--pool-type=fork-aware",
+    "--prometheus-external",
 ]
 
 [types.Header]
