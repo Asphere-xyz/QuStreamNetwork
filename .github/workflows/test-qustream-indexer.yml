@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: zombienet/bin
-          key: ${{ runner.os }}-zombienet-v1.3.133-polkadot-stable2506-1
+          key: ${{ runner.os }}-zombienet-v1.3.133-polkadot-stable2506-1-binfix2
           restore-keys: |
             ${{ runner.os }}-zombienet-
 
@@ -120,6 +120,34 @@ jobs:
               chmod +x "zombienet/bin/$bin" || true
             else
               echo "WARNING: $bin not found in zombienet/bin/"
+            fi
+          done
+
+          echo "Validating polkadot binaries are ELF (not HTML)..."
+          NEED_REDOWNLOAD=0
+          for bin in polkadot polkadot-execute-worker polkadot-prepare-worker; do
+            if [ -f "zombienet/bin/$bin" ]; then
+              if ! file "zombienet/bin/$bin" | grep -q "ELF"; then
+                echo "Corrupted $bin detected (non-ELF); removing to force re-download"
+                rm -f "zombienet/bin/$bin"
+                NEED_REDOWNLOAD=1
+              fi
+            else
+              NEED_REDOWNLOAD=1
+            fi
+          done
+
+          if [ "$NEED_REDOWNLOAD" -eq 1 ]; then
+            echo "Re-downloading polkadot binaries..."
+            make download-binaries
+          fi
+
+          echo "Post-validation of polkadot binaries:"
+          for bin in polkadot polkadot-execute-worker polkadot-prepare-worker; do
+            if [ -f "zombienet/bin/$bin" ]; then
+              file "zombienet/bin/$bin" || true
+            else
+              echo "WARNING: $bin still missing after re-download"
             fi
           done
 
