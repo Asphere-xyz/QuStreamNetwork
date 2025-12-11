@@ -58,6 +58,19 @@ jobs:
           rustup show
           rustup target add wasm32-unknown-unknown
 
+      - name: Cache Rust build artifacts
+        uses: actions/cache@v4
+        id: cache-rust-build
+        with:
+          # Cache Rust build artifacts (target/) to speed up builds
+          # This caches compiled dependencies and intermediate artifacts
+          # Cache key includes Cargo.lock hash so it invalidates when dependencies change
+          path: |
+            target/
+          key: ${{ runner.os }}-rust-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-rust-
+
       - name: Setup Docker database (background)
         working-directory: qustream-indexer
         run: docker compose up -d db
@@ -93,41 +106,99 @@ jobs:
           }
           EOF
 
+      - name: Build node binary and setup zombienet
+        timeout-minutes: 60
+        run: |
+          echo "Downloading zombienet binaries..."
+          make download-binaries
+
+          echo "Verifying downloaded binaries..."
+          ls -lh zombienet/bin/ || echo "WARNING: zombienet/bin directory not found"
+          for bin in zombienet polkadot polkadot-execute-worker polkadot-prepare-worker substrate-relay; do
+            if [ -f "zombienet/bin/$bin" ]; then
+              echo "✓ Found $bin"
+              chmod +x "zombienet/bin/$bin" || true
+            else
+              echo "WARNING: $bin not found in zombienet/bin/"
+            fi
+          done
+
+          echo "Checking Rust build cache status..."
+          CACHE_HIT="${{ steps.cache-rust-build.outputs.cache-hit }}"
+          if [ "$CACHE_HIT" == "true" ]; then
+            echo "✓ Rust build artifacts restored from cache (dependencies already compiled)"
+            if [ -f "target/release/qustream" ]; then
+              echo "✓ Node binary found in cache - build may be very fast or skipped"
+              ls -lh target/release/qustream
+            else
+              echo "Building node binary (using cached dependencies - should be faster)..."
+              make release-build
+            fi
+          else
+            echo "Building node binary (first run - this takes 30-45 minutes)..."
+            echo "Cache miss - will cache build artifacts after build completes"
+            make release-build
+          fi
+
+          echo "Verifying node binary..."
+          if [ ! -f "target/release/qustream" ]; then
+            echo "ERROR: Node binary not found at target/release/qustream"
+            exit 1
+          fi
+
+          if [ ! -x "target/release/qustream" ]; then
+            echo "Making node binary executable..."
+            chmod +x target/release/qustream
+          fi
+
+          echo "Verifying symlink..."
+          if [ ! -e "zombienet/bin/qustream" ]; then
+            echo "Creating symlink..."
+            mkdir -p zombienet/bin
+            ln -sf "../../target/release/qustream" zombienet/bin/qustream
+          fi
+
+          echo "✓ All binaries ready"
+          echo "Binary locations:"
+          ls -lh zombienet/bin/qustream target/release/qustream 2>/dev/null || true
+
+          echo "Testing binary execution..."
+          zombienet/bin/polkadot --version || echo "WARNING: polkadot --version failed"
+          zombienet/bin/zombienet --version || echo "WARNING: zombienet --version failed"
+          target/release/qustream --version || echo "WARNING: qustream --version failed"
+
       - name: Start zombienet and wait for network
         timeout-minutes: 90
         run: |
           mkdir -p /tmp/zombienet-logs
 
-          echo "Starting build and zombienet setup..."
-          echo "This includes: downloading binaries, building node, starting network"
+          echo "Starting zombienet..."
           make start-zombienet-qustream-ci > /tmp/zombienet-logs/zombienet.log 2>&1 &
           ZOMBIENET_PID=$!
           echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
 
-          echo "Waiting for node build to complete and zombienet to start..."
+          echo "Waiting for zombienet to start..."
           timeout 3600 bash -c '
           while true; do
             if ! ps -p '"$ZOMBIENET_PID"' > /dev/null 2>&1; then
-              echo "ERROR: Process died during build/startup"
+              echo "ERROR: Zombienet process died during startup"
+              echo "Last 100 lines of log:"
+              tail -100 /tmp/zombienet-logs/zombienet.log
               exit 1
             fi
 
             if grep -q "At least one of the nodes fails to start" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
               echo "ERROR: Node startup failed"
+              echo "Last 200 lines of log:"
+              tail -200 /tmp/zombienet-logs/zombienet.log
               exit 1
             fi
 
-            if grep -q "Downloading" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
-              if [ -z "$DOWNLOAD_SHOWN" ]; then
-                echo "Downloading binaries..."
-                DOWNLOAD_SHOWN=1
-              fi
-            fi
-
-            if grep -q "Creating symlink" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
-              if [ -z "$BUILD_SHOWN" ]; then
-                echo "Building node (this takes 30-45 minutes on first run)..."
-                BUILD_SHOWN=1
+            if grep -qi "error\|failed\|panic" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
+              ERROR_LINES=$(grep -i "error\|failed\|panic" /tmp/zombienet-logs/zombienet.log | tail -10)
+              if [ -n "$ERROR_LINES" ]; then
+                echo "WARNING: Errors detected in log:"
+                echo "$ERROR_LINES"
               fi
             fi
 
@@ -139,7 +210,11 @@ jobs:
             sleep 10
           done
           ' || {
-            tail -200 /tmp/zombienet-logs/zombienet.log
+            echo "=== Full zombienet log ==="
+            tail -500 /tmp/zombienet-logs/zombienet.log
+            echo ""
+            echo "=== Checking for zombie processes ==="
+            ps aux | grep -E 'zombienet|polkadot|qustream' || true
             exit 1
           }
 
