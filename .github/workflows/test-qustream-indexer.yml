@@ -228,8 +228,8 @@ jobs:
               exit 1
             fi
 
-            if grep -qi "error\|failed\|panic" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
-              ERROR_LINES=$(grep -i "error\|failed\|panic" /tmp/zombienet-logs/zombienet.log | tail -10)
+            if grep -qi "error\\|failed\\|panic" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
+              ERROR_LINES=$(grep -i "error\\|failed\\|panic" /tmp/zombienet-logs/zombienet.log | grep -vi "fetching metrics" | tail -10)
               if [ -n "$ERROR_LINES" ]; then
                 echo "WARNING: Errors detected in log:"
                 echo "$ERROR_LINES"
@@ -251,16 +251,6 @@ jobs:
             ps aux | grep -E 'zombienet|polkadot|qustream' || true
             exit 1
           }
-
-          echo "Preflight: probing Prometheus metrics endpoints (alice/bob/collator)..."
-          for PORT in 9615 9616 9617; do
-            echo " - Checking http://127.0.0.1:${PORT}/metrics"
-            if ! timeout 60 bash -c "until curl -sf http://127.0.0.1:${PORT}/metrics > /dev/null; do sleep 5; done"; then
-              echo "WARNING: metrics endpoint on ${PORT} not reachable within 60s"
-            else
-              echo "✓ Metrics reachable on ${PORT}"
-            fi
-          done
 
           echo "Waiting for parachain to produce blocks..."
           timeout 600 bash -c '
