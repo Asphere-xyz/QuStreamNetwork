@@ -349,7 +349,7 @@ jobs:
           fi
           echo "Deployment file contents:"
           cat "$DEPLOYMENT_FILE"
-          DEPLOYED_ADDRESS=$(cat "$DEPLOYMENT_FILE" | grep -o '"QuStreamRequestManagerModule#QuStreamRequestManager":"0x[^"]*"' | cut -d'"' -f4 || echo "")
+          DEPLOYED_ADDRESS=$(node -e 'const fs=require("fs"); const key="QuStreamRequestManagerModule#QuStreamRequestManager"; const file=process.argv[1]; const json=JSON.parse(fs.readFileSync(file,"utf8")); process.stdout.write((json[key] ?? ""));' "$DEPLOYMENT_FILE" 2>/dev/null || echo "")
           if [ -z "$DEPLOYED_ADDRESS" ]; then
             echo "ERROR: Failed to extract contract address from $DEPLOYMENT_FILE"
             echo "Available keys in file:"
