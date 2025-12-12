@@ -105,20 +105,13 @@ jobs:
           mkdir -p /tmp/zombienet-logs
 
           echo "Starting zombienet..."
-          make start-zombienet-qustream-ci > /tmp/zombienet-logs/zombienet.log 2>&1 &
+          PATH="${PATH}:${GITHUB_WORKSPACE}/zombienet/bin" zombienet/bin/zombienet spawn -m zombienet/configs/moonbeam-polkadot-ci.toml > /tmp/zombienet-logs/zombienet.log 2>&1 &
           ZOMBIENET_PID=$!
           echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
 
-          echo "Waiting for zombienet to start..."
+          echo "Waiting for network RPC to respond..."
           timeout 3600 bash -c '
           while true; do
-            if ! ps -p '"$ZOMBIENET_PID"' > /dev/null 2>&1; then
-              echo "ERROR: Zombienet process died during startup"
-              echo "Last 100 lines of log:"
-              tail -100 /tmp/zombienet-logs/zombienet.log
-              exit 1
-            fi
-
             if grep -q "At least one of the nodes fails to start" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
               echo "ERROR: Node startup failed"
               echo "Last 200 lines of log:"
@@ -126,9 +119,16 @@ jobs:
               exit 1
             fi
 
-            if grep -q "Network launched" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
-              echo "✓ Network launched"
+            if curl -s -X POST -H "Content-Type: application/json" --data "{\"jsonrpc\":\"2.0\",\"method\":\"eth_blockNumber\",\"params\":[],\"id\":1}" http://localhost:8800 2>/dev/null | grep -q "\"result\":\"0x"; then
+              echo "✓ RPC responding on :8800"
               exit 0
+            fi
+
+            if ! ps -p '"$ZOMBIENET_PID"' > /dev/null 2>&1; then
+              echo "ERROR: Zombienet process died before RPC became ready"
+              echo "Last 200 lines of log:"
+              tail -200 /tmp/zombienet-logs/zombienet.log
+              exit 1
             fi
 
             sleep 10
