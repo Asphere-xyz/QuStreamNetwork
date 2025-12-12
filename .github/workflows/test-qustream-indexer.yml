@@ -111,6 +111,7 @@ jobs:
         run: |
           echo "Cleaning any cached binaries to avoid HTML-corrupted downloads..."
           rm -rf zombienet/bin
+          mkdir -p zombienet/bin
 
           echo "Downloading zombienet binaries..."
           make download-binaries
@@ -143,6 +144,7 @@ jobs:
           if [ "$NEED_REDOWNLOAD" -eq 1 ]; then
             echo "Re-downloading binaries after corruption check..."
             rm -rf zombienet/bin
+            mkdir -p zombienet/bin
             make download-binaries
           fi
 
