@@ -16,7 +16,6 @@ args = [
     "--blocks-pruning=archive",
     "--state-pruning=archive",
     "--prometheus-external",
-    "--prometheus-host=0.0.0.0",
 ]
 
 [[relaychain.nodes]]
@@ -26,7 +25,6 @@ rpc_port = 9901
 prometheus_port = 9616
 args = [
     "--prometheus-external",
-    "--prometheus-host=0.0.0.0",
 ]
 
 [[parachains]]
@@ -48,7 +46,6 @@ args = [
     "-lruntime::bridge-grandpa=trace",
     "--pool-type=fork-aware",
     "--prometheus-external",
-    "--prometheus-host=0.0.0.0",
 ]
 
 [types.Header]
