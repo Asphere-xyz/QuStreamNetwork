@@ -72,8 +72,8 @@ jobs:
         timeout-minutes: 2
         run: timeout 60 bash -c 'until docker exec $(docker ps -qf "name=db") pg_isready -U postgres; do sleep 5; done'
 
-      - name: Install expect
-        run: sudo apt-get update && sudo apt-get install -y expect
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y expect protobuf-compiler
 
       - name: Build node binary and setup zombienet
         timeout-minutes: 60
