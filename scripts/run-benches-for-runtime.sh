@@ -13,7 +13,7 @@ cargo build --profile=$profile --locked --features=runtime-benchmarks
 
 # Load all pallet names in an array.
 PALLETS=($(
-  ./target/${profile}/moonbeam benchmark pallet \
+  ./target/${profile}/qustream benchmark pallet \
     --list \
     --runtime="./target/${profile}/wbuild/${runtime}-runtime/${runtime}_runtime.wasm" \
     --genesis-builder=runtime \

@@ -1,0 +1,47 @@
+name: Test QuStream Smart Contracts
+
+on:
+  pull_request:
+  push:
+    branches:
+      - qustreamnetwork
+
+# Cancel any previous job still running this workflow for this branch
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/control-the-concurrency-of-workflows-and-jobs#example-using-concurrency-to-cancel-any-in-progress-job-or-run
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-qustream-smart-contracts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: qustream-smart-contracts/package-lock.json
+
+      - name: Install dependencies
+        working-directory: qustream-smart-contracts
+        run: npm install
+
+      - name: Run tests with coverage
+        working-directory: qustream-smart-contracts
+        run: npx hardhat test --coverage
+
+      - name: Setup LCOV
+        uses: hrishikesh-kadam/setup-lcov@v1
+
+      - name: Report code coverage
+        uses: zgosalvez/github-actions-report-lcov@v5
+        with:
+          coverage-files: qustream-smart-contracts/coverage/lcov.info
+          minimum-coverage: 100
+          working-directory: qustream-smart-contracts
