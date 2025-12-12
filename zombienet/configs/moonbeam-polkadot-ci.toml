@@ -1,6 +1,6 @@
 [settings]
 provider = "native"
-timeout = 600
+timeout = 900000
 
 [relaychain]
 default_command = "polkadot"
