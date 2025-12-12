@@ -358,11 +358,11 @@ jobs:
 
       - name: Generate database migrations
         working-directory: qustream-indexer
-        run: npx sqd migration:generate || true
+        run: npx --yes @subsquid/cli migration:generate || true
 
       - name: Apply database migrations
         working-directory: qustream-indexer
-        run: npx sqd migration:apply
+        run: npx --yes @subsquid/cli migration:apply
 
       - name: Start indexer processor and API
         working-directory: qustream-indexer
