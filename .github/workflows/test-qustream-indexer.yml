@@ -11,8 +11,11 @@ concurrency:
 env:
   NODE_OPTIONS: "--max-old-space-size=8192 --no-deprecation"
   CARGO_TERM_COLOR: always
+  RUSTC_WRAPPER: "sccache"
   CARGO_INCREMENTAL: "0"
   CARGO_BUILD_JOBS: "2"
+  SCCACHE_CACHE_SIZE: "10GB"
+  SCCACHE_GHA_ENABLED: true
 
 jobs:
   test-indexer:
@@ -29,6 +32,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: "qustream-indexer/.nvmrc"
+
+      - name: Run sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.9
 
       - name: Setup Rust toolchain
         run: |
@@ -281,6 +287,10 @@ jobs:
           pkill -f polkadot || true
           pkill -f qustream || true
           cd qustream-indexer && docker compose down || true
+
+      - name: Display sccache stats
+        if: always()
+        run: ${SCCACHE_PATH} --show-stats || true
 
       - name: Upload logs on failure
         if: failure()
