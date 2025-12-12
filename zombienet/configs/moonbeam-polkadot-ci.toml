@@ -1,6 +1,7 @@
 [settings]
 provider = "native"
 timeout = 900000
+node_verifier = "None"
 
 [relaychain]
 default_command = "polkadot"
@@ -11,7 +12,6 @@ chain_spec_path = "zombienet/specs/polkadot-local.json"
 name = "alice"
 validator = true
 rpc_port = 9900
-prometheus_port = 9615
 args = [
     "--blocks-pruning=archive",
     "--state-pruning=archive",
@@ -21,7 +21,6 @@ args = [
 name = "bob"
 validator = true
 rpc_port = 9901
-prometheus_port = 9616
 args = [
 ]
 
@@ -37,7 +36,6 @@ eligibleCount = 1
 name = "alith"
 command = "qustream"
 rpc_port = 8800
-prometheus_port = 9617
 args = [
     "--no-hardware-benchmarks",
     "--no-telemetry",
