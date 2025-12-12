@@ -22,29 +22,16 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      PRIVATE_KEY: "0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b"
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: "qustream-indexer/.nvmrc"
-
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v3
-
-      - name: Cache zombienet binaries
-        uses: actions/cache@v4
-        with:
-          path: zombienet/bin
-          key: ${{ runner.os }}-zombienet-v1.3.133-polkadot-stable2506-1-binfix3
-          restore-keys: |
-            ${{ runner.os }}-zombienet-
 
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@v0.0.9
@@ -65,21 +52,6 @@ jobs:
         working-directory: qustream-smart-contracts
         run: npm install
 
-      - name: Install indexer dependencies
-        working-directory: qustream-indexer
-        run: npm install && npm run build
-
-      - name: Wait for database
-        timeout-minutes: 2
-        run: timeout 60 bash -c 'until docker exec $(docker ps -qf "name=db") pg_isready -U postgres; do sleep 5; done'
-
-      - name: Install expect for interactive prompts
-        run: sudo apt-get update && sudo apt-get install -y expect
-
-      - name: Setup contract deployment keys
-        run: |
-          echo "PRIVATE_KEY=0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b" >> $GITHUB_ENV
-
       - name: Create contract parameters file
         working-directory: qustream-smart-contracts
         run: |
@@ -92,48 +64,31 @@ jobs:
           }
           EOF
 
+      - name: Install indexer dependencies
+        working-directory: qustream-indexer
+        run: npm install && npm run build
+
+      - name: Wait for database
+        timeout-minutes: 2
+        run: timeout 60 bash -c 'until docker exec $(docker ps -qf "name=db") pg_isready -U postgres; do sleep 5; done'
+
+      - name: Install expect
+        run: sudo apt-get update && sudo apt-get install -y expect
+
       - name: Build node binary and setup zombienet
         timeout-minutes: 60
         run: |
-          echo "Cleaning any cached binaries to avoid HTML-corrupted downloads..."
           rm -rf zombienet/bin
           mkdir -p zombienet/bin
-
-          echo "Downloading zombienet binaries..."
           make download-binaries
-
+          chmod +x zombienet/bin/* || true
           for bin in zombienet polkadot polkadot-execute-worker polkadot-prepare-worker substrate-relay; do
-            if [ -f "zombienet/bin/$bin" ]; then
-              chmod +x "zombienet/bin/$bin" || true
-            fi
+            test -f "zombienet/bin/$bin" || { echo "Missing $bin"; exit 1; }
+            file "zombienet/bin/$bin" | grep -q "ELF" || { echo "Corrupted $bin (expected ELF)"; exit 1; }
           done
-
-          echo "Validating downloaded binaries are ELF (not HTML)..."
-          NEED_REDOWNLOAD=0
-          for bin in zombienet polkadot polkadot-execute-worker polkadot-prepare-worker substrate-relay; do
-            if [ -f "zombienet/bin/$bin" ]; then
-              if ! file "zombienet/bin/$bin" | grep -q "ELF"; then
-                echo "Corrupted $bin detected (non-ELF); removing to force re-download"
-                rm -f "zombienet/bin/$bin"
-                NEED_REDOWNLOAD=1
-              fi
-            else
-              NEED_REDOWNLOAD=1
-            fi
-          done
-
-          if [ "$NEED_REDOWNLOAD" -eq 1 ]; then
-            echo "Re-downloading binaries after corruption check..."
-            rm -rf zombienet/bin
-            mkdir -p zombienet/bin
-            make download-binaries
-          fi
 
           make release-build
-          if [ ! -f "target/release/qustream" ]; then
-            echo "ERROR: Node binary not found at target/release/qustream"
-            exit 1
-          fi
+          test -f "target/release/qustream" || { echo "Missing target/release/qustream"; exit 1; }
 
           if [ ! -x "target/release/qustream" ]; then
             chmod +x target/release/qustream
@@ -216,8 +171,6 @@ jobs:
       - name: Deploy QuStream contract
         working-directory: qustream-smart-contracts
         timeout-minutes: 5
-        env:
-          PRIVATE_KEY: "0x8075991ce870b93a8870eca0c0f91913d12f47948ca0fd25b49c6fa7cdbeee8b"
         run: |
           echo "Deploying QuStream contract to qustreamLocalnet..."
 
