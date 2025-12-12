@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: zombienet/bin
-          key: ${{ runner.os }}-zombienet-v1.3.133-polkadot-stable2506-1-binfix2
+          key: ${{ runner.os }}-zombienet-v1.3.133-polkadot-stable2506-1-binfix3
           restore-keys: |
             ${{ runner.os }}-zombienet-
 
@@ -109,6 +109,9 @@ jobs:
       - name: Build node binary and setup zombienet
         timeout-minutes: 60
         run: |
+          echo "Cleaning any cached binaries to avoid HTML-corrupted downloads..."
+          rm -rf zombienet/bin
+
           echo "Downloading zombienet binaries..."
           make download-binaries
 
@@ -123,9 +126,9 @@ jobs:
             fi
           done
 
-          echo "Validating polkadot binaries are ELF (not HTML)..."
+          echo "Validating downloaded binaries are ELF (not HTML)..."
           NEED_REDOWNLOAD=0
-          for bin in polkadot polkadot-execute-worker polkadot-prepare-worker; do
+          for bin in zombienet polkadot polkadot-execute-worker polkadot-prepare-worker substrate-relay; do
             if [ -f "zombienet/bin/$bin" ]; then
               if ! file "zombienet/bin/$bin" | grep -q "ELF"; then
                 echo "Corrupted $bin detected (non-ELF); removing to force re-download"
@@ -138,12 +141,13 @@ jobs:
           done
 
           if [ "$NEED_REDOWNLOAD" -eq 1 ]; then
-            echo "Re-downloading polkadot binaries..."
+            echo "Re-downloading binaries after corruption check..."
+            rm -rf zombienet/bin
             make download-binaries
           fi
 
-          echo "Post-validation of polkadot binaries:"
-          for bin in polkadot polkadot-execute-worker polkadot-prepare-worker; do
+          echo "Post-validation of binaries:"
+          for bin in zombienet polkadot polkadot-execute-worker polkadot-prepare-worker substrate-relay; do
             if [ -f "zombienet/bin/$bin" ]; then
               file "zombienet/bin/$bin" || true
             else
