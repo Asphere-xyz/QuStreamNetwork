@@ -109,7 +109,6 @@ jobs:
           ZOMBIENET_PID=$!
           echo "ZOMBIENET_PID=$ZOMBIENET_PID" >> $GITHUB_ENV
 
-          echo "Waiting for network RPC to respond..."
           timeout 3600 bash -c '
           while true; do
             if grep -q "At least one of the nodes fails to start" /tmp/zombienet-logs/zombienet.log 2>/dev/null; then
