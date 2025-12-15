@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: "0 5 * * 0" # Runs every Sunday at 5:00 AM UTC
     - cron: "0 5 * * 3" # Runs every Wednesday at 5:00 AM UTC
-    
+
 env:
   FRAME_OMNI_BENCHER_RELEASE_VERSION: polkadot-stable2503-5
 
@@ -30,8 +30,7 @@ jobs:
 
   verify:
     needs: ["set-tags"]
-    runs-on:
-      labels: bare-metal
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     strategy:
@@ -62,6 +61,20 @@ jobs:
           rustup override unset
           rustup show
           rustup target add wasm32-unknown-unknown
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+      - name: Install required dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential clang
+      - name: Install Protoc
+        uses: arduino/setup-protoc@v3
       - name: Install frame-omni-bencher
         shell: bash
         run: |
