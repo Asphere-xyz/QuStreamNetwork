@@ -76,7 +76,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y expect protobuf-compiler
 
       - name: Build node binary and setup zombienet
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: |
           rm -rf zombienet/bin
           mkdir -p zombienet/bin
